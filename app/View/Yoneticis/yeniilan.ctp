@@ -3,10 +3,16 @@ echo $this->Html->css(array(
     'yonetici/plugins/iCheck/custom',
     'yonetici/plugins/steps/jquery.steps',
     'yonetici/plugins/summernote/summernote',
-    'yonetici/plugins/summernote/summernote-bs3'
+    'yonetici/plugins/summernote/summernote-bs3',
+    '../plugin/elfinder/css/elfinder.min',
+    'yonetici/plugins/jQueryUI/jquery-ui'
 ));
 ?>
-
+<style>
+    .dialogelfinder {
+        z-index: 2000;
+    }
+</style>
 <div class="row">
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
@@ -26,19 +32,7 @@ echo $this->Html->css(array(
                                 </div>
                                 <div class="form-group"><label class="col-lg-2 control-label">İçerik</label>
                                     <div class="col-lg-10">
-                                        <textarea name="aciklama" class="summernote">
-                                            <h3>Lorem Ipsum is simply</h3>
-                                            dummy text of the printing and typesetting industry. <strong>Lorem Ipsum has been the industry's</strong> standard dummy text ever since the 1500s,
-                                            when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic
-                                            typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with
-                                            <br/>
-                                            <br/>
-                                            <ul>
-                                                <li>Remaining essentially unchanged</li>
-                                                <li>Make a type specimen book</li>
-                                                <li>Unknown printer</li>
-                                            </ul>
-                                        </textarea>
+                                        <textarea name="aciklama" class="summernote"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -51,7 +45,7 @@ echo $this->Html->css(array(
                                         <button class="btn btn-sm btn-white" type="submit">Sign in</button>
                                     </div>
                                 </div>
-                                <div class="form-group"><button type="submit">Gonder</button></div>
+                                <div class="form-group"><button type="submit" onclick="alert($('.summernote').summernote('code'))">Gonder</button></div>
                             </form>
                         <?php
                         }else if($tur == 2){
@@ -126,6 +120,9 @@ echo $this->Html->css(array(
 <?php
 echo $this->Html->script(array(
     'yonetici/plugins/summernote/summernote.min',
+    'yonetici/plugins/summernote/summernote-ext-elfinder',
+    'yonetici/plugins/jquery-ui/jquery-ui.min',
+    '../plugin/elfinder/js/elfinder.min',
     'yonetici/plugins/steps/jquery.steps.min'
 ));
 ?>
@@ -136,12 +133,68 @@ echo $this->Html->script(array(
             enableFinishButton:false,
             labels: {
                 next: "İleri",
-                previous: "Geri",
+                previous: "Geri"
             },
             onInit: function (event, currentIndex) {
                 $('#wizard .actions').addClass('hidden');
-                $('.summernote').summernote();
+                $('.summernote').summernote({
+                    toolbar: [
+                        ['style', ['fontname', 'bold', 'italic', 'underline', 'clear']],
+                        ['font', ['strikethrough', 'superscript', 'subscript']],
+                        ['fontsize', ['fontsize']],
+                        ['color', ['color']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['height', ['height']],
+                        ['insert', ['elfinder','link','video','table','hr','picture']]
+                    ]
+                });
             }
         });
     });
+
+//    function elfinderDialog() {
+//        var fm = $('<div/>').dialogelfinder({
+//            url : 'http://bk.dev/plugin/elfinder/connector.minimal.php', // change with the url of your connector
+//            lang : 'en',
+//            width : 840,
+//            height: 450,
+//            destroyOnClose : true,
+//            getFileCallback : function(files, fm) {
+//                console.log(files);
+//                $('.editor').summernote('editor.insertImage', files.url);
+//            },
+//            commandsOptions : {
+//                getfile : {
+//                    oncomplete : 'close',
+//                    folders : false
+//                }
+//            }
+//        }).dialogelfinder('instance');
+//    }
+
+    function elfinderDialog(id,t,c){
+        var fm=$('<div/>').dialogelfinder({
+            url:'http://bk.dev/plugin/elfinder/php/connector.minimal.php',
+            lang:'en',
+            width:840,
+            height:450,
+            destroyOnClose:true,
+            getFileCallback:function(files,fm){
+                if(id>0){
+                    $('#block').css({display:'block'});
+                    $('#'+c).val(files.url);
+                    $('#'+c+'image').attr('src',files.url);
+                    update(id,t,c,files.url);
+                }else{
+                    $('.summernote').summernote('editor.insertImage',files.url);
+                }
+            },
+            commandsOptions:{
+                getfile:{
+                    oncomplete:'close',
+                    folders:false
+                }
+            }
+        }).dialogelfinder('instance');
+    }
 </script>
