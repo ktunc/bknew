@@ -5,13 +5,15 @@ echo $this->Html->css(array(
     'yonetici/plugins/summernote/summernote',
     'yonetici/plugins/summernote/summernote-bs3',
     '../plugin/elfinder/css/elfinder.min',
-    'yonetici/plugins/jQueryUI/jquery-ui'
+    'yonetici/plugins/jQueryUI/jquery-ui',
+    'yonetici/plugins/filer/jquery.filer',
+    'yonetici/plugins/filer/themes/jquery.filer-dragdropbox-theme'
 ));
 ?>
 <style>
-    .dialogelfinder {
-        z-index: 2000;
-    }
+.dialogelfinder{
+    z-index: 20000;
+}
 </style>
 <div class="row">
     <div class="col-lg-12">
@@ -26,76 +28,107 @@ echo $this->Html->css(array(
                         <?php
                         if($tur == 1){
                         ?>
-                            <form class="form-horizontal" method="post" id="form-ilan" action="<?php echo $this->Html->url('/');?>yoneticis/test" enctype="multipart/form-data">
-                                <div class="form-group"><label class="col-lg-2 control-label">Başlık</label>
+                            <form class="form-horizontal" id="form-ilan">
+                                <div class="form-group"><label class="col-lg-2 control-label">Başlık:</label>
                                     <div class="col-lg-10"><input type="text" name="baslik" placeholder="Başlık" class="form-control"></div>
                                 </div>
-                                <div class="form-group"><label class="col-lg-2 control-label">İçerik</label>
+                                <div class="form-group"><label class="col-lg-2 control-label">İçerik:</label>
                                     <div class="col-lg-10">
-                                        <textarea name="aciklama" class="summernote"></textarea>
+                                        <textarea name="icerik" class="summernote"></textarea>
                                     </div>
+                                </div>
+                                <div class="form-group"><label class="col-lg-2 control-label">Bulunduğu Kat:</label>
+                                    <div class="col-lg-10"><input type="text" name="kat" placeholder="Bulunduğu Kat" class="form-control"></div>
+                                </div>
+                                <div class="form-group"><label class="col-lg-2 control-label">Bina Kat:</label>
+                                    <div class="col-lg-10"><input type="text" name="bina_kat" placeholder="Bina Kat" class="form-control"></div>
+                                </div>
+                                <div class="form-group"><label class="col-lg-2 control-label">Oda:</label>
+                                    <div class="col-lg-10"><input type="text" name="oda" placeholder="Oda" class="form-control"></div>
+                                </div>
+                                <div class="form-group"><label class="col-lg-2 control-label">Metre Kare:</label>
+                                    <div class="col-lg-10"><input type="text" name="mkare" placeholder="Metre Kare" class="form-control"></div>
+                                </div>
+                                <div class="form-group"><label class="col-lg-2 control-label">Fiyat:</label>
+                                    <div class="col-lg-10"><input type="text" name="fiyat" placeholder="Fiyat" class="form-control"></div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-lg-offset-2 col-lg-10">
-                                        <div class="i-checks"><label class=""> <div class="icheckbox_square-green" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div><i></i> Remember me </label></div>
-                                    </div>
+                                    <label class="col-lg-2 control-label"></label>
+                                    <div class="col-lg-10"><button type="button" class="btn btn-outline btn-sm btn-primary dim" id="ilandetaykaydet"><i class="fa fa-check"></i> Kaydet</button></div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-lg-offset-2 col-lg-10">
-                                        <button class="btn btn-sm btn-white" type="submit">Sign in</button>
-                                    </div>
-                                </div>
-                                <div class="form-group"><button type="submit" onclick="alert($('.summernote').summernote('code'))">Gonder</button></div>
+                                <input type="hidden" name="turu" value="1" />
+                                <input type="hidden" name="ilanId" value="0" />
                             </form>
                         <?php
                         }else if($tur == 2){
                         ?>
                             <form class="form-horizontal" id="form-ilan">
-                                <p>Sign in today for more expirience.</p>
-                                <div class="form-group"><label class="col-lg-2 control-label">Email</label>
-
-                                    <div class="col-lg-10"><input type="email" placeholder="Email" class="form-control"> <span class="help-block m-b-none">Example block-level help text here.</span>
+                                <div class="form-group"><label class="col-lg-2 control-label">Başlık:</label>
+                                    <div class="col-lg-10"><input type="text" name="baslik" placeholder="Başlık" class="form-control"></div>
+                                </div>
+                                <div class="form-group"><label class="col-lg-2 control-label">İçerik:</label>
+                                    <div class="col-lg-10">
+                                        <textarea name="icerik" class="summernote"></textarea>
                                     </div>
                                 </div>
-                                <div class="form-group"><label class="col-lg-2 control-label">Password</label>
-
-                                    <div class="col-lg-10"><input type="password" placeholder="Password" class="form-control"></div>
+                                <div class="form-group"><label class="col-lg-2 control-label">Bulunduğu Kat:</label>
+                                    <div class="col-lg-10"><input type="text" name="kat" placeholder="Bulunduğu Kat" class="form-control"></div>
+                                </div>
+                                <div class="form-group"><label class="col-lg-2 control-label">Bina Kat:</label>
+                                    <div class="col-lg-10"><input type="text" name="bina_kat" placeholder="Bina Kat" class="form-control"></div>
+                                </div>
+                                <div class="form-group"><label class="col-lg-2 control-label">Oda:</label>
+                                    <div class="col-lg-10"><input type="text" name="oda" placeholder="Oda" class="form-control"></div>
+                                </div>
+                                <div class="form-group"><label class="col-lg-2 control-label">Metre Kare:</label>
+                                    <div class="col-lg-10"><input type="text" name="mkare" placeholder="Metre Kare" class="form-control"></div>
+                                </div>
+                                <div class="form-group"><label class="col-lg-2 control-label">Fiyat:</label>
+                                    <div class="col-lg-10"><input type="text" name="fiyat" placeholder="Fiyat" class="form-control"></div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-lg-offset-2 col-lg-10">
-                                        <div class="i-checks"><label class=""> <div class="icheckbox_square-green" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div><i></i> Remember me </label></div>
-                                    </div>
+                                    <label class="col-lg-2 control-label"></label>
+                                    <div class="col-lg-10"><button type="button" class="btn btn-outline btn-sm btn-primary dim" id="ilandetaykaydet"><i class="fa fa-check"></i> Kaydet</button></div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-lg-offset-2 col-lg-10">
-                                        <button class="btn btn-sm btn-white" type="submit">Sign in</button>
-                                    </div>
-                                </div>
+                                <input type="hidden" name="turu" value="2" />
+                                <input type="hidden" name="ilanId" value="0" />
                             </form>
                         <?php
                         }else {
                         ?>
                             <form class="form-horizontal" id="form-ilan">
-                                <p>Sign in today for more expirience.</p>
-                                <div class="form-group"><label class="col-lg-2 control-label">Email</label>
-
-                                    <div class="col-lg-10"><input type="email" placeholder="Email" class="form-control"> <span class="help-block m-b-none">Example block-level help text here.</span>
+                                <div class="form-group"><label class="col-lg-2 control-label">Başlık:</label>
+                                    <div class="col-lg-10"><input type="text" name="baslik" placeholder="Başlık" class="form-control"></div>
+                                </div>
+                                <div class="form-group"><label class="col-lg-2 control-label">İçerik:</label>
+                                    <div class="col-lg-10">
+                                        <textarea name="icerik" class="summernote"></textarea>
                                     </div>
                                 </div>
-                                <div class="form-group"><label class="col-lg-2 control-label">Password</label>
-
-                                    <div class="col-lg-10"><input type="password" placeholder="Password" class="form-control"></div>
+                                <div class="form-group"><label class="col-lg-2 control-label">İmar Durumu:</label>
+                                    <div class="col-lg-10"><input type="text" name="imar" placeholder="İmar Durumu" class="form-control"></div>
+                                </div>
+                                <div class="form-group"><label class="col-lg-2 control-label">Ada:</label>
+                                    <div class="col-lg-10"><input type="text" name="ada" placeholder="Ada" class="form-control"></div>
+                                </div>
+                                <div class="form-group"><label class="col-lg-2 control-label">Parsel:</label>
+                                    <div class="col-lg-10"><input type="text" name="parsel" placeholder="Parsel" class="form-control"></div>
+                                </div>
+                                <div class="form-group"><label class="col-lg-2 control-label">Tapu:</label>
+                                    <div class="col-lg-10"><input type="text" name="Tapu" placeholder="Tapu" class="form-control"></div>
+                                </div>
+                                <div class="form-group"><label class="col-lg-2 control-label">Metre Kare:</label>
+                                    <div class="col-lg-10"><input type="text" name="mkare" placeholder="Metre Kare" class="form-control"></div>
+                                </div>
+                                <div class="form-group"><label class="col-lg-2 control-label">Fiyat:</label>
+                                    <div class="col-lg-10"><input type="text" name="fiyat" placeholder="Fiyat" class="form-control"></div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-lg-offset-2 col-lg-10">
-                                        <div class="i-checks"><label class=""> <div class="icheckbox_square-green" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div><i></i> Remember me </label></div>
-                                    </div>
+                                    <label class="col-lg-2 control-label"></label>
+                                    <div class="col-lg-10"><button type="button" class="btn btn-outline btn-sm btn-primary dim" id="ilandetaykaydet"><i class="fa fa-check"></i> Kaydet</button></div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-lg-offset-2 col-lg-10">
-                                        <button class="btn btn-sm btn-white" type="submit">Sign in</button>
-                                    </div>
-                                </div>
+                                <input type="hidden" name="turu" value="3" />
+                                <input type="hidden" name="ilanId" value="0" />
                             </form>
                         <?php
                         }
@@ -104,10 +137,18 @@ echo $this->Html->css(array(
 
                     <h1>İlan Resimleri</h1>
                     <div class="step-content">
+                        <div class="form-group">
+                            <div id="content">
 
+                                <!-- Example 2 -->
+                                <input type="file" name="files[]" id="filer_input2" multiple="multiple" accept="image/*">
+                                <!-- end of Example 2 -->
+
+                            </div>
+                        </div>
                     </div>
 
-                    <h1>Third Step</h1>
+                    <h1>İlan Lokasyonu</h1>
                     <div class="step-content">
 
                     </div>
@@ -121,8 +162,10 @@ echo $this->Html->css(array(
 echo $this->Html->script(array(
     'yonetici/plugins/summernote/summernote.min',
     'yonetici/plugins/summernote/summernote-ext-elfinder',
+    'yonetici/plugins/summernote/summernote-tr-TR.min',
     'yonetici/plugins/jquery-ui/jquery-ui.min',
     '../plugin/elfinder/js/elfinder.min',
+    '../plugin/elfinder/js/i18n/elfinder.tr',
     'yonetici/plugins/steps/jquery.steps.min'
 ));
 ?>
@@ -131,13 +174,17 @@ echo $this->Html->script(array(
 
         $("#wizard").steps({
             enableFinishButton:false,
+            enableKeyNavigation: false,
             labels: {
                 next: "İleri",
                 previous: "Geri"
             },
             onInit: function (event, currentIndex) {
-                $('#wizard .actions').addClass('hidden');
+//                $('#wizard .actions').addClass('hidden');
                 $('.summernote').summernote({
+                    height: 300,
+                    minHeight: 300,
+                    lang: 'tr-TR',
                     toolbar: [
                         ['style', ['fontname', 'bold', 'italic', 'underline', 'clear']],
                         ['font', ['strikethrough', 'superscript', 'subscript']],
@@ -145,38 +192,64 @@ echo $this->Html->script(array(
                         ['color', ['color']],
                         ['para', ['ul', 'ol', 'paragraph']],
                         ['height', ['height']],
-                        ['insert', ['elfinder','link','video','table','hr','picture']]
+                        ['insert', ['link','video','table','hr']],
+                        ['elfinder', ['elfinder']]
                     ]
                 });
             }
         });
-    });
 
-//    function elfinderDialog() {
-//        var fm = $('<div/>').dialogelfinder({
-//            url : 'http://bk.dev/plugin/elfinder/connector.minimal.php', // change with the url of your connector
-//            lang : 'en',
-//            width : 840,
-//            height: 450,
-//            destroyOnClose : true,
-//            getFileCallback : function(files, fm) {
-//                console.log(files);
-//                $('.editor').summernote('editor.insertImage', files.url);
-//            },
-//            commandsOptions : {
-//                getfile : {
-//                    oncomplete : 'close',
-//                    folders : false
-//                }
-//            }
-//        }).dialogelfinder('instance');
-//    }
+        $('#ilandetaykaydet').on('click',function(){
+//            swal({
+//                title: "Başarılı",
+//                text: "İlan Başarıyla Kaydedildi.",
+//                type: "success",
+//                showCancelButton: false,
+//                confirmButtonClass: 'fa fa-check',
+//                confirmButtonText: 'Tamam',
+//                closeOnConfirm: false
+//            }, function () {
+//                swal("Deleted!", "Your imaginary file has been deleted.", "success");
+//            });
+            $.blockUI({ css: { backgroundColor: 'transparent', border: 'none'},message: $('#LoaderBlock') });
+            var formdata = new FormData($('form#form-ilan').get(0));
+            setTimeout(function(){
+                $.ajax({
+                    async:false,
+                    type:'POST',
+                    url:'<?php echo $this->Html->url('/');?>yoneticis/ilankaydet',
+                    enctype: 'multipart/form-data',
+                    data: formdata,
+                    processData: false,
+                    contentType: false,
+                    cache: false
+                }).done(function(data){
+                    var dat = $.parseJSON(data);
+                    if(dat['return']){
+
+                    }else{
+                        $('form#form-ilan input[name="ilanId"]').val(dat['ilanId']);
+                        swal({
+                            title: "Başarılı",
+                            text: "İlan Başarıyla Kaydedildi.",
+                            type: "success",
+                            confirmButtonText: 'Tamam'
+                        });
+                        $('#wizard .actions').removeClass('hidden');
+                        $.unblockUI();
+                    }
+                }).fail(function(){
+
+                });
+            },500);
+        });
+    });
 
     function elfinderDialog(id,t,c){
         var fm=$('<div/>').dialogelfinder({
             url:'http://bk.dev/plugin/elfinder/php/connector.minimal.php',
-            lang:'en',
-            width:840,
+            lang:'tr',
+            width:900,
             height:450,
             destroyOnClose:true,
             getFileCallback:function(files,fm){
@@ -198,3 +271,9 @@ echo $this->Html->script(array(
         }).dialogelfinder('instance');
     }
 </script>
+<?php
+echo $this->Html->script(array(
+        'yonetici/plugins/filer/jquery.filer.min',
+    'yonetici/plugins/filer/jquery.filer.custom'
+));
+?>

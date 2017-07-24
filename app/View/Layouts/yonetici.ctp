@@ -32,12 +32,14 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
             'font-awesome.min',
             'yonetici/bootstrap.min',
             'yonetici/style',
-            'yonetici/animate'
+            'yonetici/animate',
+            'yonetici/plugins/sweetalert/sweetalert'
     ));
 
     echo $this->Html->script(array(
             'yonetici/jquery-3.1.1.min',
-            'yonetici/bootstrap.min'
+            'yonetici/bootstrap.min',
+            'blockUI'
     ));
 
     echo $this->fetch('meta');
@@ -47,6 +49,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body class="fixed-sidebar fixed-nav fixed-nav-basic">
+<?php echo $this->element('loader'); ?>
 <div id="wrapper">
 
     <?php echo $this->element('yonetici/menu'); ?>
@@ -172,24 +175,24 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
             </nav>
         </div>
-        <div class="row wrapper border-bottom white-bg page-heading">
-            <div class="col-sm-4">
-                <h2>This is main title</h2>
-                <ol class="breadcrumb">
-                    <li>
-                        <a href="index-2.html">This is</a>
-                    </li>
-                    <li class="active">
-                        <strong>Breadcrumb</strong>
-                    </li>
-                </ol>
-            </div>
-            <div class="col-sm-8">
-                <div class="title-action">
-                    <a href="#" class="btn btn-primary">This is action area</a>
-                </div>
-            </div>
-        </div>
+<!--        <div class="row wrapper border-bottom white-bg page-heading">-->
+<!--            <div class="col-sm-4">-->
+<!--                <h2>This is main title</h2>-->
+<!--                <ol class="breadcrumb">-->
+<!--                    <li>-->
+<!--                        <a href="index-2.html">This is</a>-->
+<!--                    </li>-->
+<!--                    <li class="active">-->
+<!--                        <strong>Breadcrumb</strong>-->
+<!--                    </li>-->
+<!--                </ol>-->
+<!--            </div>-->
+<!--            <div class="col-sm-8">-->
+<!--                <div class="title-action">-->
+<!--                    <a href="#" class="btn btn-primary">This is action area</a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
 
         <div class="wrapper wrapper-content">
             <?php echo $this->fetch('content'); ?>
@@ -212,7 +215,8 @@ echo $this->Html->script(array(
         'yonetici/plugins/metisMenu/jquery.metisMenu',
         'yonetici/plugins/slimscroll/jquery.slimscroll.min',
         'yonetici/inspinia',
-        'yonetici/plugins/pace/pace.min'
+        'yonetici/plugins/pace/pace.min',
+        'yonetici/plugins/sweetalert/sweetalert.min'
 ));
 ?>
 

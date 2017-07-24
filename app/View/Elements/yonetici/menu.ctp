@@ -26,7 +26,7 @@
                     <li><a href="<?php echo $this->Html->url('/');?>yoneticis/ilanlar">İlanlar</a></li>
                     <li><a href="<?php echo $this->Html->url('/');?>yoneticis/yeniilan/tur:3">Yeni Arsa İlanı</a></li>
                     <li><a href="<?php echo $this->Html->url('/');?>yoneticis/yeniilan/tur:2">Yeni İşyeri İlanı</a></li>
-                    <li><a href="<?php echo $this->Html->url('/');?>yoneticis/yeniilan/tur:1">Yeni Ev İlanı</a></li>
+                    <li><a href="<?php echo $this->Html->url('/');?>yoneticis/yeniilan/tur:1">Yeni Konut İlanı</a></li>
                 </ul>
             </li>
             <li>

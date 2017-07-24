@@ -29,8 +29,8 @@
             context.memo('button.elfinder', function () {
                 // create button
                 var button = ui.button({
-                    contents: '<i class="fa fa-list-alt"/> File Manager',
-                    tooltip: 'elfinder',
+                    contents: '<i class="fa fa-list-alt"/> Resim/Dosya Yöneticisi',
+                    // tooltip: 'elfinder',
                     click: function () {
                         elfinderDialog($(this).closest('.note-editor').parent().children('.summernote'));
                     }
