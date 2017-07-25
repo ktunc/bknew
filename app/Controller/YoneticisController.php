@@ -9,11 +9,12 @@ App::uses('ImageManipulator','Vendor');
  * @property IlanKonut $IlanKonut
  * @property IlanArsa $IlanArsa
  * @property IlanIsyeri $IlanIsyeri
+ * @property IlanResim $IlanResim
  */
 class YoneticisController extends AppController {
 
     var $layout = 'yonetici';
-    var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri');
+    var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri', 'IlanResim');
 /**
  * Scaffold
  *
@@ -35,7 +36,10 @@ class YoneticisController extends AppController {
 	    $this->set('ilanHeader',$this->ilanHeader[$tur]);
     }
 
-	public function ilanlar(){}
+	public function ilanlar(){
+        $data = $this->Ilan->find('all',array('order'=>array('Ilan.id' => 'DESC')));
+        $this->set('ilanlar',$data);
+    }
 
 	public function ilankaydet(){
 	    $this->autoLayout = false;
@@ -116,6 +120,62 @@ class YoneticisController extends AppController {
         exit();
     }
 
+    public function ilanresimkaydet(){
+	    $this->autoLayout = false;
+	    $this->autoRender = false;
+        $return = array('hata'=>true, 'mesaj'=>'Bir hata meydana geldi. Lütfen tekrar deneyin.');
+        if($this->request->is('post')){
+            $data = $this->request->data;
+            if(array_key_exists('ilanId',$data) && $data['ilanId'] != 0){
+                $ilanId = $data['ilanId'];
+                $yuklenenfile = array_key_exists('yuklenenfile',$data)?$data['yuklenenfile']:false;
+
+                $hata = 0;
+                foreach($yuklenenfile as $value){
+                    $asilpath = WWW_ROOT.'img/gecici/'.$value;
+                    if(!is_file($asilpath)){
+                        continue;
+                    }
+
+                    if(file_exists($asilpath)){
+                        $fileType = pathinfo($value, PATHINFO_EXTENSION);
+                        $resName = time().rand(1,1000).'.'.$fileType;
+                        $path = 'img/ilan/'.$ilanId.'/'.$resName;
+                        $pathThumb = 'img/ilan/'.$ilanId.'/thumb'.$resName;
+//                        $pathRes = WWW_ROOT.'img/ilan/'.$ilanId.'/'.$resName;
+//                        $pathResThumb = WWW_ROOT.'img/ilan/'.$ilanId.'/thumb'.$resName;
+
+                        //image Resize
+                        $manipulator = new ImageManipulator($asilpath);
+                        $newImage = $manipulator->resample(800, 800);
+                        if($manipulator->save($path)){
+                            $manipulator = new ImageManipulator($path);
+                            $newImage = $manipulator->resample(200, 200);
+                            if($manipulator->save($pathThumb)){
+                                $this->IlanResim->create();
+                                $this->IlanResim->save(array('ilan_id'=>$ilanId,'res'=>$value,'path'=>$path,'paththumb'=>$pathThumb, 'islem_tarihi'=>date('Y-m-d H:i:s')));
+                                if(file_exists($asilpath)){
+                                    unlink($asilpath);
+                                }
+                            }
+                        }else{
+                            $hata++;
+                        }
+                    }else{
+                        $hata++;
+                    }
+                }
+
+                if($hata == 0){
+                    $return['hata'] = false;
+                    $return['mesaj'] = 'İlan resimleri başarıyla kaydedildi.';
+                }
+            }
+        }
+        echo json_encode($return);
+        exit();
+    }
+
     public function uploadimage(){
         $this->autoRender = false;
         $uploader = new FilerUploader();
@@ -156,14 +216,29 @@ class YoneticisController extends AppController {
             if(file_exists($file)){
                 unlink($file);
             }
+
+            $res = $this->IlanResim->findByRes($_POST['file']);
+            if($res){
+                $fileRes = new File($res['IlanResim']['path']);
+                $fileRes->delete();
+                $fileResThumb = new File($res['IlanResim']['paththumb']);
+                if($fileResThumb){
+                    $fileResThumb->delete();
+                }
+
+                if($this->IlanResim->deleteAll(array('id'=>$res['IlanResim']['id']))){
+                    echo json_encode(true);
+                }else{
+                    echo json_encode(false);
+                }
+            }
         }
         echo json_encode(true);
     }
 
 	public function test(){
-	    pr($this->request->data['aciklama']);
-	    pr($_FILES);
-	    exit();
+        $this->IlanResim->create();
+        exit();
     }
 
 }

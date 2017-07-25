@@ -128,7 +128,7 @@ echo $this->Html->css(array(
                                     <div class="col-lg-10"><button type="button" class="btn btn-outline btn-sm btn-primary dim" id="ilandetaykaydet"><i class="fa fa-check"></i> Kaydet</button></div>
                                 </div>
                                 <input type="hidden" name="turu" value="3" />
-                                <input type="hidden" name="ilanId" value="0" />
+                                <input type="hidden" name="ilanId" class="ilanId" value="0" />
                             </form>
                         <?php
                         }
@@ -137,20 +137,29 @@ echo $this->Html->css(array(
 
                     <h1>İlan Resimleri</h1>
                     <div class="step-content">
-                        <div class="form-group">
-                            <div id="content">
+                        <form class="form-horizontal" id="form-ilan-resim">
+                            <div class="form-group">
+                                <div id="content">
 
-                                <!-- Example 2 -->
-                                <input type="file" name="files[]" id="filer_input2" multiple="multiple" accept="image/*">
-                                <!-- end of Example 2 -->
+                                    <!-- Example 2 -->
+                                    <input type="file" name="files[]" id="filer_input2" multiple="multiple" accept="image/*">
+                                    <!-- end of Example 2 -->
 
+                                </div>
                             </div>
-                        </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label"></label>
+                                <div class="col-lg-10"><button type="button" class="btn btn-outline btn-sm btn-primary dim" id="ilanresimkaydet"><i class="fa fa-check"></i> Kaydet</button></div>
+                            </div>
+                            <input type="hidden" name="ilanId" class="ilanId" value="0"/>
+                        </form>
                     </div>
 
                     <h1>İlan Lokasyonu</h1>
                     <div class="step-content">
-
+                        <form class="form-horizontal" id="form-ilan-location">
+                            <input type="hidden" name="ilanId" class="ilanId" value="0"/>
+                        </form>
                     </div>
                 </div>
 
@@ -180,7 +189,7 @@ echo $this->Html->script(array(
                 previous: "Geri"
             },
             onInit: function (event, currentIndex) {
-//                $('#wizard .actions').addClass('hidden');
+                $('#wizard .actions').addClass('hidden');
                 $('.summernote').summernote({
                     height: 300,
                     minHeight: 300,
@@ -225,13 +234,49 @@ echo $this->Html->script(array(
                     cache: false
                 }).done(function(data){
                     var dat = $.parseJSON(data);
-                    if(dat['return']){
+                    if(dat['hata']){
+
+                    }else{
+                        $('form#form-ilan input[name="ilanId"]').val(dat['ilanId']);
+                        $('form#form-ilan-resim input[name="ilanId"]').val(dat['ilanId']);
+                        $('form#form-ilan-location input[name="ilanId"]').val(dat['ilanId']);
+                        swal({
+                            title: "Başarılı",
+                            text: "İlan Başarıyla Kaydedildi.",
+                            type: "success",
+                            confirmButtonText: 'Tamam'
+                        });
+                        $('#wizard .actions').removeClass('hidden');
+                        $.unblockUI();
+                    }
+                }).fail(function(){
+
+                });
+            },500);
+        });
+
+        $('#ilanresimkaydet').on('click',function(){
+            $.blockUI({ css: { backgroundColor: 'transparent', border: 'none'},message: $('#LoaderBlock') });
+            var formdata = new FormData($('form#form-ilan-resim').get(0));
+            setTimeout(function(){
+                $.ajax({
+                    async:false,
+                    type:'POST',
+                    url:'<?php echo $this->Html->url('/');?>yoneticis/ilanresimkaydet',
+                    enctype: 'multipart/form-data',
+                    data: formdata,
+                    processData: false,
+                    contentType: false,
+                    cache: false
+                }).done(function(data){
+                    var dat = $.parseJSON(data);
+                    if(dat['hata']){
 
                     }else{
                         $('form#form-ilan input[name="ilanId"]').val(dat['ilanId']);
                         swal({
                             title: "Başarılı",
-                            text: "İlan Başarıyla Kaydedildi.",
+                            text: "İlan Resimleri Başarıyla Kaydedildi.",
                             type: "success",
                             confirmButtonText: 'Tamam'
                         });

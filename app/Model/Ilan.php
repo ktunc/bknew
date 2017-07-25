@@ -54,4 +54,35 @@ class Ilan extends AppModel {
 		)
 	);
 
+	public $hasMany = array(
+	    'IlanResim'=>array(
+	        'className' => 'IlanResim',
+            'foreignKey' => 'ilan_id',
+            'dependent' => true
+        )
+    );
+
+	public $hasOne = array(
+	    'IlanLocation' => array(
+            'className' => 'IlanLocation',
+            'foreignKey' => 'ilan_id',
+            'dependent' => true
+        ),
+        'IlanKonut' => array(
+            'className' => 'IlanKonut',
+            'foreignKey' => 'ilan_id',
+            'dependent' => true
+        ),
+        'IlanIsyeri' => array(
+            'className' => 'IlanIsyeri',
+            'foreignKey' => 'ilan_id',
+            'dependent' => true
+        ),
+        'IlanArsa' => array(
+            'className' => 'IlanArsa',
+            'foreignKey' => 'ilan_id',
+            'dependent' => true
+        )
+    );
+
 }
