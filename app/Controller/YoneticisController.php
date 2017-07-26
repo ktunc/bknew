@@ -10,11 +10,16 @@ App::uses('ImageManipulator','Vendor');
  * @property IlanArsa $IlanArsa
  * @property IlanIsyeri $IlanIsyeri
  * @property IlanResim $IlanResim
+ * @property Sehir $Sehir
+ * $property Ilce $Ilce
+ * $property Semt $Semt
+ * @property Mahalle $Mahalle
+ * @property IlanLocation $IlanLocation
  */
 class YoneticisController extends AppController {
 
     var $layout = 'yonetici';
-    var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri', 'IlanResim');
+    var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri', 'IlanResim', 'Sehir', 'Ilce', 'Semt', 'Mahalle', 'IlanLocation');
 /**
  * Scaffold
  *
@@ -24,7 +29,9 @@ class YoneticisController extends AppController {
 
 	public $ilanHeader = array(1=>'Yeni Konut İlanı', 2=>'Yeni İşyeri İlanı', 3=>'Yeni Arsa İlanı');
 
-	public function index(){}
+	public function index(){
+
+    }
 
 	public function yeniilan(){
 	    $named=$this->request->param('named');
@@ -34,11 +41,20 @@ class YoneticisController extends AppController {
         }
 	    $this->set('tur',$tur);
 	    $this->set('ilanHeader',$this->ilanHeader[$tur]);
+	    $sehir = $this->Sehir->find('all',array('order'=>array('sehir_adi'=>'ASC')));
+	    $this->set('sehir', $sehir);
     }
 
 	public function ilanlar(){
         $data = $this->Ilan->find('all',array('order'=>array('Ilan.id' => 'DESC')));
         $this->set('ilanlar',$data);
+    }
+
+    public function ilanedit(){
+	    $named = $this->request->params["named"];
+        $data = $this->Ilan->findById($named['ilan']);
+        pr($data);
+        exit();
     }
 
 	public function ilankaydet(){
@@ -176,6 +192,40 @@ class YoneticisController extends AppController {
         exit();
     }
 
+    public function ilanlocationkaydet(){
+        $this->autoLayout = false;
+        $this->autoRender = false;
+        $return = array('hata'=>true, 'mesaj'=>'Bir hata meydana geldi. Lütfen tekrar deneyin.');
+        if($this->request->is('post')){
+            $data = $this->request->data;
+            if(array_key_exists('ilanId',$data) && $data['ilanId'] != 0){
+                $ilanId = $data['ilanId'];
+                $location = $this->IlanLocation->findByIlanId($ilanId);
+
+                $sehir = array_key_exists('sehir',$data)?($data['sehir']==-1?null:$data['sehir']):null;
+                $ilce = array_key_exists('ilce',$data)?($data['ilce']==-1?null:$data['ilce']):null;
+                $semt = array_key_exists('semt',$data)?($data['semt']==-1?null:$data['semt']):null;
+                $mahalle = array_key_exists('mahalle',$data)?($data['mahalle']==-1?null:$data['mahalle']):null;
+                $adres = $data['adres'];
+                $saved = array('sehir_id'=>$sehir, 'ilce_id'=>$ilce, 'semt_id'=>$semt, 'mahalle_id'=>$mahalle, 'adres'=>$adres);
+
+                if($location){
+                    $this->IlanLocation->id = $location['IlanLocation']['id'];
+                    if($this->IlanLocation->save($saved)){
+                        $return['hata'] = false;
+                    }
+                }else{
+                    $this->IlanLocation->create();
+                    if($this->IlanLocation->save($saved)){
+                        $return['hata'] = false;
+                    }
+                }
+            }
+        }
+        echo json_encode($return);
+        exit();
+    }
+
     public function uploadimage(){
         $this->autoRender = false;
         $uploader = new FilerUploader();
@@ -236,9 +286,70 @@ class YoneticisController extends AppController {
         echo json_encode(true);
     }
 
+    public function ajaxIlceBySehir(){
+        $this->autoRender = false;
+        $this->autoLayout = false;
+        $return = array('hata'=>true, 'mesaj'=>'Bir hata meydana geldi. Lütfen tekrar deneyin.', 'select'=>false);
+        if($this->request->is('post')){
+            $sehir = $this->request->data('sehir');
+            $ilce = $this->Ilce->find('all',array('conditions'=>array('sehir_id'=>$sehir),'order'=>array('ilce_adi'=>'ASC')));
+            if($ilce){
+                $selectilce = '<option value="-1">Seçiniz</option>';
+                foreach ($ilce as $row) {
+                    $selectilce .= '<option value="'.$row['Ilce']['id'].'">'.$row['Ilce']['ilce_adi'].'</option>';
+                }
+                $return['select'] = $selectilce;
+            }
+        }
+
+        echo json_encode($return);
+        exit();
+    }
+
+    public function ajaxSemtByIlce(){
+        $this->autoRender = false;
+        $this->autoLayout = false;
+        $return = array('hata'=>true, 'mesaj'=>'Bir hata meydana geldi. Lütfen tekrar deneyin.', 'select'=>false);
+        if($this->request->is('post')){
+            $ilce = $this->request->data('ilce');
+            $semt = $this->Semt->find('all',array('conditions'=>array('ilce_id'=>$ilce),'order'=>array('semt_adi'=>'ASC')));
+            if($semt){
+                $selectilce = '<option value="-1">Seçiniz</option>';
+                foreach ($semt as $row) {
+                    $selectilce .= '<option value="'.$row['Semt']['id'].'">'.$row['Semt']['semt_adi'].'</option>';
+                }
+                $return['select'] = $selectilce;
+            }
+        }
+
+        echo json_encode($return);
+        exit();
+    }
+
+    public function ajaxMahalleBySemt(){
+        $this->autoRender = false;
+        $this->autoLayout = false;
+        $return = array('hata'=>true, 'mesaj'=>'Bir hata meydana geldi. Lütfen tekrar deneyin.', 'select'=>false);
+        if($this->request->is('post')){
+            $semt = $this->request->data('semt');
+            $mahalle = $this->Mahalle->find('all',array('conditions'=>array('semt_id'=>$semt),'order'=>array('mahalle_adi'=>'ASC')));
+            if($mahalle){
+                $selectilce = '<option value="-1">Seçiniz</option>';
+                foreach ($mahalle as $row) {
+                    $selectilce .= '<option value="'.$row['Mahalle']['id'].'">'.$row['Mahalle']['mahalle_adi'].'</option>';
+                }
+                $return['select'] = $selectilce;
+            }
+        }
+
+        echo json_encode($return);
+        exit();
+    }
+
 	public function test(){
         $this->IlanResim->create();
         exit();
     }
+
 
 }

@@ -35,6 +35,7 @@ echo $this->Html->css(array('yonetici/plugins/dataTables/datatables.min'));
                             <th>Başlık</th>
                             <th>Satılık-Kiralık</th>
                             <th>Tür</th>
+                            <th width="5%">İşlem</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -51,6 +52,7 @@ echo $this->Html->css(array('yonetici/plugins/dataTables/datatables.min'));
                             }else {
                                 echo '<td>Arsa</td>';
                             }
+                            echo '<td><a href="'.$this->Html->url('/').'yoneticis/ilanedit/ilan:'.$row['Ilan']['id'].'"><i class="fa fa-edit fa-lg text-success"></i></a> <i class="fa fa-times fa-lg text-danger"></i></td>';
                             echo '</tr>';
                         }
                         ?>
@@ -61,6 +63,7 @@ echo $this->Html->css(array('yonetici/plugins/dataTables/datatables.min'));
                             <th>Başlık</th>
                             <th>Satılık-Kiralık</th>
                             <th>Tür</th>
+                            <th>İşlem</th>
                         </tr>
                         </tfoot>
                     </table>

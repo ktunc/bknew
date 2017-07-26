@@ -7,7 +7,8 @@ echo $this->Html->css(array(
     '../plugin/elfinder/css/elfinder.min',
     'yonetici/plugins/jQueryUI/jquery-ui',
     'yonetici/plugins/filer/jquery.filer',
-    'yonetici/plugins/filer/themes/jquery.filer-dragdropbox-theme'
+    'yonetici/plugins/filer/themes/jquery.filer-dragdropbox-theme',
+    'yonetici/plugins/select2/select2.min'
 ));
 ?>
 <style>
@@ -158,6 +159,47 @@ echo $this->Html->css(array(
                     <h1>İlan Lokasyonu</h1>
                     <div class="step-content">
                         <form class="form-horizontal" id="form-ilan-location">
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">Şehir</label>
+                                <div class="col-lg-10">
+                                    <select class="select2" name="sehir">
+                                        <option value="-1">Seçiniz</option>
+                                        <?php
+                                        foreach($sehir as $cow){
+                                            echo '<option value="'.$cow['Sehir']['id'].'">'.$cow['Sehir']['sehir_adi'].'</option>';
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">İlçe</label>
+                                <div class="col-lg-10">
+                                    <select class="select2" name="ilce"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">Semt</label>
+                                <div class="col-lg-10">
+                                    <select class="select2" name="semt"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">Mahalle</label>
+                                <div class="col-lg-10">
+                                    <select class="select2" name="mahalle"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">Adres</label>
+                                <div class="col-lg-10">
+                                    <textarea name="adres"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label"></label>
+                                <div class="col-lg-10"><button type="button" class="btn btn-outline btn-sm btn-primary dim" id="ilanlocationkaydet"><i class="fa fa-check"></i> Kaydet</button></div>
+                            </div>
                             <input type="hidden" name="ilanId" class="ilanId" value="0"/>
                         </form>
                     </div>
@@ -189,7 +231,7 @@ echo $this->Html->script(array(
                 previous: "Geri"
             },
             onInit: function (event, currentIndex) {
-                $('#wizard .actions').addClass('hidden');
+//                $('#wizard .actions').addClass('hidden');
                 $('.summernote').summernote({
                     height: 300,
                     minHeight: 300,
@@ -207,6 +249,8 @@ echo $this->Html->script(array(
                 });
             }
         });
+
+        $('.select2').select2({width:'100%'});
 
         $('#ilandetaykaydet').on('click',function(){
 //            swal({
@@ -273,7 +317,6 @@ echo $this->Html->script(array(
                     if(dat['hata']){
 
                     }else{
-                        $('form#form-ilan input[name="ilanId"]').val(dat['ilanId']);
                         swal({
                             title: "Başarılı",
                             text: "İlan Resimleri Başarıyla Kaydedildi.",
@@ -288,6 +331,124 @@ echo $this->Html->script(array(
                 });
             },500);
         });
+
+        $('#ilanlocationkaydet').on('click',function(){
+            $.blockUI({ css: { backgroundColor: 'transparent', border: 'none'},message: $('#LoaderBlock') });
+            var formdata = new FormData($('form#form-ilan-location').get(0));
+            setTimeout(function(){
+                $.ajax({
+                    async:false,
+                    type:'POST',
+                    url:'<?php echo $this->Html->url('/');?>yoneticis/ilanlocationkaydet',
+                    enctype: 'multipart/form-data',
+                    data: formdata,
+                    processData: false,
+                    contentType: false,
+                    cache: false
+                }).done(function(data){
+                    var dat = $.parseJSON(data);
+                    if(dat['hata']){
+
+                    }else{
+                        swal({
+                            title: "Başarılı",
+                            text: "İlan Adres ve Lokasyonu Başarıyla Kaydedildi.",
+                            type: "success",
+                            confirmButtonText: 'Tamam'
+                        });
+                        $('#wizard .actions').removeClass('hidden');
+                        $.unblockUI();
+                    }
+                }).fail(function(){
+
+                });
+            },500);
+        });
+
+        $('select[name="sehir"]').on('change',function(){
+            $.blockUI();
+            var sehir = $(this).val();
+            setTimeout(function(){
+                $.ajax({
+                    async:false,
+                    type:'POST',
+                    url:'<?php echo $this->Html->url('/');?>yoneticis/ajaxIlceBySehir',
+                    data:{'sehir':sehir}
+                }).done(function(data){
+                    var dat = $.parseJSON(data);
+                    if(dat['select'] == false){
+                        $.unblockUI();
+                        $('select[name="ilce"]').html('').select2({width:"100%"});
+                        $('select[name="semt"]').html('').select2({width:"100%"});
+                        $('select[name="mahalle"]').html('').select2({width:"100%"});
+                    }else{
+                        $('select[name="ilce"]').html(dat['select']).select2({width:"100%"});
+                        $('select[name="semt"]').html('').select2({width:"100%"});
+                        $('select[name="mahalle"]').html('').select2({width:"100%"});
+                        $.unblockUI();
+                    }
+                }).fail(function(){
+                    $.unblockUI();
+                    $('select[name="ilce"]').html('').select2({width:"100%"});
+                    $('select[name="semt"]').html('').select2({width:"100%"});
+                    $('select[name="mahalle"]').html('').select2({width:"100%"});
+                });
+            },500);
+        });
+
+        $('select[name="ilce"]').on('change',function(){
+            $.blockUI();
+            var ilce = $(this).val();
+            setTimeout(function(){
+                $.ajax({
+                    async:false,
+                    type:'POST',
+                    url:'<?php echo $this->Html->url('/');?>yoneticis/ajaxSemtByIlce',
+                    data:{'ilce':ilce}
+                }).done(function(data){
+                    var dat = $.parseJSON(data);
+                    if(dat['select'] == false){
+                        $.unblockUI();
+                        $('select[name="semt"]').html('').select2({width:"100%"});
+                        $('select[name="mahalle"]').html('').select2({width:"100%"});
+                    }else{
+                        $('select[name="semt"]').html(dat['select']).select2({width:"100%"});
+                        $('select[name="mahalle"]').html('').select2({width:"100%"});
+                        $.unblockUI();
+                    }
+                }).fail(function(){
+                    $.unblockUI();
+                    $('select[name="semt"]').html('').select2({width:"100%"});
+                    $('select[name="mahalle"]').html('').select2({width:"100%"});
+                });
+            },500);
+        });
+
+        $('select[name="semt"]').on('change',function(){
+            $.blockUI();
+            var semt = $(this).val();
+            setTimeout(function(){
+                $.ajax({
+                    async:false,
+                    type:'POST',
+                    url:'<?php echo $this->Html->url('/');?>yoneticis/ajaxMahalleBySemt',
+                    data:{'semt':semt}
+                }).done(function(data){
+                    var dat = $.parseJSON(data);
+                    if(dat['select'] == false){
+                        $.unblockUI();
+                        $('select[name="mahalle"]').html('').select2({width:"100%"});
+                    }else{
+                        $('select[name="mahalle"]').html(dat['select']).select2({width:"100%"});
+                        $.unblockUI();
+                    }
+                }).fail(function(){
+                    $.unblockUI();
+                    $('select[name="mahalle"]').html('').select2({width:"100%"});
+                });
+            },500);
+        });
+
     });
 
     function elfinderDialog(id,t,c){
@@ -319,6 +480,7 @@ echo $this->Html->script(array(
 <?php
 echo $this->Html->script(array(
         'yonetici/plugins/filer/jquery.filer.min',
-    'yonetici/plugins/filer/jquery.filer.custom'
+    'yonetici/plugins/filer/jquery.filer.custom',
+    'yonetici/plugins/select2/select2.full.min'
 ));
 ?>
