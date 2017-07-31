@@ -30,7 +30,23 @@ class Ilan extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
-		)
+		),
+        'Sehir' => array(
+            'className' => 'Sehir',
+            'foreignKey' => 'sehir_id'
+        ),
+        'Ilce' => array(
+            'className' => 'Ilce',
+            'foreignKey' => 'ilce_id'
+        ),
+        'Semt' => array(
+            'className' => 'Semt',
+            'foreignKey' => 'semt_id'
+        ),
+        'Mahalle' => array(
+            'className' => 'Mahalle',
+            'foreignKey' => 'mahalle_id'
+        )
 	);
 
 /**
@@ -63,11 +79,6 @@ class Ilan extends AppModel {
     );
 
 	public $hasOne = array(
-	    'IlanLocation' => array(
-            'className' => 'IlanLocation',
-            'foreignKey' => 'ilan_id',
-            'dependent' => true
-        ),
         'IlanKonut' => array(
             'className' => 'IlanKonut',
             'foreignKey' => 'ilan_id',

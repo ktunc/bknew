@@ -52,9 +52,35 @@ class YoneticisController extends AppController {
 
     public function ilanedit(){
 	    $named = $this->request->params["named"];
-        $data = $this->Ilan->findById($named['ilan']);
-        pr($data);
-        exit();
+        $ilan = $this->Ilan->findById($named['ilan']);
+        if(!$ilan){
+            $this->redirect(array('controller'=>'yoneticis'));
+        }
+
+        if(!array_key_exists($ilan['Ilan']['turu'],$this->ilanHeader)){
+            $this->redirect(array('controller'=>'yoneticis','action'=>'yeniilan','tur'=>1));
+        }
+        $this->set('tur',$ilan['Ilan']['turu']);
+        $this->set('ilanHeader',$this->ilanHeader[$ilan['Ilan']['turu']]);
+        $sehir = $ilce = $semt = $mahalle = false;
+        $sehir = $this->Sehir->find('all',array('order'=>array('sehir_adi'=>'ASC')));
+        $this->set('sehir', $sehir);
+
+        if(!empty($ilan['Ilan']['sehir_id'])){
+            $ilce = $this->Ilce->find('all',array('conditions'=>array('sehir_id'=>$ilan['Ilan']['sehir_id']), 'order'=>array('ilce_adi'=>'ASC')));
+        }
+        if(!empty($ilan['Ilan']['ilce_id'])){
+            $semt = $this->Semt->find('all',array('conditions'=>array('ilce_id'=>$ilan['Ilan']['ilce_id']), 'order'=>array('semt_adi'=>'ASC')));
+        }
+        if(!empty($ilan['Ilan']['semt_id'])){
+            $mahalle = $this->Mahalle->find('all',array('conditions'=>array('semt_id'=>$ilan['Ilan']['semt_id']), 'order'=>array('mahalle_adi'=>'ASC')));
+        }
+        $this->set('ilce',$ilce);
+        $this->set('semt',$semt);
+        $this->set('mahalle',$mahalle);
+
+        $this->set('ilan',$ilan);
+//        pr($ilan['Ilan']['sehir_id']);exit();
     }
 
 	public function ilankaydet(){
@@ -71,7 +97,7 @@ class YoneticisController extends AppController {
                     exit();
                 }
                 $return['ilanId'] = $data['ilanId'];
-                $saved = array('baslik'=>$data['baslik'],'icerik'=>$data['icerik'],'turu'=>$data['turu'],'fiyat'=>$data['fiyat'],'eklenme_tarihi'=>date('Y-m-d H:i:s'));
+                $saved = array('baslik'=>$data['baslik'],'icerik'=>$data['icerik'],'turu'=>$data['turu'],'fiyat'=>$data['fiyat'],'satkir'=>$data['satkir']);
                 $this->Ilan->id = $data['ilanId'];
                 if(!$this->Ilan->save($saved)){
                     echo json_encode($return);
@@ -102,7 +128,7 @@ class YoneticisController extends AppController {
                 }
             }else{
                 if(array_key_exists('turu',$data) && array_key_exists($data['turu'],$this->ilanHeader)){
-                    $saved = array('baslik'=>$data['baslik'],'icerik'=>$data['icerik'],'turu'=>$data['turu'],'fiyat'=>$data['fiyat'],'eklenme_tarihi'=>date('Y-m-d H:i:s'));
+                    $saved = array('baslik'=>$data['baslik'],'icerik'=>$data['icerik'],'turu'=>$data['turu'],'fiyat'=>$data['fiyat'],'satkir'=>$data['satkir'],'eklenme_tarihi'=>date('Y-m-d H:i:s'));
                     $this->Ilan->create();
                     if(!$this->Ilan->save($saved)){
                         echo json_encode($return);
@@ -200,7 +226,7 @@ class YoneticisController extends AppController {
             $data = $this->request->data;
             if(array_key_exists('ilanId',$data) && $data['ilanId'] != 0){
                 $ilanId = $data['ilanId'];
-                $location = $this->IlanLocation->findByIlanId($ilanId);
+                $ilan = $this->Ilan->findById($ilanId);
 
                 $sehir = array_key_exists('sehir',$data)?($data['sehir']==-1?null:$data['sehir']):null;
                 $ilce = array_key_exists('ilce',$data)?($data['ilce']==-1?null:$data['ilce']):null;
@@ -209,14 +235,9 @@ class YoneticisController extends AppController {
                 $adres = $data['adres'];
                 $saved = array('sehir_id'=>$sehir, 'ilce_id'=>$ilce, 'semt_id'=>$semt, 'mahalle_id'=>$mahalle, 'adres'=>$adres);
 
-                if($location){
-                    $this->IlanLocation->id = $location['IlanLocation']['id'];
-                    if($this->IlanLocation->save($saved)){
-                        $return['hata'] = false;
-                    }
-                }else{
-                    $this->IlanLocation->create();
-                    if($this->IlanLocation->save($saved)){
+                if($ilan){
+                    $this->Ilan->id = $ilanId;
+                    if($this->Ilan->save($saved)){
                         $return['hata'] = false;
                     }
                 }

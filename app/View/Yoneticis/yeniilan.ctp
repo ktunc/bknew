@@ -10,6 +10,7 @@ echo $this->Html->css(array(
     'yonetici/plugins/filer/themes/jquery.filer-dragdropbox-theme',
     'yonetici/plugins/select2/select2.min'
 ));
+$satkir = array(1=>'Satılık',2=>'Kiralık');
 ?>
 <style>
 .dialogelfinder{
@@ -36,6 +37,17 @@ echo $this->Html->css(array(
                                 <div class="form-group"><label class="col-lg-2 control-label">İçerik:</label>
                                     <div class="col-lg-10">
                                         <textarea name="icerik" class="summernote"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group"><label class="col-lg-2 control-label">Satılık-Kiralık:</label>
+                                    <div class="col-lg-10">
+                                        <select class="select2" name="satkir">
+                                            <?php
+                                            foreach ($satkir as $k=>$v){
+                                                echo '<option value="'.$k.'">'.$v.'</option>';
+                                            }
+                                            ?>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group"><label class="col-lg-2 control-label">Bulunduğu Kat:</label>
@@ -72,6 +84,17 @@ echo $this->Html->css(array(
                                         <textarea name="icerik" class="summernote"></textarea>
                                     </div>
                                 </div>
+                                <div class="form-group"><label class="col-lg-2 control-label">Satılık-Kiralık:</label>
+                                    <div class="col-lg-10">
+                                        <select class="select2" name="satkir">
+                                            <?php
+                                            foreach ($satkir as $k=>$v){
+                                                echo '<option value="'.$k.'">'.$v.'</option>';
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="form-group"><label class="col-lg-2 control-label">Bulunduğu Kat:</label>
                                     <div class="col-lg-10"><input type="text" name="kat" placeholder="Bulunduğu Kat" class="form-control"></div>
                                 </div>
@@ -104,6 +127,17 @@ echo $this->Html->css(array(
                                 <div class="form-group"><label class="col-lg-2 control-label">İçerik:</label>
                                     <div class="col-lg-10">
                                         <textarea name="icerik" class="summernote"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group"><label class="col-lg-2 control-label">Satılık-Kiralık:</label>
+                                    <div class="col-lg-10">
+                                        <select class="select2" name="satkir">
+                                            <?php
+                                            foreach ($satkir as $k=>$v){
+                                                echo '<option value="'.$k.'">'.$v.'</option>';
+                                            }
+                                            ?>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group"><label class="col-lg-2 control-label">İmar Durumu:</label>
@@ -193,7 +227,7 @@ echo $this->Html->css(array(
                             <div class="form-group">
                                 <label class="col-lg-2 control-label">Adres</label>
                                 <div class="col-lg-10">
-                                    <textarea name="adres"></textarea>
+                                    <textarea rows="5" name="adres" class="form-control"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -231,7 +265,7 @@ echo $this->Html->script(array(
                 previous: "Geri"
             },
             onInit: function (event, currentIndex) {
-//                $('#wizard .actions').addClass('hidden');
+                $('#wizard .actions').addClass('hidden');
                 $('.summernote').summernote({
                     height: 300,
                     minHeight: 300,
