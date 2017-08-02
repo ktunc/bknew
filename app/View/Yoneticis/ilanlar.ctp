@@ -7,23 +7,6 @@ echo $this->Html->css(array('yonetici/plugins/dataTables/datatables.min'));
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <h5>Basic Data Tables example with responsive plugin</h5>
-                <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-wrench"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#">Config option 1</a>
-                        </li>
-                        <li><a href="#">Config option 2</a>
-                        </li>
-                    </ul>
-                    <a class="close-link">
-                        <i class="fa fa-times"></i>
-                    </a>
-                </div>
             </div>
             <div class="ibox-content">
 
@@ -31,8 +14,9 @@ echo $this->Html->css(array('yonetici/plugins/dataTables/datatables.min'));
                     <table class="table table-striped table-bordered table-hover dataTables-example" >
                         <thead>
                         <tr>
-                            <th>İlan ID</th>
+                            <th width="5%">İlan ID</th>
                             <th>Başlık</th>
+                            <th>Yer</th>
                             <th>Satılık-Kiralık</th>
                             <th>Tür</th>
                             <th width="5%">İşlem</th>
@@ -44,6 +28,7 @@ echo $this->Html->css(array('yonetici/plugins/dataTables/datatables.min'));
                             echo '<tr>';
                             echo '<td>'.$row['Ilan']['id'].'</td>';
                             echo '<td>'.$row['Ilan']['baslik'].'</td>';
+                            echo '<td>'.$row['Sehir']['sehir_adi'].'</td>';
                             echo '<td>'.($row['Ilan']['satkir']==1?"Satılık":"Kiralık").'</td>';
                             if($row['Ilan']['turu'] == 1){
                                 echo '<td>Konut</td>';
@@ -61,6 +46,7 @@ echo $this->Html->css(array('yonetici/plugins/dataTables/datatables.min'));
                         <tr>
                             <th>İlan ID</th>
                             <th>Başlık</th>
+                            <th>Yer</th>
                             <th>Satılık-Kiralık</th>
                             <th>Tür</th>
                             <th>İşlem</th>

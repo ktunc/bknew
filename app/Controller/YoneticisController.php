@@ -367,6 +367,8 @@ class YoneticisController extends AppController {
         exit();
     }
 
+    public function yenidanisman(){}
+
 	public function test(){
         $this->IlanResim->create();
         exit();

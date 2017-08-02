@@ -75,7 +75,7 @@ $satkir = array(1=>'Satılık',2=>'Kiralık');
                                         <div class="col-lg-10"><button type="button" class="btn btn-outline btn-sm btn-primary dim" id="ilandetaykaydet"><i class="fa fa-check"></i> Kaydet</button></div>
                                     </div>
                                     <input type="hidden" name="turu" value="1" />
-                                    <input type="hidden" name="ilanId" value="0" />
+                                    <input type="hidden" name="ilanId" value="<?php echo $ilan['Ilan']['id']; ?>" />
                                 </form>
                                 <?php
                             }else if($tur == 2){
@@ -124,7 +124,7 @@ $satkir = array(1=>'Satılık',2=>'Kiralık');
                                         <div class="col-lg-10"><button type="button" class="btn btn-outline btn-sm btn-primary dim" id="ilandetaykaydet"><i class="fa fa-check"></i> Kaydet</button></div>
                                     </div>
                                     <input type="hidden" name="turu" value="2" />
-                                    <input type="hidden" name="ilanId" value="0" />
+                                    <input type="hidden" name="ilanId"value="<?php echo $ilan['Ilan']['id']; ?>" />
                                 </form>
                                 <?php
                             }else {
@@ -176,7 +176,7 @@ $satkir = array(1=>'Satılık',2=>'Kiralık');
                                         <div class="col-lg-10"><button type="button" class="btn btn-outline btn-sm btn-primary dim" id="ilandetaykaydet"><i class="fa fa-check"></i> Kaydet</button></div>
                                     </div>
                                     <input type="hidden" name="turu" value="3" />
-                                    <input type="hidden" name="ilanId" class="ilanId" value="0" />
+                                    <input type="hidden" name="ilanId" class="ilanId" value="<?php echo $ilan['Ilan']['id']; ?>" />
                                 </form>
                                 <?php
                             }
@@ -216,7 +216,7 @@ $satkir = array(1=>'Satılık',2=>'Kiralık');
                                     <label class="col-lg-2 control-label"></label>
                                     <div class="col-lg-10"><button type="button" class="btn btn-outline btn-sm btn-primary dim" id="ilanresimkaydet"><i class="fa fa-check"></i> Kaydet</button></div>
                                 </div>
-                                <input type="hidden" name="ilanId" class="ilanId" value="0"/>
+                                <input type="hidden" name="ilanId" class="ilanId" value="<?php echo $ilan['Ilan']['id']; ?>"/>
                             </form>
                         </div>
 
@@ -307,7 +307,7 @@ $satkir = array(1=>'Satılık',2=>'Kiralık');
                                     <label class="col-lg-2 control-label"></label>
                                     <div class="col-lg-10"><button type="button" class="btn btn-outline btn-sm btn-primary dim" id="ilanlocationkaydet"><i class="fa fa-check"></i> Kaydet</button></div>
                                 </div>
-                                <input type="hidden" name="ilanId" class="ilanId" value="0"/>
+                                <input type="hidden" name="ilanId" class="ilanId" value="<?php echo $ilan['Ilan']['id']; ?>"/>
                             </form>
                         </div>
                     </div>
