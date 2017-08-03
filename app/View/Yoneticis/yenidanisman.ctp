@@ -4,9 +4,8 @@ echo $this->Html->css(array(
     'yonetici/plugins/summernote/summernote-bs3',
     '../plugin/elfinder/css/elfinder.min',
     'yonetici/plugins/jQueryUI/jquery-ui',
-    'yonetici/plugins/filer/jquery.filer',
-    'yonetici/plugins/filer/themes/jquery.filer-dragdropbox-theme',
-    'yonetici/plugins/select2/select2.min'
+    'yonetici/plugins/select2/select2.min',
+    'yonetici/plugins/jasny/jasny-bootstrap.min'
 ));
 $iletisimturu = array(1=>'Telefon', 2=>'Mail');
 ?>
@@ -23,6 +22,24 @@ $iletisimturu = array(1=>'Telefon', 2=>'Mail');
                 </div>
                 <div class="ibox-content">
                     <form class="form-horizontal" id="form-danisman">
+                        <div class="form-group"><label class="col-lg-2 control-label">Resim:</label>
+                            <div class="col-lg-10">
+                                <div class="row fileresim">
+                                    <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                        <div class="form-control" data-trigger="fileinput">
+                                            <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                            <span class="fileinput-filename"></span>
+                                        </div>
+                                        <span class="input-group-addon btn btn-default btn-file">
+                                        <span class="fileinput-new">Seç</span>
+                                        <span class="fileinput-exists">Değiştir</span>
+                                        <input type="file" name="danismanresim"/>
+                                    </span>
+                                        <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Sil</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group"><label class="col-lg-2 control-label">Adı Soyadı:</label>
                             <div class="col-lg-10"><input type="text" name="isim" placeholder="Adı Soyadı" class="form-control"></div>
                         </div>
@@ -59,7 +76,7 @@ $iletisimturu = array(1=>'Telefon', 2=>'Mail');
                         </div>
                         <div class="form-group">
                             <label class="col-lg-2 control-label"></label>
-                            <div class="col-lg-10"><button type="button" class="btn btn-outline btn-sm btn-primary dim" id="danismandetaykaydet"><i class="fa fa-check"></i> Kaydet</button></div>
+                            <div class="col-lg-10"><button type="button" class="btn btn-outline btn-sm btn-primary dim" id="danismankaydet"><i class="fa fa-check"></i> Kaydet</button></div>
                         </div>
                         <input type="hidden" name="danismanId" value="0" />
                     </form>
@@ -74,40 +91,41 @@ echo $this->Html->script(array(
     'yonetici/plugins/summernote/summernote-tr-TR.min',
     'yonetici/plugins/jquery-ui/jquery-ui.min',
     '../plugin/elfinder/js/elfinder.min',
-    '../plugin/elfinder/js/i18n/elfinder.tr'
+    '../plugin/elfinder/js/i18n/elfinder.tr',
+    'yonetici/plugins/jasny/jasny-bootstrap.min'
 ));
 ?>
-    <script type="text/javascript">
-        var iletisimtxt = '<div class="row"> <div class="col-lg-2"> <select class="select2" name="iletisimturu[]"><?php foreach($iletisimturu as $k=>$v){ echo '<option value="'.$k.'">'.$v.'</option>';}?></select> </div> <div class="col-lg-9"> <input type="text" class="form-control" name="iletisim[]" placeholder="İletişim" /> </div><div class="col-lg-1"> <button type="button" class="btn btn-sm btn-danger iletisimsil"><i class="fa fa-trash"></i></button> </div> </div>';
-        $(document).ready(function(){
-            $('.select2').select2({width:'100%'});
+<script type="text/javascript">
+var iletisimtxt = '<div class="row"> <div class="col-lg-2"> <select class="select2" name="iletisimturu[]"><?php foreach($iletisimturu as $k=>$v){ echo '<option value="'.$k.'">'.$v.'</option>';}?></select> </div> <div class="col-lg-9"> <input type="text" class="form-control" name="iletisim[]" placeholder="İletişim" /> </div><div class="col-lg-1"> <button type="button" class="btn btn-sm btn-danger iletisimsil"><i class="fa fa-trash"></i></button> </div> </div>';
+$(document).ready(function(){
+    $('.select2').select2({width:'100%'});
 
-            $('.summernote').summernote({
-                height: 300,
-                minHeight: 300,
-                lang: 'tr-TR',
-                toolbar: [
-                    ['style', ['fontname', 'bold', 'italic', 'underline', 'clear']],
-                    ['font', ['strikethrough', 'superscript', 'subscript']],
-                    ['fontsize', ['fontsize']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['height', ['height']],
-                    ['insert', ['link','video','table','hr']],
-                    ['elfinder', ['elfinder']]
-                ]
-            });
+    $('.summernote').summernote({
+        height: 300,
+        minHeight: 300,
+        lang: 'tr-TR',
+        toolbar: [
+            ['style', ['fontname', 'bold', 'italic', 'underline', 'clear']],
+            ['font', ['strikethrough', 'superscript', 'subscript']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+            ['insert', ['link','video','table','hr']],
+            ['elfinder', ['elfinder']]
+        ]
+    });
 
-            $('button#iletisimekle').on('click',function(){
-                $('div#iletisimDiv').append(iletisimtxt);
-                $('.select2').select2({width:'100%'});
-            });
+    $('button#iletisimekle').on('click',function(){
+        $('div#iletisimDiv').append(iletisimtxt);
+        $('.select2').select2({width:'100%'});
+    });
 
-            $('div#iletisimDiv').on('click','button.iletisimsil',function () {
-                $(this).closest('div.row').remove();
-            });
+    $('div#iletisimDiv').on('click','button.iletisimsil',function () {
+        $(this).closest('div.row').remove();
+    });
 
-            $('#ilandetaykaydet').on('click',function(){
+    $('#danismankaydet').on('click',function(){
 //            swal({
 //                title: "Başarılı",
 //                text: "İlan Başarıyla Kaydedildi.",
@@ -119,223 +137,73 @@ echo $this->Html->script(array(
 //            }, function () {
 //                swal("Deleted!", "Your imaginary file has been deleted.", "success");
 //            });
-                $.blockUI({ css: { backgroundColor: 'transparent', border: 'none'},message: $('#LoaderBlock') });
-                var formdata = new FormData($('form#form-ilan').get(0));
-                setTimeout(function(){
-                    $.ajax({
-                        async:false,
-                        type:'POST',
-                        url:'<?php echo $this->Html->url('/');?>yoneticis/ilankaydet',
-                        enctype: 'multipart/form-data',
-                        data: formdata,
-                        processData: false,
-                        contentType: false,
-                        cache: false
-                    }).done(function(data){
-                        var dat = $.parseJSON(data);
-                        if(dat['hata']){
+        $.blockUI({ css: { backgroundColor: 'transparent', border: 'none'},message: $('#LoaderBlock') });
+        var formdata = new FormData($('form#form-danisman').get(0));
+        setTimeout(function(){
+            $.ajax({
+                async:false,
+                type:'POST',
+                url:'<?php echo $this->Html->url('/');?>yoneticis/danismankaydet',
+                enctype: 'multipart/form-data',
+                data: formdata,
+                processData: false,
+                contentType: false,
+                cache: false
+            }).done(function(data){
+                var dat = $.parseJSON(data);
+                if(dat['hata']){
 
-                        }else{
-                            $('form#form-ilan input[name="ilanId"]').val(dat['ilanId']);
-                            $('form#form-ilan-resim input[name="ilanId"]').val(dat['ilanId']);
-                            $('form#form-ilan-location input[name="ilanId"]').val(dat['ilanId']);
-                            swal({
-                                title: "Başarılı",
-                                text: "İlan Başarıyla Kaydedildi.",
-                                type: "success",
-                                confirmButtonText: 'Tamam'
-                            });
-                            $('#wizard .actions').removeClass('hidden');
-                            $.unblockUI();
-                        }
-                    }).fail(function(){
-
-                    });
-                },500);
-            });
-
-            $('#ilanresimkaydet').on('click',function(){
-                $.blockUI({ css: { backgroundColor: 'transparent', border: 'none'},message: $('#LoaderBlock') });
-                var formdata = new FormData($('form#form-ilan-resim').get(0));
-                setTimeout(function(){
-                    $.ajax({
-                        async:false,
-                        type:'POST',
-                        url:'<?php echo $this->Html->url('/');?>yoneticis/ilanresimkaydet',
-                        enctype: 'multipart/form-data',
-                        data: formdata,
-                        processData: false,
-                        contentType: false,
-                        cache: false
-                    }).done(function(data){
-                        var dat = $.parseJSON(data);
-                        if(dat['hata']){
-
-                        }else{
-                            swal({
-                                title: "Başarılı",
-                                text: "İlan Resimleri Başarıyla Kaydedildi.",
-                                type: "success",
-                                confirmButtonText: 'Tamam'
-                            });
-                            $('#wizard .actions').removeClass('hidden');
-                            $.unblockUI();
-                        }
-                    }).fail(function(){
-
-                    });
-                },500);
-            });
-
-            $('#ilanlocationkaydet').on('click',function(){
-                $.blockUI({ css: { backgroundColor: 'transparent', border: 'none'},message: $('#LoaderBlock') });
-                var formdata = new FormData($('form#form-ilan-location').get(0));
-                setTimeout(function(){
-                    $.ajax({
-                        async:false,
-                        type:'POST',
-                        url:'<?php echo $this->Html->url('/');?>yoneticis/ilanlocationkaydet',
-                        enctype: 'multipart/form-data',
-                        data: formdata,
-                        processData: false,
-                        contentType: false,
-                        cache: false
-                    }).done(function(data){
-                        var dat = $.parseJSON(data);
-                        if(dat['hata']){
-
-                        }else{
-                            swal({
-                                title: "Başarılı",
-                                text: "İlan Adres ve Lokasyonu Başarıyla Kaydedildi.",
-                                type: "success",
-                                confirmButtonText: 'Tamam'
-                            });
-                            $('#wizard .actions').removeClass('hidden');
-                            $.unblockUI();
-                        }
-                    }).fail(function(){
-
-                    });
-                },500);
-            });
-
-            $('select[name="sehir"]').on('change',function(){
-                $.blockUI();
-                var sehir = $(this).val();
-                setTimeout(function(){
-                    $.ajax({
-                        async:false,
-                        type:'POST',
-                        url:'<?php echo $this->Html->url('/');?>yoneticis/ajaxIlceBySehir',
-                        data:{'sehir':sehir}
-                    }).done(function(data){
-                        var dat = $.parseJSON(data);
-                        if(dat['select'] == false){
-                            $.unblockUI();
-                            $('select[name="ilce"]').html('').select2({width:"100%"});
-                            $('select[name="semt"]').html('').select2({width:"100%"});
-                            $('select[name="mahalle"]').html('').select2({width:"100%"});
-                        }else{
-                            $('select[name="ilce"]').html(dat['select']).select2({width:"100%"});
-                            $('select[name="semt"]').html('').select2({width:"100%"});
-                            $('select[name="mahalle"]').html('').select2({width:"100%"});
-                            $.unblockUI();
-                        }
-                    }).fail(function(){
-                        $.unblockUI();
-                        $('select[name="ilce"]').html('').select2({width:"100%"});
-                        $('select[name="semt"]').html('').select2({width:"100%"});
-                        $('select[name="mahalle"]').html('').select2({width:"100%"});
-                    });
-                },500);
-            });
-
-            $('select[name="ilce"]').on('change',function(){
-                $.blockUI();
-                var ilce = $(this).val();
-                setTimeout(function(){
-                    $.ajax({
-                        async:false,
-                        type:'POST',
-                        url:'<?php echo $this->Html->url('/');?>yoneticis/ajaxSemtByIlce',
-                        data:{'ilce':ilce}
-                    }).done(function(data){
-                        var dat = $.parseJSON(data);
-                        if(dat['select'] == false){
-                            $.unblockUI();
-                            $('select[name="semt"]').html('').select2({width:"100%"});
-                            $('select[name="mahalle"]').html('').select2({width:"100%"});
-                        }else{
-                            $('select[name="semt"]').html(dat['select']).select2({width:"100%"});
-                            $('select[name="mahalle"]').html('').select2({width:"100%"});
-                            $.unblockUI();
-                        }
-                    }).fail(function(){
-                        $.unblockUI();
-                        $('select[name="semt"]').html('').select2({width:"100%"});
-                        $('select[name="mahalle"]').html('').select2({width:"100%"});
-                    });
-                },500);
-            });
-
-            $('select[name="semt"]').on('change',function(){
-                $.blockUI();
-                var semt = $(this).val();
-                setTimeout(function(){
-                    $.ajax({
-                        async:false,
-                        type:'POST',
-                        url:'<?php echo $this->Html->url('/');?>yoneticis/ajaxMahalleBySemt',
-                        data:{'semt':semt}
-                    }).done(function(data){
-                        var dat = $.parseJSON(data);
-                        if(dat['select'] == false){
-                            $.unblockUI();
-                            $('select[name="mahalle"]').html('').select2({width:"100%"});
-                        }else{
-                            $('select[name="mahalle"]').html(dat['select']).select2({width:"100%"});
-                            $.unblockUI();
-                        }
-                    }).fail(function(){
-                        $.unblockUI();
-                        $('select[name="mahalle"]').html('').select2({width:"100%"});
-                    });
-                },500);
-            });
-
-        });
-
-        function elfinderDialog(id,t,c){
-            var fm=$('<div/>').dialogelfinder({
-                url:'http://bk.dev/plugin/elfinder/php/connector.minimal.php',
-                lang:'tr',
-                width:900,
-                height:450,
-                destroyOnClose:true,
-                getFileCallback:function(files,fm){
-                    if(id>0){
-                        $('#block').css({display:'block'});
-                        $('#'+c).val(files.url);
-                        $('#'+c+'image').attr('src',files.url);
-                        update(id,t,c,files.url);
-                    }else{
-                        $('.summernote').summernote('editor.insertImage',files.url);
+                }else{
+                    $('form#form-danisman input[name="danismanId"]').val(dat['danismanId']);
+                    $('.danismanresim').remove();
+                    if(dat['resim']){
+                        $('.fileresim').before('<div class="row danismanresim"><img src="'+dat['resim']+'" /></div>');
                     }
-                },
-                commandsOptions:{
-                    getfile:{
-                        oncomplete:'close',
-                        folders:false
-                    }
+
+                    swal({
+                        title: "Başarılı",
+                        text: "Danışman Başarıyla Kaydedildi.",
+                        type: "success",
+                        confirmButtonText: 'Tamam'
+                    });
+                    $.unblockUI();
                 }
-            }).dialogelfinder('instance');
+            }).fail(function(){
+
+            });
+        },500);
+    });
+
+});
+
+function elfinderDialog(id,t,c){
+    var fm=$('<div/>').dialogelfinder({
+        url:'http://bk.dev/plugin/elfinder/php/connector.minimal.php',
+        lang:'tr',
+        width:900,
+        height:450,
+        destroyOnClose:true,
+        getFileCallback:function(files,fm){
+            if(id>0){
+                $('#block').css({display:'block'});
+                $('#'+c).val(files.url);
+                $('#'+c+'image').attr('src',files.url);
+                update(id,t,c,files.url);
+            }else{
+                $('.summernote').summernote('editor.insertImage',files.url);
+            }
+        },
+        commandsOptions:{
+            getfile:{
+                oncomplete:'close',
+                folders:false
+            }
         }
-    </script>
+    }).dialogelfinder('instance');
+}
+</script>
 <?php
 echo $this->Html->script(array(
-    'yonetici/plugins/filer/jquery.filer.min',
-    'yonetici/plugins/filer/jquery.filer.custom',
     'yonetici/plugins/select2/select2.full.min'
 ));
 ?>

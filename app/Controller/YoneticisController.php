@@ -14,12 +14,13 @@ App::uses('ImageManipulator','Vendor');
  * $property Ilce $Ilce
  * $property Semt $Semt
  * @property Mahalle $Mahalle
- * @property IlanLocation $IlanLocation
+ * @property Danisman $Danisman
+ * @property DanismanIletisim $DanismanIletisim
  */
 class YoneticisController extends AppController {
 
     var $layout = 'yonetici';
-    var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri', 'IlanResim', 'Sehir', 'Ilce', 'Semt', 'Mahalle', 'IlanLocation');
+    var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri', 'IlanResim', 'Sehir', 'Ilce', 'Semt', 'Mahalle', 'Danisman', 'DanismanIletisim');
 /**
  * Scaffold
  *
@@ -368,6 +369,109 @@ class YoneticisController extends AppController {
     }
 
     public function yenidanisman(){}
+
+    public function danismankaydet(){
+        $this->autoLayout = false;
+        $this->autoRender = false;
+        $return = array('hata'=>true,'mesaj'=>'Bir hata meydana geldi. Lütfen tekrar deneyin.','resim'=>false, 'danismanId'=>false);
+        if($this->request->is('post')){
+            $data = $this->request->data;
+            $files = $this->request->param('form');
+
+            if(array_key_exists('danismanId',$data) && $data['danismanId'] != 0){
+                $pata = $this->Danisman->findById($data['danismanId']);
+                if($pata){
+                    $saved = array('isim'=>$data['isim'],'hakkinda'=>$data['hakkinda'],'islem_tarihi'=>date('Y-m-d H:i:s'));
+                    $this->Danisman->id = $data['danismanId'];
+                    if($this->Danisman->save($saved)){
+                        $lastId = $data['danismanId'];
+                        $return['hata'] = false;
+
+                        // Resim Ekle
+                        if(array_key_exists('danismanresim',$files)){
+                            // Eski resmi Sil
+                            if(!empty($pata['Danisman']['resim'])){
+                                $fileRes = new File($pata['Danisman']['resim']);
+                                $fileRes->delete();
+                            }
+                            // Eski resmi Sil Son
+                            $fileType = pathinfo($files['danismanresim']['name'], PATHINFO_EXTENSION);
+                            $resName = time().rand(1,1000).'.'.$fileType;
+                            $path = 'img/danisman/'.$lastId.'/'.$resName;
+                            //image Resize
+                            $manipulator = new ImageManipulator($files['danismanresim']['tmp_name']);
+                            if($manipulator->getWidth() > 200){
+                                $manipulator->resample(200, 200);
+                            }
+
+                            if($manipulator->save($path)){
+                                $this->Danisman->id = $lastId;
+                                $this->Danisman->save(array('resim'=>$path));
+                            }
+                        }
+                        // Resim Ekle Son
+
+                        // İletisim Kaydet
+                        $this->DanismanIletisim->deleteAll(array('danisman_id'=>$lastId),true);
+                        foreach($data['iletisimturu'] as $key=>$val){
+                            if(!empty($data['iletisim'][$key])){
+                                $saved = array('danisman_id'=>$lastId, 'iletisim'=>$data['iletisim'][$key], 'turu'=>$val, 'islem_tarihi'=>date('Y-m-d H:i:s'));
+                                $this->DanismanIletisim->create();
+                                $this->DanismanIletisim->save($saved);
+                            }
+                        }
+                        // İletisim Kaydet Son
+
+                        $danisman = $this->Danisman->findById($lastId);
+                        $return['resim'] = !empty($danisman['Danisman']['resim'])?(Router::url('/', true).$danisman['Danisman']['resim']):false;
+                        $return['danismanId'] = $lastId;
+                    }
+                }
+            }else{
+                $saved = array('isim'=>$data['isim'],'hakkinda'=>$data['hakkinda'],'islem_tarihi'=>date('Y-m-d H:i:s'));
+                $this->Danisman->create();
+                if($this->Danisman->save($saved)){
+                    $lastId = $this->Danisman->getLastInsertID();
+                    $return['hata'] = false;
+
+                    // Resim Ekle
+                    if(array_key_exists('danismanresim',$files)){
+                        $fileType = pathinfo($files['danismanresim']['name'], PATHINFO_EXTENSION);
+                        $resName = time().rand(1,1000).'.'.$fileType;
+                        $path = 'img/danisman/'.$lastId.'/'.$resName;
+                        //image Resize
+                        $manipulator = new ImageManipulator($files['danismanresim']['tmp_name']);
+                        if($manipulator->getWidth() > 200){
+                            $manipulator->resample(200, 200);
+                        }
+
+                        if($manipulator->save($path)){
+                            $this->Danisman->id = $lastId;
+                            $this->Danisman->save(array('resim'=>$path));
+                        }
+                    }
+                    // Resim Ekle Son
+
+                    // İletisim Kaydet
+                    foreach($data['iletisimturu'] as $key=>$val){
+                        if(!empty($data['iletisim'][$key])){
+                            $saved = array('danisman_id'=>$lastId, 'iletisim'=>$data['iletisim'][$key], 'turu'=>$val, 'islem_tarihi'=>date('Y-m-d H:i:s'));
+                            $this->DanismanIletisim->create();
+                            $this->DanismanIletisim->save($saved);
+                        }
+                    }
+                    // İletisim Kaydet Son
+
+                    $danisman = $this->Danisman->findById($lastId);
+                    $return['resim'] = !empty($danisman['Danisman']['resim'])?(Router::url('/', true).$danisman['Danisman']['resim']):false;
+                    $return['danismanId'] = $lastId;
+                }
+            }
+        }
+
+        echo json_encode($return);
+        exit();
+    }
 
 	public function test(){
         $this->IlanResim->create();
