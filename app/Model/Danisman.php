@@ -38,4 +38,12 @@ class Danisman extends AppModel {
 		)
 	);
 
+    public $hasMany = array(
+        'DanismanIletisim'=>array(
+            'className' => 'DanismanIletisim',
+            'foreignKey' => 'danisman_id',
+            'dependent' => true
+        )
+    );
+
 }

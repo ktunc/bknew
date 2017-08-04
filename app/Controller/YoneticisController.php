@@ -473,6 +473,40 @@ class YoneticisController extends AppController {
         exit();
     }
 
+    public function danismanedit(){
+        $named = $this->request->params["named"];
+        $danisman = $this->Danisman->findById($named['danisman']);
+        if(!$danisman){
+            $this->redirect(array('controller'=>'yoneticis'));
+        }
+
+        $this->set('danisman',$danisman);
+    }
+
+    public function danismanlar(){
+        $danismanlar = $this->Danisman->find('all',array('order'=>array('isim'=>'ASC')));
+        $this->set('danismanlar',$danismanlar);
+    }
+
+    public function danismanilan(){
+        $named = $this->request->params["named"];
+        $danisman = $this->Danisman->findById($named['danisman']);
+        if(!$danisman){
+            $this->redirect(array('controller'=>'yoneticis'));
+        }
+
+        foreach ($danisman['Ilan'] as $key=>$row) {
+            $pp = $this->IlanResim->find('first',array('conditions'=>array('ilan_id'=>$row['id']),'order'=>array('islem_tarihi'=>'ASC')));
+            $danisman['Ilan'][$key]['path'] = false;
+            $danisman['Ilan'][$key]['paththumb'] = false;
+            if(!empty($pp)){
+                $danisman['Ilan'][$key]['path'] = $pp['IlanResim']['path'];
+                $danisman['Ilan'][$key]['paththumb'] = $pp['IlanResim']['paththumb'];
+            }
+        }
+        $this->set('danisman',$danisman);
+    }
+
 	public function test(){
         $this->IlanResim->create();
         exit();

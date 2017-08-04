@@ -39,4 +39,12 @@ class IlanDanisman extends AppModel {
 			'order' => ''
 		)
 	);
+
+    public $hasMany = array(
+        'IlanResim'=>array(
+            'className' => 'IlanResim',
+            'foreignKey' => 'ilan_id',
+            'dependent' => true
+        )
+    );
 }
