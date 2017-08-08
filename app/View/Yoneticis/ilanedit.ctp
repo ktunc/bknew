@@ -13,6 +13,7 @@ echo $this->Html->css(array(
 ));
 $satkir = array(1=>'Satılık',2=>'Kiralık');
 ?>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBb6wy1FSr2ms69Cy7BSuZQLOB9-EPIkIA&libraries=places" type="text/javascript"></script>
     <style>
         .dialogelfinder{
             z-index: 20000;
@@ -304,6 +305,17 @@ $satkir = array(1=>'Satılık',2=>'Kiralık');
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="col-xs-3 col-md-2 control-label" for="us2-address">Location</label>
+                                    <div class="col-xs-9 col-md-10">
+                                        <input type="text" id="us2-address" name="location"  class="form-control"/>
+                                    </div>
+                                    <input type="hidden" id="us2-lat" name="latitude" />
+                                    <input type="hidden" id="us2-lon" name="longitude" />
+                                </div>
+                                <div class="form-group">
+                                    <div id="us2" class="col-lg-10 col-lg-offset-2" style="min-height: 300px;margin-top: 2%;"></div>
+                                </div>
+                                <div class="form-group">
                                     <label class="col-lg-2 control-label"></label>
                                     <div class="col-lg-10"><button type="button" class="btn btn-outline btn-sm btn-primary dim" id="ilanlocationkaydet"><i class="fa fa-check"></i> Kaydet</button></div>
                                 </div>
@@ -324,21 +336,40 @@ echo $this->Html->script(array(
     'yonetici/plugins/jquery-ui/jquery-ui.min',
     '../plugin/elfinder/js/elfinder.min',
     '../plugin/elfinder/js/i18n/elfinder.tr',
-    'yonetici/plugins/steps/jquery.steps.min'
+    'yonetici/plugins/steps/jquery.steps.min',
+    'yonetici/locationpicker.jquery'
 ));
 ?>
     <script type="text/javascript">
         $(document).ready(function(){
 
             $("#wizard").steps({
+                enableAllSteps: true,
                 enableFinishButton:false,
                 enableKeyNavigation: false,
                 labels: {
                     next: "İleri",
                     previous: "Geri"
                 },
+                onStepChanged: function (event, currentIndex){
+                    if(currentIndex == 2){
+                        $('#us2').locationpicker({
+                            location: {latitude: <?php echo empty($ilan['Ilan']['latitude'])?0:$ilan['Ilan']['latitude'];?>, longitude: <?php echo empty($ilan['Ilan']['longitude'])?0:$ilan['Ilan']['longitude'];?>},
+                            //location: {latitude: 39.918012967883385, longitude: 32.85808648203124},
+                            radius: 10,
+                            inputBinding: {
+                                latitudeInput: $('#us2-lat'),
+                                longitudeInput: $('#us2-lon'),
+                                radiusInput: $('#us2-radius'),
+                                locationNameInput: $('#us2-address')
+                            },
+                            enableAutocomplete: true
+                        });
+                    }
+                },
                 onInit: function (event, currentIndex) {
 //                    $('#wizard .actions').addClass('hidden');
+                    $('#wizard li[role="tab"]:not(.current)').addClass('done');
                     $('.summernote').summernote({
                         height: 300,
                         minHeight: 300,
@@ -555,6 +586,7 @@ echo $this->Html->script(array(
                     });
                 },500);
             });
+
 
         });
 

@@ -45,7 +45,7 @@ App::uses('PhpReader', 'Configure');
  */
 class AppController extends Controller {
     public $components = array('Cookie','Session','Paginator','Flash');
-    public $helpers = array('Html','Form','Js','JqueryEngine');
+    public $helpers = array('Html','Form','Js','JqueryEngine','GoogleMap');
 
     public function beforeFilter(){
         parent::beforeFilter();

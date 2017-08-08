@@ -233,8 +233,10 @@ class YoneticisController extends AppController {
                 $ilce = array_key_exists('ilce',$data)?($data['ilce']==-1?null:$data['ilce']):null;
                 $semt = array_key_exists('semt',$data)?($data['semt']==-1?null:$data['semt']):null;
                 $mahalle = array_key_exists('mahalle',$data)?($data['mahalle']==-1?null:$data['mahalle']):null;
+                $latitude = $data['latitude'];
+                $longitude = $data['longitude'];
                 $adres = $data['adres'];
-                $saved = array('sehir_id'=>$sehir, 'ilce_id'=>$ilce, 'semt_id'=>$semt, 'mahalle_id'=>$mahalle, 'adres'=>$adres);
+                $saved = array('sehir_id'=>$sehir, 'ilce_id'=>$ilce, 'semt_id'=>$semt, 'mahalle_id'=>$mahalle, 'adres'=>$adres, 'latitude'=>$latitude, 'longitude'=>$longitude);
 
                 if($ilan){
                     $this->Ilan->id = $ilanId;
