@@ -44,6 +44,8 @@ class YoneticisController extends AppController {
 	    $this->set('ilanHeader',$this->ilanHeader[$tur]);
 	    $sehir = $this->Sehir->find('all',array('order'=>array('sehir_adi'=>'ASC')));
 	    $this->set('sehir', $sehir);
+        $danismanlar = $this->Danisman->find('all',array('order'=>array('isim'=>'ASC')));
+        $this->set('danismanlar',$danismanlar);
     }
 
 	public function ilanlar(){
@@ -82,6 +84,8 @@ class YoneticisController extends AppController {
 
         $this->set('ilan',$ilan);
 //        pr($ilan['Ilan']['sehir_id']);exit();
+        $danismanlar = $this->Danisman->find('all',array('order'=>array('isim'=>'ASC')));
+        $this->set('danismanlar',$danismanlar);
     }
 
 	public function ilankaydet(){
@@ -98,30 +102,30 @@ class YoneticisController extends AppController {
                     exit();
                 }
                 $return['ilanId'] = $data['ilanId'];
-                $saved = array('baslik'=>$data['baslik'],'icerik'=>$data['icerik'],'turu'=>$data['turu'],'fiyat'=>$data['fiyat'],'satkir'=>$data['satkir']);
+                $saved = array('baslik'=>$data['baslik'],'icerik'=>$data['icerik'],'turu'=>$data['turu'],'fiyat'=>$data['fiyat'],'satkir'=>$data['satkir'], 'danisman_id'=>$data['danisman']);
                 $this->Ilan->id = $data['ilanId'];
                 if(!$this->Ilan->save($saved)){
                     echo json_encode($return);
                     exit();
                 }
 
-                if($pata['turu'] == 1){
+                if($pata['Ilan']['turu'] == 1){
                     $tata = $this->IlanKonut->findByIlanId($data['ilanId']);
-                    $this->IlanKonut->id = $tata['id'];
+                    $this->IlanKonut->id = $tata['IlanKonut']['id'];
                     $saved = array('kat'=>$data['kat'], 'bina_kat'=>$data['bina_kat'], 'oda'=>$data['oda'], 'mkare'=>$data['mkare'], 'islem_tarihi'=>date('Y-m-d H:i:s'));
                     if($this->IlanKonut->save($saved)){
                         $return['hata'] = false;
                     }
-                }else if($pata['turu'] == 2){
+                }else if($pata['Ilan']['turu'] == 2){
                     $tata = $this->IlanIsyeri->findByIlanId($data['ilanId']);
-                    $this->IlanIsyeri->id = $tata['id'];
+                    $this->IlanIsyeri->id = $tata['IlanIsyeri']['id'];
                     $saved = array('kat'=>$data['kat'], 'bina_kat'=>$data['bina_kat'], 'oda'=>$data['oda'], 'mkare'=>$data['mkare'], 'islem_tarihi'=>date('Y-m-d H:i:s'));
                     if($this->IlanIsyeri->save($saved)){
                         $return['hata'] = false;
                     }
                 }else{
                     $tata = $this->IlanArsa->findByIlanId($data['ilanId']);
-                    $this->IlanArsa->id = $tata['id'];
+                    $this->IlanArsa->id = $tata['IlanArsa']['id'];
                     $saved = array('imar'=>$data['imar'], 'ada'=>$data['ada'], 'parsel'=>$data['parsel'], 'mkare'=>$data['mkare'], 'tapu'=>$data['tapu'], 'islem_tarihi'=>date('Y-m-d H:i:s'));
                     if($this->IlanArsa->save($saved)){
                         $return['hata'] = false;
@@ -129,7 +133,7 @@ class YoneticisController extends AppController {
                 }
             }else{
                 if(array_key_exists('turu',$data) && array_key_exists($data['turu'],$this->ilanHeader)){
-                    $saved = array('baslik'=>$data['baslik'],'icerik'=>$data['icerik'],'turu'=>$data['turu'],'fiyat'=>$data['fiyat'],'satkir'=>$data['satkir'],'eklenme_tarihi'=>date('Y-m-d H:i:s'));
+                    $saved = array('baslik'=>$data['baslik'],'icerik'=>$data['icerik'],'turu'=>$data['turu'],'fiyat'=>$data['fiyat'],'satkir'=>$data['satkir'], 'danisman_id'=>$data['danisman'],'eklenme_tarihi'=>date('Y-m-d H:i:s'));
                     $this->Ilan->create();
                     if(!$this->Ilan->save($saved)){
                         echo json_encode($return);

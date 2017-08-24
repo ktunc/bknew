@@ -46,6 +46,11 @@ class Ilan extends AppModel {
         'Mahalle' => array(
             'className' => 'Mahalle',
             'foreignKey' => 'mahalle_id'
+        ),
+        'Danisman' => array(
+            'className' => 'Danisman',
+            'foreignKey' => 'danisman_id',
+            'dependent' => true
         )
 	);
 
@@ -54,21 +59,21 @@ class Ilan extends AppModel {
  *
  * @var array
  */
-	public $hasAndBelongsToMany = array(
-		'Danisman' => array(
-			'className' => 'Danisman',
-			'joinTable' => 'ilan_danisman',
-			'foreignKey' => 'ilan_id',
-			'associationForeignKey' => 'danisman_id',
-			'unique' => 'keepExisting',
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'finderQuery' => '',
-		)
-	);
+//	public $hasAndBelongsToMany = array(
+//		'Danisman' => array(
+//			'className' => 'Danisman',
+//			'joinTable' => 'ilan_danisman',
+//			'foreignKey' => 'ilan_id',
+//			'associationForeignKey' => 'danisman_id',
+//			'unique' => 'keepExisting',
+//			'conditions' => '',
+//			'fields' => '',
+//			'order' => '',
+//			'limit' => '',
+//			'offset' => '',
+//			'finderQuery' => '',
+//		)
+//	);
 
 	public $hasMany = array(
 	    'IlanResim'=>array(

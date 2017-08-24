@@ -12,6 +12,10 @@ echo $this->Html->css(array(
 ));
 $this->Html->script('http://maps.google.com/maps/api/js?key=AIzaSyBb6wy1FSr2ms69Cy7BSuZQLOB9-EPIkIA&sensor=true&libraries=places', false);
 $satkir = array(1=>'Satılık',2=>'Kiralık');
+$danismanSelect = array(0=>'Seçiniz');
+foreach ($danismanlar as $row){
+    $danismanSelect[$row['Danisman']['id']] = $row['Danisman']['isim'];
+}
 ?>
 <style>
 .dialogelfinder{
@@ -28,29 +32,29 @@ $satkir = array(1=>'Satılık',2=>'Kiralık');
                 <div id="wizard" class="wizard wizard-big clearfix">
                     <h1>İlan Bilgileri</h1>
                     <div class="step-content">
+                        <form class="form-horizontal" id="form-ilan">
+                            <div class="form-group"><label class="col-lg-2 control-label">Başlık:</label>
+                                <div class="col-lg-10"><input type="text" name="baslik" placeholder="Başlık" class="form-control"></div>
+                            </div>
+                            <div class="form-group"><label class="col-lg-2 control-label">İçerik:</label>
+                                <div class="col-lg-10">
+                                    <textarea name="icerik" class="summernote"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group"><label class="col-lg-2 control-label">Satılık-Kiralık:</label>
+                                <div class="col-lg-10">
+                                    <select class="select2" name="satkir">
+                                        <?php
+                                        foreach ($satkir as $k=>$v){
+                                            echo '<option value="'.$k.'">'.$v.'</option>';
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
                         <?php
                         if($tur == 1){
                         ?>
-                            <form class="form-horizontal" id="form-ilan">
-                                <div class="form-group"><label class="col-lg-2 control-label">Başlık:</label>
-                                    <div class="col-lg-10"><input type="text" name="baslik" placeholder="Başlık" class="form-control"></div>
-                                </div>
-                                <div class="form-group"><label class="col-lg-2 control-label">İçerik:</label>
-                                    <div class="col-lg-10">
-                                        <textarea name="icerik" class="summernote"></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group"><label class="col-lg-2 control-label">Satılık-Kiralık:</label>
-                                    <div class="col-lg-10">
-                                        <select class="select2" name="satkir">
-                                            <?php
-                                            foreach ($satkir as $k=>$v){
-                                                echo '<option value="'.$k.'">'.$v.'</option>';
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>
                                 <div class="form-group"><label class="col-lg-2 control-label">Bulunduğu Kat:</label>
                                     <div class="col-lg-10"><input type="text" name="kat" placeholder="Bulunduğu Kat" class="form-control"></div>
                                 </div>
@@ -66,36 +70,10 @@ $satkir = array(1=>'Satılık',2=>'Kiralık');
                                 <div class="form-group"><label class="col-lg-2 control-label">Fiyat:</label>
                                     <div class="col-lg-10"><input type="text" name="fiyat" placeholder="Fiyat" class="form-control"></div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-lg-2 control-label"></label>
-                                    <div class="col-lg-10"><button type="button" class="btn btn-outline btn-sm btn-primary dim" id="ilandetaykaydet"><i class="fa fa-check"></i> Kaydet</button></div>
-                                </div>
                                 <input type="hidden" name="turu" value="1" />
-                                <input type="hidden" name="ilanId" value="0" />
-                            </form>
                         <?php
                         }else if($tur == 2){
                         ?>
-                            <form class="form-horizontal" id="form-ilan">
-                                <div class="form-group"><label class="col-lg-2 control-label">Başlık:</label>
-                                    <div class="col-lg-10"><input type="text" name="baslik" placeholder="Başlık" class="form-control"></div>
-                                </div>
-                                <div class="form-group"><label class="col-lg-2 control-label">İçerik:</label>
-                                    <div class="col-lg-10">
-                                        <textarea name="icerik" class="summernote"></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group"><label class="col-lg-2 control-label">Satılık-Kiralık:</label>
-                                    <div class="col-lg-10">
-                                        <select class="select2" name="satkir">
-                                            <?php
-                                            foreach ($satkir as $k=>$v){
-                                                echo '<option value="'.$k.'">'.$v.'</option>';
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>
                                 <div class="form-group"><label class="col-lg-2 control-label">Bulunduğu Kat:</label>
                                     <div class="col-lg-10"><input type="text" name="kat" placeholder="Bulunduğu Kat" class="form-control"></div>
                                 </div>
@@ -111,36 +89,10 @@ $satkir = array(1=>'Satılık',2=>'Kiralık');
                                 <div class="form-group"><label class="col-lg-2 control-label">Fiyat:</label>
                                     <div class="col-lg-10"><input type="text" name="fiyat" placeholder="Fiyat" class="form-control"></div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-lg-2 control-label"></label>
-                                    <div class="col-lg-10"><button type="button" class="btn btn-outline btn-sm btn-primary dim" id="ilandetaykaydet"><i class="fa fa-check"></i> Kaydet</button></div>
-                                </div>
                                 <input type="hidden" name="turu" value="2" />
-                                <input type="hidden" name="ilanId" value="0" />
-                            </form>
                         <?php
                         }else {
                         ?>
-                            <form class="form-horizontal" id="form-ilan">
-                                <div class="form-group"><label class="col-lg-2 control-label">Başlık:</label>
-                                    <div class="col-lg-10"><input type="text" name="baslik" placeholder="Başlık" class="form-control"></div>
-                                </div>
-                                <div class="form-group"><label class="col-lg-2 control-label">İçerik:</label>
-                                    <div class="col-lg-10">
-                                        <textarea name="icerik" class="summernote"></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group"><label class="col-lg-2 control-label">Satılık-Kiralık:</label>
-                                    <div class="col-lg-10">
-                                        <select class="select2" name="satkir">
-                                            <?php
-                                            foreach ($satkir as $k=>$v){
-                                                echo '<option value="'.$k.'">'.$v.'</option>';
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>
                                 <div class="form-group"><label class="col-lg-2 control-label">İmar Durumu:</label>
                                     <div class="col-lg-10"><input type="text" name="imar" placeholder="İmar Durumu" class="form-control"></div>
                                 </div>
@@ -159,16 +111,28 @@ $satkir = array(1=>'Satılık',2=>'Kiralık');
                                 <div class="form-group"><label class="col-lg-2 control-label">Fiyat:</label>
                                     <div class="col-lg-10"><input type="text" name="fiyat" placeholder="Fiyat" class="form-control"></div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-lg-2 control-label"></label>
-                                    <div class="col-lg-10"><button type="button" class="btn btn-outline btn-sm btn-primary dim" id="ilandetaykaydet"><i class="fa fa-check"></i> Kaydet</button></div>
-                                </div>
                                 <input type="hidden" name="turu" value="3" />
-                                <input type="hidden" name="ilanId" class="ilanId" value="0" />
-                            </form>
                         <?php
                         }
                         ?>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">Danışman:</label>
+                                <div class="col-lg-10">
+                                    <select class="select2" name="danisman">
+                                        <?php
+                                        foreach($danismanSelect as $k=>$v){
+                                            echo '<option value="'.$k.'">'.$v.'</option>';
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label"></label>
+                                <div class="col-lg-10"><button type="button" class="btn btn-outline btn-sm btn-primary dim" id="ilandetaykaydet"><i class="fa fa-check"></i> Kaydet</button></div>
+                            </div>
+                            <input type="hidden" name="ilanId" value="0" />
+                        </form>
                     </div>
 
                     <h1>İlan Resimleri</h1>
@@ -248,6 +212,11 @@ $satkir = array(1=>'Satılık',2=>'Kiralık');
                             </div>
                             <input type="hidden" name="ilanId" class="ilanId" value="0"/>
                         </form>
+                    </div>
+
+                    <h1>Danışmanlar</h1>
+                    <div class="step-content">
+
                     </div>
                 </div>
 
