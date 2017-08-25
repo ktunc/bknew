@@ -28,34 +28,38 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	<?php
 		echo $this->Html->meta('icon');
 
-		echo $this->Html->css('cake.generic');
+    echo $this->Html->css(array(
+        'font-awesome.min',
+        'site/bootstrap.min',
+        'site/batikapi',
+        'yonetici/plugins/sweetalert/sweetalert'
+    ));
 
-		echo $this->fetch('meta');
-		echo $this->fetch('css');
-		echo $this->fetch('script');
-	?>
+    echo $this->Html->script(array(
+        'site/jquery-3.1.1.min',
+        'site/bootstrap.min',
+        'blockUI'
+    ));
+
+    echo $this->fetch('meta');
+    echo $this->fetch('css');
+    echo $this->fetch('script');
+    ?>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-	<div id="container">
-		<div id="header">
-			<h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
-		</div>
-		<div id="content">
-
-			<?php echo $this->Flash->render(); ?>
-
-			<?php echo $this->fetch('content'); ?>
-		</div>
-		<div id="footer">
-			<?php echo $this->Html->link(
-					$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
-					'http://www.cakephp.org/',
-					array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered')
-				);
-			?>
-			<p>
-				<?php echo $cakeVersion; ?>
-			</p>
+    <div class="container-fluid">
+        <?php echo $this->element('site/header'); ?>
+    </div>
+	<div class="container-fluid">
+		<div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-3">
+                <?php echo $this->element('site/menu'); ?>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-9">
+                <?php echo $this->Flash->render(); ?>
+                <?php echo $this->fetch('content'); ?>
+            </div>
 		</div>
 	</div>
 	<?php echo $this->element('sql_dump'); ?>

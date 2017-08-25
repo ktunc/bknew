@@ -188,22 +188,25 @@ class YoneticisController extends AppController {
                         $fileType = pathinfo($value, PATHINFO_EXTENSION);
                         $resName = time().rand(1,1000).'.'.$fileType;
                         $path = 'img/ilan/'.$ilanId.'/'.$resName;
+                        $path8 = 'img/ilan/'.$ilanId.'/800-'.$resName;
                         $pathThumb = 'img/ilan/'.$ilanId.'/thumb'.$resName;
 //                        $pathRes = WWW_ROOT.'img/ilan/'.$ilanId.'/'.$resName;
 //                        $pathResThumb = WWW_ROOT.'img/ilan/'.$ilanId.'/thumb'.$resName;
 
                         //image Resize
                         $manipulator = new ImageManipulator($asilpath);
-                        $newImage = $manipulator->resample(800, 800);
+                        $manipulator->resample(1024, 1024);
                         if($manipulator->save($path)){
                             $manipulator = new ImageManipulator($path);
-                            $newImage = $manipulator->resample(200, 200);
-                            if($manipulator->save($pathThumb)){
-                                $this->IlanResim->create();
-                                $this->IlanResim->save(array('ilan_id'=>$ilanId,'res'=>$value,'path'=>$path,'paththumb'=>$pathThumb, 'islem_tarihi'=>date('Y-m-d H:i:s')));
-                                if(file_exists($asilpath)){
-                                    unlink($asilpath);
-                                }
+                            $manipulator->resample(800, 800);
+                            $manipulator->save($path8);
+                            $manipulator = new ImageManipulator($path);
+                            $manipulator->resample(200, 200);
+                            $manipulator->save($pathThumb);
+                            $this->IlanResim->create();
+                            $this->IlanResim->save(array('ilan_id'=>$ilanId,'res'=>$value,'path'=>$path,'path8'=>$path8,'paththumb'=>$pathThumb, 'islem_tarihi'=>date('Y-m-d H:i:s')));
+                            if(file_exists($asilpath)){
+                                unlink($asilpath);
                             }
                         }else{
                             $hata++;
