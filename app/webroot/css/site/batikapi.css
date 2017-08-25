@@ -23,6 +23,7 @@
     background-color: #ffffff !important;
     padding: 50px !important;
     color:#000000;
+    border-radius: 5px;
 }
 .font-bold{
     font-weight: bold;
@@ -30,4 +31,14 @@
 
 .flexslider .slides img{
     height: 400px !important;
+}
+
+@media only screen and (max-width: 767px) {
+    .bg-white{
+        padding: 5px !important;
+    }
+
+    .flexslider .slides img{
+        height: 200px !important;
+    }
 }

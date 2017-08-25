@@ -8,7 +8,7 @@ echo $this->Html->css('site/PhotoSwipe/photoswipe');
     <div class="col-sm-12 col-md-9">
         <div class="row">
             <p class="IlanHeader"><?php echo $ilan['Ilan']['baslik']; ?></p>
-            <p class="IlanAdres"><?php echo (!empty($ilan['Mahalle']['id'])?$ilan['Mahalle']['mahalle_adi'].'/':'').(!empty($ilan['Semt']['id'])?$ilan['Semt']['semt_adi'].'/':'').(!empty($ilan['Ilce']['id'])?$ilan['Ilce']['ilce_adi'].'/':'').(!empty($ilan['Sehir']['id'])?$ilan['Sehir']['sehir_adi']:''); ?></p>
+            <p class="IlanAdres"><?php echo (!empty($ilan['Mahalle']['id'])?$ilan['Mahalle']['mahalle_adi'].' / ':'').(!empty($ilan['Semt']['id'])?$ilan['Semt']['semt_adi'].' / ':'').(!empty($ilan['Ilce']['id'])?$ilan['Ilce']['ilce_adi'].' / ':'').(!empty($ilan['Sehir']['id'])?$ilan['Sehir']['sehir_adi']:''); ?></p>
             <div class="row">
                 <div class="col-xs-6">
                     Navi
@@ -19,7 +19,6 @@ echo $this->Html->css('site/PhotoSwipe/photoswipe');
             </div>
         </div>
         <div class="row">
-
             <section class="slider">
                 <div class="flexslider">
                     <ul class="slides" id="Gallery">
@@ -35,6 +34,9 @@ echo $this->Html->css('site/PhotoSwipe/photoswipe');
                     </ul>
                 </div>
             </section>
+        </div>
+        <div class="row">
+            <?php echo $ilan['Ilan']['icerik']; ?>
         </div>
         <?php pr($ilan); ?>
     </div>
