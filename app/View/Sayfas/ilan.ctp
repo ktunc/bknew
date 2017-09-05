@@ -41,6 +41,17 @@ echo $this->Html->css('site/PhotoSwipe/photoswipe');
         <?php pr($ilan); ?>
     </div>
     <div class="hidden-xs hidden-sm col-md-3">
+        <?php
+        foreach($ilanlar as $row){
+            echo '<div class="row">';
+            if(!empty($row['IlanResim'])){
+                echo '<img src="'.$this->Html->url('/').$row['IlanResim'][0]['paththumb'].'" />';
+            }else{
+                echo $row['Ilan']['id'];
+            }
+            echo '</div>';
+        }
+        ?>
         <?php pr($ilanlar); ?>
     </div>
 </div>
