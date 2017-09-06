@@ -37,4 +37,20 @@ class SayfasController extends AppController{
         }
 
     }
+
+    public function danisman(){
+        $named=$this->request->param('named');
+        if(array_key_exists('dId',$named)){
+            $danisman = $this->Danisman->findById($named['dId']);
+            if($danisman){
+                $this->set('danisman',$danisman);
+                $danismanlar = $this->Danisman->find('all',array('conditions'=>array('Danisman.id != '.$named['dId']), 'order'=>array('isim'=>'asc')));
+                $this->set('danismanlar',$danismanlar);
+            }else{
+                // Hata
+            }
+        }else{
+            // Hata
+        }
+    }
 }

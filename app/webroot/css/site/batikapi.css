@@ -16,8 +16,27 @@
     color:orange;
     font-weight: bold;
 }
+.IlanHeader2{
+    font-size: 16px;
+    color:orange;
+    font-weight: bold;
+}
 .IlanAdres{
     font-size: 16px;
+}
+.IlanAdres2{
+    font-size: 14px;
+}
+.IlanDanismanIsim{
+    font-weight: bold;
+    font-size: 20px;
+}
+.thumbnail{
+    background-color: transparent;
+    border:1px solid #dddddd;
+}
+.thumbnail .caption{
+    color: #000000 !important;
 }
 .bg-white{
     background-color: #ffffff !important;
@@ -31,6 +50,24 @@
 
 .flexslider .slides img{
     height: 400px !important;
+}
+
+.padding-rl-10{
+    padding-right: 10px;
+    padding-left: 10px;
+}
+.margin-rl-0{
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+.margin-rl-10{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.table>thead>tr>th, .table>thead>tr>th, table>tbody>tr>th, .table>tbody>tr>th, table>tfoot>tr>th, .table>tfoot>tr>th, table>thead>tr>td, .table>thead>tr>td, table>tbody>tr>td, .table>tbody>tr>td, table>tfoot>tr>td, .table>tfoot>tr>td
+{
+    border-color: #dddddd;
 }
 
 @media only screen and (max-width: 767px) {

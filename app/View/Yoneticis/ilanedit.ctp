@@ -9,7 +9,8 @@ echo $this->Html->css(array(
     'yonetici/plugins/filer/jquery.filer',
     'yonetici/plugins/filer/themes/jquery.filer-dragdropbox-theme',
     'yonetici/plugins/select2/select2.min',
-    'yonetici/plugins/blueimp/css/blueimp-gallery.min'
+    'yonetici/plugins/blueimp/css/blueimp-gallery.min',
+    'sortable'
 ));
 $satkir = array(1=>'Satılık',2=>'Kiralık');
 $danismanSelect = array(0=>'Seçiniz');
@@ -158,10 +159,23 @@ foreach ($danismanlar as $row){
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <div class="col-xs-12">
                                     <div class="lightBoxGallery">
-                                        <?php foreach($ilan['IlanResim'] as $row){
-                                            echo '<div class="img-thumbnail text-right"><a href="'.$this->Html->url('/').$row['path'].'" title="Image from Unsplash" data-gallery="" ><img src="'.$this->Html->url('/').$row['paththumb'].'"></a> <br><i onclick="FuncDeleteResim('.$row['id'].')" class="fa fa-trash fa-lg text-danger"></i></div>';
-                                        } ?>
+                                        <section class="sortableblock">
+                                            <ul class="sortable grid" id="sort2">
+                                            <?php foreach($ilan['IlanResim'] as $row){
+                                                //echo '<li><a href="'.$this->Html->url('/').$row['path'].'" data-gallery="" ><img src="'.$this->Html->url('/').$row['paththumb'].'" width="100%"></a> <br><i onclick="FuncDeleteResim('.$row['id'].')" class="fa fa-trash fa-lg text-danger"></i></li>';
+                                                echo '<li>';
+                                                echo '<div class="thumbnail">';
+                                                echo '<a href="'.$this->Html->url('/').$row['path'].'" data-gallery="" ><img src="'.$this->Html->url('/').$row['paththumb'].'" width="100%"></a>';
+                                                echo '<div class="caption">';
+                                                echo '<i onclick="FuncDeleteResim('.$row['id'].')" class="fa fa-trash fa-lg text-danger"></i>';
+                                                echo '</div>';
+                                                echo '</div>';
+                                                echo '</li>';
+                                            } ?>
+                                            </ul>
+                                        </section>
 
                                         <div id="blueimp-gallery" class="blueimp-gallery">
                                             <div class="slides"></div>
@@ -172,6 +186,7 @@ foreach ($danismanlar as $row){
                                             <a class="play-pause"></a>
                                             <ol class="indicator"></ol>
                                         </div>
+                                    </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -303,7 +318,6 @@ echo $this->Html->script(array(
 ?>
     <script type="text/javascript">
         $(document).ready(function(){
-
             $("#wizard").steps({
                 enableAllSteps: true,
                 enableFinishButton:false,
@@ -326,6 +340,8 @@ echo $this->Html->script(array(
                             },
                             enableAutocomplete: true
                         });
+                    }else if(currentIndex == 1){
+                        $('#sort1, #sort2').sortable();
                     }
                 },
                 onInit: function (event, currentIndex) {
@@ -586,6 +602,7 @@ echo $this->Html->script(array(
     'yonetici/plugins/filer/jquery.filer.min',
     'yonetici/plugins/filer/jquery.filer.custom',
     'yonetici/plugins/select2/select2.full.min',
-    'yonetici/plugins/blueimp/jquery.blueimp-gallery.min'
+    'yonetici/plugins/blueimp/jquery.blueimp-gallery.min',
+    'site/jquery.sortable.min'
 ));
 ?>
