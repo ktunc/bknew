@@ -53,8 +53,11 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     </div>
 	<div class="container-fluid">
 		<div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-3">
+            <div class="hidden-xs hidden-sm col-md-3">
                 <?php echo $this->element('site/menu'); ?>
+            </div>
+            <div class="col-xs-12 col-sm-12 hidden-md hidden-lg">
+                <?php echo $this->element('site/menumobile'); ?>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-9">
                 <?php echo $this->Flash->render(); ?>

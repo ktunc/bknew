@@ -1,3 +1,9 @@
+/* google maps */
+.mapcanvas{
+    width: 100%;
+    min-height: 300px;
+}
+/* google maps SON */
 .imgIcerik
 {
     /*max-width: 100%;*/
@@ -52,9 +58,29 @@
     height: 400px !important;
 }
 
+.padding-rl-5{
+    padding-right: 5px;
+    padding-left: 5px;
+}
 .padding-rl-10{
     padding-right: 10px;
     padding-left: 10px;
+}
+.padding-rl-30{
+    padding-right: 30px;
+    padding-left: 30px;
+}
+.padding-rl-50{
+    padding-right: 50px;
+    padding-left: 50px;
+}
+.padding-tb-5{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.padding-tb-20{
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 .margin-rl-0{
     margin-left: 0px !important;
@@ -64,12 +90,104 @@
     margin-left: 10px;
     margin-right: 10px;
 }
-
+/* Menu */
+.menu3{
+    min-height:110px;
+}
+.menu3img{
+    padding-right:30px;
+    padding-left:30px;
+}
+.bg-detayli {
+    background-color: #8477ba;
+    color: #ffffff;
+}
+.bg-kurumsal {
+    background-color: #713bb8;
+    color: #ffffff;
+}
+.bg-danismanlar {
+    background-color: #d9187f;
+    color: #ffffff;
+}
+.bg-analiz {
+    background-color: #46d4b8;
+    color: #ffffff;
+}
+/* Menu SON */
 .table>thead>tr>th, .table>thead>tr>th, table>tbody>tr>th, .table>tbody>tr>th, table>tfoot>tr>th, .table>tfoot>tr>th, table>thead>tr>td, .table>thead>tr>td, table>tbody>tr>td, .table>tbody>tr>td, table>tfoot>tr>td, .table>tfoot>tr>td
 {
     border-color: #dddddd;
 }
+@media only screen and (min-width: 1901px) {
+    /* Menu */
+    .menu3{
+        min-height:90px;
+    }
+    .menu3img{
+        padding-right:55px;
+        padding-left:55px;
+    }
+    /* Menu SON */
+}
+@media only screen and (max-width: 1900px) {
+    /* Menu */
+    .menu3{
+        min-height:90px;
+    }
+    .menu3img{
+        padding-right:50px;
+        padding-left:50px;
+    }
+    /* Menu SON */
+}
+@media only screen and (max-width: 1875px) {
+    /* Menu */
+    .menu3{
+        min-height:105px;
+    }
+    .menu3img{
+        padding-right:50px;
+        padding-left:50px;
+    }
+    /* Menu SON */
+}
+@media only screen and (max-width: 1700px) {
+    /* Menu */
+    .menu3{
+        min-height:105px;
+    }
+    .menu3img{
+        padding-right:45px;
+        padding-left:45px;
+    }
+    /* Menu SON */
+}
+@media only screen and (max-width: 1600px) {
+    /* Menu */
+    .menu3{
+        min-height:105px;
+    }
+    .menu3img{
+        padding-right:40px;
+        padding-left:40px;
+    }
+    /* Menu SON */
+}
+@media only screen and (max-width: 1500px) {
+    /* Menu */
+    .menu3{
+        min-height:105px;
+    }
+    .menu3img{
+        padding-right:35px;
+        padding-left:35px;
+    }
+    /* Menu SON */
+}
+@media only screen and (max-width: 1400px) {
 
+}
 @media only screen and (max-width: 767px) {
     .bg-white{
         padding: 5px !important;
