@@ -213,11 +213,6 @@ foreach ($danismanlar as $row){
                             <input type="hidden" name="ilanId" class="ilanId" value="0"/>
                         </form>
                     </div>
-
-                    <h1>Danışmanlar</h1>
-                    <div class="step-content">
-
-                    </div>
                 </div>
 
             </div>
@@ -485,7 +480,7 @@ echo $this->Html->script(array(
 
     function elfinderDialog(id,t,c){
         var fm=$('<div/>').dialogelfinder({
-            url:'http://bk.dev/plugin/elfinder/php/connector.minimal.php',
+            url:'<?php echo $this->Html->url('/'); ?>plugin/elfinder/php/connector.minimal.php',
             lang:'tr',
             width:900,
             height:450,

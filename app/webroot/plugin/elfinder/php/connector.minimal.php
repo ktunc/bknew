@@ -92,14 +92,16 @@ function access($attr, $path, $data, $volume, $isDir, $relpath) {
 
 // Documentation for connector options:
 // https://github.com/Studio-42/elFinder/wiki/Connector-configuration-options
+//print_r(dirname(ELFINDER_PHP_ROOT_PATH).'/../../../upload/');
+//exit();
 $opts = array(
 	// 'debug' => true,
 	'roots' => array(
 		// Items volume
 		array(
 			'driver'        => 'LocalFileSystem',           // driver for accessing file system (REQUIRED)
-			'path'          => '../files/',                 // path to files (REQUIRED)
-			'URL'           => dirname($_SERVER['PHP_SELF']) . '/../files/', // URL to files (REQUIRED)
+			'path'          => dirname(ELFINDER_PHP_ROOT_PATH).'/../../upload/',                 // path to files (REQUIRED)
+			'URL'           => 'http://'.$_SERVER['SERVER_NAME'].'/upload/', // URL to files (REQUIRED)
 			'trashHash'     => 't1_Lw',                     // elFinder's hash of trash folder
 			'winHashFix'    => DIRECTORY_SEPARATOR !== '/', // to make hash same to Linux one on windows too
 			'uploadDeny'    => array('all'),                // All Mimetypes not allowed to upload
@@ -111,14 +113,22 @@ $opts = array(
 		array(
 			'id'            => '1',
 			'driver'        => 'Trash',
-			'path'          => '../files/.trash/',
-			'tmbURL'        => dirname($_SERVER['PHP_SELF']) . '/../files/.trash/.tmb/',
+			'path'          => dirname(ELFINDER_PHP_ROOT_PATH).'/../../upload/.trash/',
+			'tmbURL'        => 'http://'.$_SERVER['SERVER_NAME'].'/upload/.trash/.tmb/',
 			'winHashFix'    => DIRECTORY_SEPARATOR !== '/', // to make hash same to Linux one on windows too
 			'uploadDeny'    => array('all'),                // Recomend the same settings as the original volume that uses the trash
 			'uploadAllow'   => array('image', 'text/plain'),// Same as above
 			'uploadOrder'   => array('deny', 'allow'),      // Same as above
 			'accessControl' => 'access',                    // Same as above
 		)
+        // array(
+            // 'driver' => 'FTP',
+            // 'host'   => 'ftp://kaantunc.com.tr',
+            // 'user'   => 'resim@kaantunc.com.tr',
+            // 'pass'   => '1q2w3e4r',
+            // 'path'   => '/',
+            // 'port' => 21
+        // )
 	)
 );
 
