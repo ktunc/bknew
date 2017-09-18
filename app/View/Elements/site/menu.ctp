@@ -1,21 +1,23 @@
 <div class="row padding-tb-5">
     <div class="col-xs-4 padding-rl-5">
-        <div class="bg-danger padding-rl-30 padding-tb-20 text-center">
-            <img src="<?php echo $this->Html->url('/');?>img/menu/konut.png" width="100%"/>
+        <div class="bg-danger menu1 padding-tb-20 text-center">
+            <div class="menu1img">
+                <img src="<?php echo $this->Html->url('/');?>img/menu/konut.png" width="100%"/>
+            </div>
             <h2>Konut</h2>
             <h3>10</h3>
         </div>
     </div>
     <div class="col-xs-4 padding-rl-5">
-        <div class="bg-info padding-rl-30 padding-tb-20 text-center">
-            <img src="<?php echo $this->Html->url('/');?>img/menu/isyeri.png" width="100%"/>
+        <div class="bg-info menu1 padding-tb-20 text-center">
+            <div class="menu1img"><img src="<?php echo $this->Html->url('/');?>img/menu/isyeri.png" width="100%"/></div>
             <h2>İşyeri</h2>
             <h3>10</h3>
         </div>
     </div>
     <div class="col-xs-4 padding-rl-5">
-        <div class="bg-success padding-rl-30 padding-tb-20 text-center">
-            <img src="<?php echo $this->Html->url('/');?>img/menu/arsa.png" width="100%"/>
+        <div class="bg-success menu1 padding-tb-20 text-center">
+            <div class="menu1img"><img src="<?php echo $this->Html->url('/');?>img/menu/arsa.png" width="100%"/></div>
             <h2>Arsa</h2>
             <h3>10</h3>
         </div>
@@ -84,13 +86,13 @@
     </div>
     <div class="col-xs-4 padding-rl-5">
         <div class="text-center menu3">
-            <div class="row margin-rl-0 padding-rl-10 padding-tb-5">
-                <div class="col-xs-6"><img src="<?php echo $this->Html->url('/');?>img/menu/face.png" width="100%"/></div>
-                <div class="col-xs-6"><img src="<?php echo $this->Html->url('/');?>img/menu/youtube.png" width="100%"/></div>
+            <div class="row margin-rl-0 padding-tb-5">
+                <div class="col-xs-6 spad-rl"><img src="<?php echo $this->Html->url('/');?>img/menu/face.png" width="100%"/></div>
+                <div class="col-xs-6 spad-rl"><img src="<?php echo $this->Html->url('/');?>img/menu/youtube.png" width="100%"/></div>
             </div>
-            <div class="row margin-rl-0 padding-rl-10 padding-tb-5">
-                <div class="col-xs-6"><img src="<?php echo $this->Html->url('/');?>img/menu/instagram.png" width="100%"/></div>
-                <div class="col-xs-6"><img src="<?php echo $this->Html->url('/');?>img/menu/gplus.png" width="100%"/></div>
+            <div class="row margin-rl-0 padding-tb-5">
+                <div class="col-xs-6 spad-rl"><img src="<?php echo $this->Html->url('/');?>img/menu/instagram.png" width="100%"/></div>
+                <div class="col-xs-6 spad-rl"><img src="<?php echo $this->Html->url('/');?>img/menu/gplus.png" width="100%"/></div>
             </div>
         </div>
     </div>
