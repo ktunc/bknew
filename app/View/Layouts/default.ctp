@@ -48,6 +48,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+<?php echo $this->element('loader'); ?>
     <div class="container-fluid">
         <?php echo $this->element('site/header'); ?>
     </div>

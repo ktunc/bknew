@@ -2,49 +2,63 @@
 section.sortableblock {
     display: block;
 }
-ul.sortable {
-    margin: auto;
-    padding: 0;
-    width: 100%;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    list-style: none !important;
+.sortable img{
+    height: 150px !important;
 }
-ul.sortable.grid {
-    overflow: hidden;
+@media only screen and (max-width: 767px) {
+    .sortable img{
+        height: 150px !important;
+    }
 }
-ul.sortable > li {
-    list-style: none;
-    border: 1px solid #CCC;
-    /*background: #F6F6F6;*/
-    color: #1C94C4;
-    margin: 5px;
-    padding: 5px;
-    height: 22px;
-    cursor: pointer;
+@media only screen and (max-width: 400px) {
+    .sortable img{
+        height: 100px !important;
+    }
 }
+/*ul.sortable {*/
+    /*margin: auto;*/
+    /*padding: 0;*/
+    /*width: 100%;*/
+    /*-webkit-touch-callout: none;*/
+    /*-webkit-user-select: none;*/
+    /*-khtml-user-select: none;*/
+    /*-moz-user-select: none;*/
+    /*-ms-user-select: none;*/
+    /*user-select: none;*/
+    /*list-style: none !important;*/
+/*}*/
+/*ul.sortable.grid {*/
+    /*overflow: hidden;*/
+/*}*/
+/*ul.sortable > li {*/
+    /*list-style: none;*/
+    /*border: 1px solid #CCC;*/
+    /*!*background: #F6F6F6;*!*/
+    /*color: #1C94C4;*/
+    /*margin: 5px;*/
+    /*padding: 5px;*/
+    /*height: 22px;*/
+    /*cursor: pointer;*/
+/*}*/
 
 
-ul.sortable.grid > li {
+/*ul.sortable.grid > li {*/
 
-    float: left;
-    width: 150px;
-    height: 190px;
-    padding: 10px;
-    text-align: center;
-}
-ul.sortable.grid > li.highlight {
-    background: #FEE25F;
-}
-ul.sortable.grid > li.sortable-placeholder {
-    border: 1px dashed #CCC;
-    background: none;
-}
+    /*float: left;*/
+    /*width: 150px;*/
+    /*height: 190px;*/
+    /*padding: 10px;*/
+    /*text-align: center;*/
+/*}*/
+/*ul.sortable.grid > li.highlight {*/
+    /*background: #FEE25F;*/
+/*}*/
+/*ul.sortable.grid > li.sortable-placeholder {*/
+    /*border: 1px dashed #CCC;*/
+    /*background: none;*/
+/*}*/
 
-ul.sortable.grid > li img {
-    margin: 0px !important;
-}
+/*ul.sortable.grid > li img {*/
+    /*margin: 0px !important;*/
+/*}*/
+

@@ -1,11 +1,33 @@
 <div id="map_canvas" class="mapcanvas"></div>
+<div class="mapContent" id="mapContent">
+    <div class="div40 map-ilan-img text-center" id="map-ilan-img"></div>
+    <div class="div60 font10 map-ilan-content" id="map-ilan-content"></div>
+</div>
+<div id="mapSearch" style="display:inline-block;
+    background-color: transparent;
+border-radius: 5px;margin-right: 10px; margin-bottom:10px;text-align: right">
+    <img class="mapIcon" alt="batikapigayrimenkul_gmapuydu_icon" src="<?php echo $this->webroot;?>img/uydu45.png" onclick="FuncMapTypeChange()"/><br>
+    <img class="mapIcon" alt="batikapigayrimenkul_gmapkelsearch_icon" src="<?php echo $this->webroot;?>img/kel45.png" onclick="FuncMapTextSearch()"/><br>
+    <img class="mapIcon" alt="batikapigayrimenkul_gmapfilter_icon" src="<?php echo $this->webroot;?>img/filter45.png" onclick="FuncDetSearch()"/><br>
+<!--    <a href="--><?php //echo $this->Html->url('/').'users/arama'.$this->requestAction(array('controller'=>'users','action'=>'GetPagUrl'),$pagg);?><!--"><img class="mapIcon" alt="batikapigayrimenkul_gmaplisteleme_icon" src="--><?php //echo $this->webroot;?><!--img/listele45.png"/></a>-->
+    <!-- <button type="button" class="btn btn-xs btn-primary" onclick="FuncSetNowPosition()" style="margin-top:5px;"><i class="fa fa-2x fa-compass"></i></button> -->
+</div>
+<div id="mapSearch2" style="display:inline-block;
+    background-color: transparent;
+border-radius: 5px;margin-right: 10px; margin-bottom:10px;text-align: right">
+    <a href="<?php echo $this->Html->url('/');?>sayfas/index/tur:1"><img class="mapIcon" alt="batikapigayrimenkul_gmapkonut_icon" src="<?php echo $this->webroot;?>img/kon45.png"/></a><br>
+    <a href="<?php echo $this->Html->url('/');?>sayfas/index/tur:2"><img class="mapIcon" alt="batikapigayrimenkul_gmapisyeri_icon" src="<?php echo $this->webroot;?>img/isyer45.png"/></a><br>
+    <a href="<?php echo $this->Html->url('/');?>sayfas/index/tur:3"><img class="mapIcon" alt="batikapigayrimenkul_gmaparsa_icon" src="<?php echo $this->webroot;?>img/arsa45.png"/></a><br>
+    <a href="<?php echo $this->Html->url('/');?>"><img class="mapIcon" alt="batikapigayrimenkul_gmaphepsi_icon" src="<?php echo $this->webroot;?>img/hep45.png"/></a>
+    <!-- <button type="button" class="btn btn-xs btn-primary" onclick="FuncSetNowPosition()" style="margin-top:5px;"><i class="fa fa-2x fa-compass"></i></button> -->
+</div>
 
-
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBb6wy1FSr2ms69Cy7BSuZQLOB9-EPIkIA&libraries=places&callback=initMap" type="text/javascript"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBb6wy1FSr2ms69Cy7BSuZQLOB9-EPIkIA&libraries=places&sensor=false" type="text/javascript"></script>
 <?php
-//echo $this->Html->css('jquery.bxslider.min');
-//echo $this->Html->script('jquery.bxslider.min');
+echo $this->Html->css('site/jquery.bxslider.min');
+echo $this->Html->script('site/jquery.bxslider.min');
 ?>
+
 <script type="text/javascript">
     var getLocFunc = false;
     var zoomMap = true;
@@ -32,6 +54,12 @@
     if(isMobile.any()){
         zoomMap = false;
     }
+
+    var locationstest = <?php echo $ilanlar; ?>;
+    var map;
+    var markers = [];
+    var infowindow;
+
     $(document).ready(function(){
         $('#mapContent').on('click','#CloseMapContent',function(e){
             e.preventDefault();
@@ -39,9 +67,11 @@
             $('#mapContent').hide();
         });
 
-        $('.mapcanvas').height($(window).height()*0.97);
+        $('.mapcanvas').height($(window).height()*0.93);
         $('body>div.container').css('padding','0');
         $('body>div.container').css('width','100%');
+
+        google.maps.event.addDomListener(window, 'load', init);
     });
 
     //    var locations = [
@@ -51,11 +81,9 @@
     //      ['Bondi Beach', -33.890542, 151.274856, 3],
     //      ['Coogee Beach', -33.923036, 151.259052, 'test']
     //    ];
-    var map;
-    var markers = [];
-    var infowindow;
 
-    function initMap(){
+
+    function init(){
         map = new google.maps.Map(document.getElementById('map_canvas'), {
             zoom: 10,
             zoomControl: zoomMap,
@@ -67,6 +95,95 @@
             rotateControl: false
         });
 
+//        if(<?php //echo $dd;?>//){
+//            var geolocate = new google.maps.LatLng(locationstest[0]['lat'], locationstest[0]['lon']);
+//            map.setCenter(geolocate);
+//        }
+        /*else{
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var geolocate = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            map.setCenter(geolocate);
+        });
+    }*/
+
+        //map.controls[google.maps.ControlPosition.TOP_LEFT].push(document.getElementById('mapContent'));
+        map.controls[google.maps.ControlPosition.RIGHT_TOP].push(document.getElementById('mapSearch2'));
+        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('mapSearch'));
+//        map.addListener('center_changed',function(){
+//            $('#testdiv').hide();
+//        });
+
+        var iconmyloc = {
+            url: '<?php echo $this->webroot;?>img/mapmy.png', // url
+            scaledSize: new google.maps.Size(30, 30), // scaled size
+            origin: new google.maps.Point(0,0), // origin
+            anchor: new google.maps.Point(10, 30) // anchor
+        };
+        markers[-11] = new google.maps.Marker({
+            position: {lat:39.87426820323075, lng:32.64915393991237},
+            map: map,
+            icon: iconmyloc,
+            zIndex:99999999,
+            id: -11
+        });
+        markers[-11].addListener('click', function() {
+            $('#mapContent').hide();
+            toggleBounce(-11);
+            FuncGetMapBatiInfo();
+        });
+
+        var num_markers = locationstest.length;
+        for (var i = 0; i < num_markers; i++) {
+            var iconurl = '<?php echo $this->webroot;?>img/';
+            if(locationstest[i]['turu'] == 1){
+                iconurl += 'konutmarker.png';
+            }else if(locationstest[i]['turu'] == 2){
+                iconurl += 'isyerimarker.png';
+            }else if(locationstest[i]['turu'] == 3){
+                iconurl += 'arsamarker.png';
+            }
+            var iconmar = {
+                url: iconurl, // url
+                scaledSize: new google.maps.Size(30, 30), // scaled size
+                origin: new google.maps.Point(0,0), // origin
+                anchor: new google.maps.Point(10, 30) // anchor
+            };
+            markers[i] = new google.maps.Marker({
+                position: {lat:parseFloat(locationstest[i]['latitude']), lng:parseFloat(locationstest[i]['longitude'])},
+                map: map,
+                icon: iconmar,
+                html: '<a target="_blank" href="http://google.com">'+locationstest[i]['baslik']+'</a>',
+                id: i
+            });
+
+            markers[i].addListener('click', function() {
+                $('#mapContent').hide();
+                toggleBounce(this.id);
+                FuncGetMapIlanInfo(locationstest[this.id]['id'],locationstest[this.id]['turu'],parseFloat(locationstest[this.id]['latitude']),parseFloat(locationstest[this.id]['longitude']));
+            });
+        }
+
+        if(navigator.geolocation) {
+            getLocFunc = true;
+            navigator.geolocation.getCurrentPosition(function(position) {
+                //var geoLoc = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+                var iconLoc = {
+                    url: '<?php echo $this->webroot;?>img/myloc3.png', // url
+                    //size: new google.maps.Size(35, 35),
+                    scaledSize: new google.maps.Size(20, 20), // scaled size
+                    origin: new google.maps.Point(0,0), // origin
+                    anchor: new google.maps.Point(10, 20) // anchor
+                };
+                markers[-10] = new google.maps.Marker({
+                    position: {lat:position.coords.latitude, lng:position.coords.longitude},
+                    map: map,
+                    icon: iconLoc,
+                    id: -10
+                });
+                //var AlertLocInterval = setInterval(Funcalert, 2000);
+                var getLocInterval = setInterval(FuncGetLoc, 2000);
+            });
+        }
 
     }
 
@@ -103,85 +220,80 @@
 
     function FuncGetMapIlanInfo(ilanId, ilanTip, lat, lon){
         $.blockUI({ css: { backgroundColor: 'transparent', border: 'none'},message: $('#LoaderBlock') });
-        $.ajax({
-            //async: false,
-            type: 'POST',
-            url: "<?php echo $this->Html->url('/');?>users/AjaxGetMapIlanInfo",
-            data: 'ilanId='+ilanId+'&ilanTip='+ilanTip
-        }).done(function(data){
-            var dat = $.parseJSON(data);
-            if(dat['hata']){
-                $.unblockUI();
-                $('#UyariModal #UyariContent').html('Bir hata meydana geldi. Lütfen sayfayı yenileyerek tekrar deneyiniz.');
-                $('#UyariModal').modal({
-                    keyboard:false,
-                    backdrop:'static'
+        setTimeout(
+            function () {
+                $.ajax({
+                    async: false,
+                    type: 'POST',
+                    url: "<?php echo $this->Html->url('/');?>sayfas/AjaxGetMapIlanInfo",
+                    data: {'ilanId':ilanId}
+                }).done(function(data){
+                    var dat = $.parseJSON(data);
+                    if(dat['hata']){
+                        $.unblockUI();
+                        $('#UyariModal #UyariContent').html('Bir hata meydana geldi. Lütfen sayfayı yenileyerek tekrar deneyiniz.');
+                        $('#UyariModal').modal({
+                            keyboard:false,
+                            backdrop:'static'
+                        });
+                        return false;
+                    }else{
+                        // Seçilen marker'ı merkez olarak set ediyor
+                        /*var geolocate = new google.maps.LatLng(lat, lon);
+                        map.setCenter(geolocate);*/
+
+                        var ilanLink = "<?php echo $this->Html->url('/');?>ilan/ilan:"+dat['ilan']['Ilan']['id']+'/ilanNo:'+dat['ilan']['Ilan']['ilan_no'];
+                        var textColor = "";
+                        var content = '<div class="anaDivMapFlex fontBold"><div class="div85"><a href="'+ilanLink+'" class="text-black fontBold mapH1">'+dat['ilan']['Ilan']['baslik']+'</a></div>';
+                        content += '<div class="div15 text-danger mapHNo text-right">'+dat['ilan']['ilanNo']+'</div></div>';
+                        content += '<div class="anaDivMap"><a href="'+ilanLink+'" class="fontBold text-danger mapH1 fontItalic'+textColor+'"><i class="fa fa-try fa-lg"></i> '+number_format(dat['ilan']['Ilan']['fiyat'])+'</a></div>';
+                        content += '<div class="anaDivMap"><a href="'+ilanLink+'" class="fontBold text-black mapHalt'+textColor+'" style="text-transform: capitalize;">';
+                        var ildet = dat['ilan']['Sehir']['sehir_adi'];
+                        if(dat['ilan']['Ilce']['ilce_id'] != '' && dat['ilan']['Ilce']['lice_id'] != null){
+                            ildet += dat['ilan']['Ilce']['ilce_adi'];
+                        }
+                        if(dat['ilan']['Semt']['semt_id'] != '' && dat['ilan']['Semt']['semt_id'] != null){
+                            ildet += dat['ilan']['Semt']['semt_adi'];
+                        }
+                        if(dat['ilan']['Mahalle']['mahalle_id'] != '' && dat['ilan']['Mahalle']['mahalle_id'] != null){
+                            ildet += dat['ilan']['Mahalle']['mahalle_adi'];
+                        }
+                        content += ildet.turkishToLower()+'</a></div>';
+                        content += '<div class="anaDivMap"><div class="divYan fLeft"><a target="_blank" href="https://maps.google.com?saddr=Current+Location&daddr='+lat+','+lon+'"><img class="MapDircetioIcon" alt="map_direction_icon" src="<?php echo $this->webroot;?>img/mapdirect.png" /></a></div><div class="divYan fRight mapHNo" id="CloseMapContent"><i class="fa fa-times fa-2x text-danger" style="margin-right: 5px;cursor: pointer"></i></div>';
+
+                        if($(window).width() > 767){
+                            var imgCon = '<div class="SliderClass">';
+                            var say = 1;
+                            $(dat['ilan']['IlanResim']).each(function(key,vall){
+                                imgCon += '<div class="slide"><a href="'+ilanLink+'"><img alt="'+dat['ilan']['Ilan']['ilan_no']+'_'+say+'" src="<?php echo $this->Html->url('/');?>'+vall['paththumb']+'" /></a></div>';
+                                say++;
+                            });
+                            imgCon += "</div>";
+                        }else{
+                            var imgCon = '<a href="'+ilanLink+'"><img src="<?php echo $this->Html->url('/');?>'+dat['img'][0]+'" /></a>';
+                        }
+
+
+                        $('#mapContent #map-ilan-content').html(content);
+                        $('#mapContent #map-ilan-img').html(imgCon);
+                        $('#mapContent').show();
+                        $('#mapContent').css('display','inline-flex');
+                        if($(window).width() > 767){
+                            $('.SliderClass').bxSlider({
+                                auto: true,
+                                pager: false,
+                                slideWidth: 200,
+                                minSlides: 1,
+                                maxSlides: 5,
+                                moveSlides: 1,
+                                slideMargin: 10
+                            });
+                        }
+                        $.unblockUI();
+                    }
                 });
-                return false;
-            }else{
-                // Seçilen marker'ı merkez olarak set ediyor
-                /*var geolocate = new google.maps.LatLng(lat, lon);
-                map.setCenter(geolocate);*/
-
-                var ilanLink = "<?php echo $this->Html->url('/');?>";
-                var textColor = "";
-                if(ilanTip == 1){
-                    //textColor = " text-danger";
-                    ilanLink += "konut/ilanNo:"+dat['ilanNo'];
-                }else if(ilanTip == 2){
-                    ilanLink += "isyeri/ilanNo:"+dat['ilanNo'];
-                }else if(ilanTip == 3){
-                    //textColor = " text-success";
-                    ilanLink += "arsa/ilanNo:"+dat['ilanNo'];
-                }
-                var content = '<div class="anaDivMapFlex fontBold"><div class="div85"><a href="'+ilanLink+'" class="text-black fontBold mapH1'+textColor+'">'+dat['baslik']+'</a></div>';
-                content += '<div class="div15 text-danger mapHNo text-right">'+dat['ilanNo']+'</div></div>';
-                content += '<div class="anaDivMap"><a href="'+ilanLink+'" class="fontBold text-danger mapH1 fontItalic'+textColor+'">'+number_format(dat['fiyat'])+' '+dat['fiyat_birim']+'</a></div>';
-                content += '<div class="anaDivMap"><a href="'+ilanLink+'" class="fontBold text-black mapHalt'+textColor+'" style="text-transform: capitalize;">';
-                var ildet = dat['il'];
-                if(dat['ilce'] != '' && dat['ilce'] != null){
-                    ildet = dat['ilce'];
-                }
-                if(dat['semt'] != '' && dat['semt'] != null){
-                    ildet = dat['semt'];
-                }
-                if(dat['mahalled'] != '' && dat['mahalle'] != null){
-                    ildet = dat['mahalle'];
-                }
-                content += ildet.turkishToLower()+'</a></div>';
-                content += '<div class="anaDivMap"><div class="divYan fLeft"><a target="_blank" href="https://maps.google.com?saddr=Current+Location&daddr='+lat+','+lon+'"><img class="MapDircetioIcon" alt="map_direction_icon" src="<?php echo $this->webroot;?>img/mapdirect.png" /></a></div><div class="divYan fRight mapHNo" id="CloseMapContent"><i class="fa fa-times fa-2x text-danger" style="margin-right: 5px;cursor: pointer"></i></div>';
-
-                if($(window).width() > 767){
-                    var imgCon = '<div class="SliderClass">';
-                    var say = 1;
-                    $(dat['img']).each(function(key,vall){
-                        imgCon += '<div class="slide"><a href="'+ilanLink+'"><img alt="'+dat['ilanNo']+'_'+say+'" src="<?php echo $this->Html->url('/');?>'+vall+'" /></a></div>';
-                        say++;
-                    });
-                    imgCon += "</div>";
-                }else{
-                    var imgCon = '<a href="'+ilanLink+'"><img src="<?php echo $this->Html->url('/');?>'+dat['img'][0]+'" /></a>';
-                }
-
-
-                $('#mapContent #map-ilan-content').html(content);
-                $('#mapContent #map-ilan-img').html(imgCon);
-                $('#mapContent').show();
-                $('#mapContent').css('display','inline-flex');
-                if($(window).width() > 767){
-                    $('.SliderClass').bxSlider({
-                        auto: true,
-                        pager: false,
-                        slideWidth: 200,
-                        minSlides: 1,
-                        maxSlides: 5,
-                        moveSlides: 1,
-                        slideMargin: 10
-                    });
-                }
-                $.unblockUI();
-            }
-        });
+            },500
+        );
     }
 
     function FuncGetMapBatiInfo(){

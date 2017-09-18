@@ -86,6 +86,12 @@ class YoneticisController extends AppController {
 //        pr($ilan['Ilan']['sehir_id']);exit();
         $danismanlar = $this->Danisman->find('all',array('order'=>array('isim'=>'ASC')));
         $this->set('danismanlar',$danismanlar);
+
+        $step = 0;
+        if(array_key_exists('step',$named)){
+            $step = $named['step'];
+        }
+        $this->set('step',$step);
     }
 
 	public function ilankaydet(){
@@ -178,7 +184,9 @@ class YoneticisController extends AppController {
                 $yuklenenfile = array_key_exists('yuklenenfile',$data)?$data['yuklenenfile']:false;
 
                 $hata = 0;
+                $sira = $this->IlanResim->find('count',array('conditions'=>array('ilan_id'=>$ilanId)));
                 foreach($yuklenenfile as $value){
+                    $sira++;
                     $asilpath = WWW_ROOT.'img/gecici/'.$value;
                     if(!is_file($asilpath)){
                         continue;
@@ -204,7 +212,7 @@ class YoneticisController extends AppController {
                             $manipulator->resample(200, 200);
                             $manipulator->save($pathThumb);
                             $this->IlanResim->create();
-                            $this->IlanResim->save(array('ilan_id'=>$ilanId,'res'=>$value,'path'=>$path,'path8'=>$path8,'paththumb'=>$pathThumb, 'islem_tarihi'=>date('Y-m-d H:i:s')));
+                            $this->IlanResim->save(array('ilan_id'=>$ilanId,'res'=>$value,'path'=>$path,'path8'=>$path8,'paththumb'=>$pathThumb, 'sira'=>$sira, 'islem_tarihi'=>date('Y-m-d H:i:s')));
                             if(file_exists($asilpath)){
                                 unlink($asilpath);
                             }
@@ -521,5 +529,39 @@ class YoneticisController extends AppController {
         exit();
     }
 
+    public function ilanresimsirala(){
+	    $this->autoRender = false;
+	    if($this->request->is('post')){
+	        $resimler = $this->request->data('resimler');
+	        $sira = 1;
+            foreach($resimler as $row){
+                $this->IlanResim->id = $row['resim-id'];
+                $this->IlanResim->save(array('sira'=>$sira));
+                $sira++;
+            }
+        }
+    }
 
+    public function resimsil(){
+        $this->autoRender = false;
+        $return = array('hata'=>true);
+        if($this->request->is('post')){
+            $resId = $this->request->data('resId');
+            $resim = $this->IlanResim->findById($resId);
+            if($resim){
+                $fileRes = new File($resim['IlanResim']['path']);
+                $fileRes->delete();
+                $fileRes = new File($resim['IlanResim']['path8']);
+                $fileRes->delete();
+                $fileResThumb = new File($resim['IlanResim']['paththumb']);
+                $fileResThumb->delete();
+
+                if($this->IlanResim->delete(array('id'=>$resId),false)){
+                    $return['hata'] = false;
+                    $return['resId'] = $resId;
+                }
+            }
+        }
+        echo json_encode($return);
+    }
 }

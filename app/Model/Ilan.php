@@ -79,7 +79,8 @@ class Ilan extends AppModel {
 	    'IlanResim'=>array(
 	        'className' => 'IlanResim',
             'foreignKey' => 'ilan_id',
-            'dependent' => true
+            'dependent' => true,
+            'order'=>'IlanResim.sira ASC'
         )
     );
 

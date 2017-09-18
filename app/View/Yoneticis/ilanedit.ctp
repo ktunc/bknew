@@ -1,3 +1,18 @@
+<style>
+    .sortable-ghost {
+        opacity: .2;
+    }
+
+    .drag-handle {
+        margin-right: 10px;
+        font: bold 20px Sans-Serif;
+        color: #5F9EDF;
+        display: inline-block;
+        cursor: move;
+        cursor: -webkit-grabbing;  /* overrides 'move' */
+    }
+
+</style>
 <?php
 echo $this->Html->css(array(
     'yonetici/plugins/iCheck/custom',
@@ -160,21 +175,35 @@ foreach ($danismanlar as $row){
                                 </div>
                                 <div class="form-group">
                                     <div class="col-xs-12">
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-xs-12">
                                     <div class="lightBoxGallery">
                                         <section class="sortableblock">
-                                            <ul class="sortable grid" id="sort2">
+                                            <div id="items" class="sortable">
                                             <?php foreach($ilan['IlanResim'] as $row){
-                                                //echo '<li><a href="'.$this->Html->url('/').$row['path'].'" data-gallery="" ><img src="'.$this->Html->url('/').$row['paththumb'].'" width="100%"></a> <br><i onclick="FuncDeleteResim('.$row['id'].')" class="fa fa-trash fa-lg text-danger"></i></li>';
-                                                echo '<li>';
+                                                echo '<div class="col-xs-12 col-sm-3 sortdata" data-ilan-id="'.$row['ilan_id'].'" data-resim-id="'.$row['id'].'">';
                                                 echo '<div class="thumbnail">';
                                                 echo '<a href="'.$this->Html->url('/').$row['path'].'" data-gallery="" ><img src="'.$this->Html->url('/').$row['paththumb'].'" width="100%"></a>';
                                                 echo '<div class="caption">';
                                                 echo '<i onclick="FuncDeleteResim('.$row['id'].')" class="fa fa-trash fa-lg text-danger"></i>';
                                                 echo '</div>';
                                                 echo '</div>';
-                                                echo '</li>';
+                                                echo '</div>';
+                                                //echo '<li><a href="'.$this->Html->url('/').$row['path'].'" data-gallery="" ><img src="'.$this->Html->url('/').$row['paththumb'].'" width="100%"></a> <br><i onclick="FuncDeleteResim('.$row['id'].')" class="fa fa-trash fa-lg text-danger"></i></li>';
+//                                                echo '<li>';
+//                                                echo '<div class="thumbnail">';
+//                                                echo '<a href="'.$this->Html->url('/').$row['path'].'" data-gallery="" ><img src="'.$this->Html->url('/').$row['paththumb'].'" width="100%"></a>';
+//                                                echo '<div class="caption">';
+//                                                echo '<i onclick="FuncDeleteResim('.$row['id'].')" class="fa fa-trash fa-lg text-danger"></i>';
+//                                                echo '</div>';
+//                                                echo '</div>';
+//                                                echo '</li>';
+
                                             } ?>
-                                            </ul>
+                                            </div>
                                         </section>
 
                                         <div id="blueimp-gallery" class="blueimp-gallery">
@@ -315,6 +344,7 @@ echo $this->Html->script(array(
     'yonetici/plugins/steps/jquery.steps.min',
     'yonetici/locationpicker.jquery'
 ));
+echo $this->Html->script('yonetici/plugins/Sortable-master/Sortable');
 ?>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -341,7 +371,25 @@ echo $this->Html->script(array(
                             enableAutocomplete: true
                         });
                     }else if(currentIndex == 1){
-                        $('#sort1, #sort2').sortable();
+//                        $('#sort1, #sort2').sortable();
+//                        $('.sortable').sortable().bind('sortupdate', function() {
+//                            var i = 1;
+//                            $('.sortable li').each(function(){
+//                                alert(i+' - '+$(this).data('item'));
+//                                i++;
+//                            });
+//                        });
+                        var el = document.getElementById('items');
+                        var sortable = Sortable.create(el,{
+                            // Element dragging ended
+                            onEnd: function (/**Event*/evt) {
+//                                alert(evt.oldIndex+1);  // element's old index within parent
+//                                alert(evt.newIndex+1);  // element's new index within parent
+//                                var ilanId = evt.item.dataset.ilanId;
+//                                var resId = evt.item.dataset.resimId;
+                                FuncResimSirala();
+                            }
+                        });
                     }
                 },
                 onInit: function (event, currentIndex) {
@@ -362,6 +410,11 @@ echo $this->Html->script(array(
                             ['elfinder', ['elfinder']]
                         ]
                     });
+                    var step = <?php echo $step; ?>;
+                    for(var i = 0; i < step; i++){
+                        $("#wizard").steps("next");
+                    }
+
                 }
             });
 
@@ -437,6 +490,9 @@ echo $this->Html->script(array(
                                 text: "İlan Resimleri Başarıyla Kaydedildi.",
                                 type: "success",
                                 confirmButtonText: 'Tamam'
+                            }).then(function(){
+                                var link = '<?php echo $this->Html->url('/');?>yoneticis/ilanedit/ilan:'+$('form#form-ilan-resim input[name="ilanId"]').val()+'/step:1';
+                                window.location.href = link;
                             });
                             $('#wizard .actions').removeClass('hidden');
                             $.unblockUI();
@@ -593,8 +649,60 @@ echo $this->Html->script(array(
             }).dialogelfinder('instance');
         }
 
-        function FuncDeleteResim(id){
-            alert(id);
+        function FuncDeleteResim(resId){
+            swal({
+                title: 'Resmi silmek istediğinizden emin misiniz?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                confirmButtonText: '<i class="fa fa-trash"></i> Sil',
+                cancelButtonText: 'İptal'
+            }).then(function () {
+                $.ajax({
+                    type:'POST',
+                    url:'<?php echo $this->Html->url('/');?>yoneticis/resimsil',
+                    data:{'resId':resId}
+                }).done(function (data) {
+                    var dat = $.parseJSON(data);
+                    if(dat['hata']){
+                        swal(
+                            'Hata!!!',
+                            'Resim silinirken bir hata meydana geldi. Lütfen tekrar deneyin.',
+                            'danger'
+                        );
+                    }else{
+                        $('[data-resim-id="'+dat['resId']+'"]').remove();
+                        FuncResimSirala();
+                        swal(
+                            'Başarılı!!!',
+                            'Resim başarıyla silindi.',
+                            'success'
+                        );
+                    }
+                }).fail(function () {
+                    swal(
+                        'Hata!!!',
+                        'Resim silinirken bir hata meydana geldi. Lütfen internet bağlantınızı kontrol ederek tekrar deneyin.',
+                        'danger'
+                    );
+                });
+            });
+        }
+
+        function FuncResimSirala(){
+            var resArr = [];
+            $('div#items .sortdata').each(function () {
+                resArr.push({'ilan-id':$(this).data('ilan-id'), 'resim-id':$(this).data('resim-id')});
+            });
+            $.ajax({
+                type:'POST',
+                url:'<?php echo $this->Html->url('/');?>yoneticis/ilanresimsirala',
+                data: {'resimler':resArr}
+            }).done(function (data) {
+
+            }).fail(function () {
+
+            });
         }
     </script>
 <?php

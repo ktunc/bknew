@@ -59,7 +59,7 @@
     <div class="col-xs-4 padding-rl-5">
         <div class="bg-danismanlar padding-tb-5 text-center menu3">
             <div class="menu3img"><img src="<?php echo $this->Html->url('/');?>img/menu/danismanlar.png" width="100%"/></div>
-            <div><h4>DANIŞMANLAR</h4></div>
+            <div><h4>DANIŞMAN</h4></div>
         </div>
     </div>
     <div class="col-xs-4 padding-rl-5">

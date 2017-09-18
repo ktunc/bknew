@@ -119,6 +119,34 @@
 {
     border-color: #dddddd;
 }
+.divYan{display:inline-block;margin:2px;}
+.fRight{float: right;}.fLeft{float: left;}
+.mapContent{
+    width:96%;
+    /*width: 100%;*/
+    padding:5px 0;
+    margin: 5px;
+    display: none;
+    background-color: rgba(256, 256, 256, 1);
+    border-radius: 5px;
+    position: absolute;
+    top:0;
+}
+.mapContent > div{
+    padding: 0px 5px;
+}
+.mapContent>.div40{
+    width: 52%;
+}
+.mapContent>.div60{
+    width: 47%;
+}
+.mapIcon{width: 100%; margin-top: 5px;cursor: pointer;}
+.anaDivMap{
+    display:inline-block;
+    width:99%;
+    padding:5px 0;
+}
 @media only screen and (min-width: 1901px) {
     /* Menu */
     .menu3{

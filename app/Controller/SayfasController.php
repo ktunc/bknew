@@ -19,7 +19,19 @@ App::uses('AppController', 'Controller');
 class SayfasController extends AppController{
     var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri', 'IlanResim', 'Sehir', 'Ilce', 'Semt', 'Mahalle', 'Danisman', 'DanismanIletisim');
 
-    public function index(){}
+    public function index(){
+        $named = $this->request->params['named'];
+        $sqlEk = ' 1 = 1 ';
+        if(array_key_exists('tur',$named)){
+            $sqlEk .= ' AND Ilan.turu = '.$named['tur'];
+        }
+        $ilanlar = array();
+        $data = $this->Ilan->find('all',array('conditions'=>array('Ilan.latitude IS NOT NULL', 'Ilan.longitude IS NOT NULL', $sqlEk)));
+        foreach ($data as $row){
+            $ilanlar[] = $row['Ilan'];
+        }
+        $this->set('ilanlar',json_encode($ilanlar));
+    }
 
     public function ilan(){
         $named=$this->request->param('named');
@@ -52,5 +64,20 @@ class SayfasController extends AppController{
         }else{
             // Hata
         }
+    }
+
+    public function AjaxGetMapIlanInfo(){
+        $this->autoRender = false;
+        $return = array('hata'=>true);
+        if($this->request->is('post')){
+            $ilanId = $this->request->data('ilanId');
+            $ilan = $this->Ilan->findById($ilanId);
+            if($ilan){
+                $return['hata'] = false;
+                $return['ilan'] = $ilan;
+            }
+        }
+
+        echo json_encode($return);
     }
 }
