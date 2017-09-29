@@ -6,7 +6,7 @@ echo $this->Html->css(array('yonetici/plugins/dataTables/datatables.min'));
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>İlanlar</h5>
+                <h5>Haberler</h5>
             </div>
             <div class="ibox-content">
 
@@ -14,42 +14,37 @@ echo $this->Html->css(array('yonetici/plugins/dataTables/datatables.min'));
                     <table class="table table-striped table-bordered table-hover dataTables-example" >
                         <thead>
                         <tr>
-                            <th width="5%">İlan ID</th>
+                            <th width="5%">Haber ID</th>
                             <th>Başlık</th>
-                            <th>Yer</th>
-                            <th>Satılık-Kiralık</th>
-                            <th>Tür</th>
-                            <th width="5%">İşlem</th>
+                            <th width="5%">Yayında</th>
+                            <th width="5%">Düzenle</th>
+                            <th width="5%">Sil</th>
                         </tr>
                         </thead>
                         <tbody>
                         <?php
-                        foreach($ilanlar as $row){
+                        foreach($haberler as $row){
                             echo '<tr>';
-                            echo '<td>'.$row['Ilan']['id'].'</td>';
-                            echo '<td>'.$row['Ilan']['baslik'].'</td>';
-                            echo '<td>'.$row['Sehir']['sehir_adi'].'</td>';
-                            echo '<td>'.($row['Ilan']['satkir']==1?"Satılık":"Kiralık").'</td>';
-                            if($row['Ilan']['turu'] == 1){
-                                echo '<td>Konut</td>';
-                            }else if($row['Ilan']['turu'] == 2){
-                                echo '<td>İşyeri</td>';
+                            echo '<td>'.$row['Haber']['id'].'</td>';
+                            echo '<td>'.$row['Haber']['baslik'].'</td>';
+                            if($row['Haber']['yayinda'] == 1){
+                                echo '<td class="text-center text-primary"><i class="fa fa-check fa-lg"></i></td>';
                             }else {
-                                echo '<td>Arsa</td>';
+                                echo '<td class="text-center text-danger"><i class="fa fa-times fa-lg"></i></td>';
                             }
-                            echo '<td><a href="'.$this->Html->url('/').'yoneticis/ilanedit/ilan:'.$row['Ilan']['id'].'"><i class="fa fa-edit fa-lg text-success"></i></a> <i class="fa fa-times fa-lg text-danger"></i></td>';
+                            echo '<td class="text-center"><a href="'.$this->Html->url('/').'yoneticis/haberedit/hId:'.$row['Haber']['id'].'"><i class="fa fa-edit fa-lg text-success"></i></a></td>';
+                            echo '<td class="text-center"><i class="fa fa-times fa-lg text-danger" onclick="FuncHaberSil('.$row['Haber']['id'].')"></i></td>';
                             echo '</tr>';
                         }
                         ?>
                         </tbody>
                         <tfoot>
                         <tr>
-                            <th>İlan ID</th>
+                            <th width="5%">Haber ID</th>
                             <th>Başlık</th>
-                            <th>Yer</th>
-                            <th>Satılık-Kiralık</th>
-                            <th>Tür</th>
-                            <th>İşlem</th>
+                            <th width="5%">Yayında</th>
+                            <th width="5%">Düzenle</th>
+                            <th width="5%">Sil</th>
                         </tr>
                         </tfoot>
                     </table>

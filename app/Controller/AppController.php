@@ -26,6 +26,7 @@ App::uses('Folder', 'Utility');
 App::uses('File', 'Utility');
 App::uses('CakeEmail', 'Network/Email');
 App::uses('PhpReader', 'Configure');
+App::uses('Mobile_Detect','Vendor');
 
 /**
  * Application Controller
@@ -56,6 +57,10 @@ class AppController extends Controller {
         $ismobile = $this->isMobile();
         if($ismobile){
             $this->Session->write('Mobile','1');
+        }
+
+        if(!$this->Session->check('userCheck') && $controller == 'yoneticis' && ($action != 'giris' && $action != 'login' && $action != 'cikis')){
+            return $this->redirect(array('controller'=>'yoneticis','action'=>'giris'));
         }
 
         if(!$this->Session->check('UserLogin')){

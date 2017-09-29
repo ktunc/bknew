@@ -22,20 +22,5 @@ class User extends AppModel {
  *
  * @var array
  */
-	public $hasMany = array(
-		'Ilan' => array(
-			'className' => 'Ilan',
-			'foreignKey' => 'user_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		)
-	);
 
 }

@@ -19,6 +19,13 @@ App::uses('AppController', 'Controller');
 class SayfasController extends AppController{
     var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri', 'IlanResim', 'Sehir', 'Ilce', 'Semt', 'Mahalle', 'Danisman', 'DanismanIletisim');
 
+    public function beforeFilter(){
+        $detect = new Mobile_Detect;
+        if($detect->isMobile() || $detect->isTablet()){
+            $this->layout = 'mobile';
+        }
+    }
+
     public function index(){
         $named = $this->request->params['named'];
         $sqlEk = ' 1 = 1 ';

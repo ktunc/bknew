@@ -16,11 +16,13 @@ App::uses('ImageManipulator','Vendor');
  * @property Mahalle $Mahalle
  * @property Danisman $Danisman
  * @property DanismanIletisim $DanismanIletisim
+ * @property Haber $Haber
+ * @property User $User
  */
 class YoneticisController extends AppController {
 
     var $layout = 'yonetici';
-    var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri', 'IlanResim', 'Sehir', 'Ilce', 'Semt', 'Mahalle', 'Danisman', 'DanismanIletisim');
+    var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri', 'IlanResim', 'Sehir', 'Ilce', 'Semt', 'Mahalle', 'Danisman', 'DanismanIletisim','Haber','User');
 /**
  * Scaffold
  *
@@ -563,5 +565,92 @@ class YoneticisController extends AppController {
             }
         }
         echo json_encode($return);
+    }
+
+    public function giris(){
+        if($this->Session->check('userCheck')){
+            return $this->redirect(
+                array('controller' => 'yoneticis', 'action' => 'index')
+            );
+        }else{
+            $this->layout = 'giris';
+        }
+    }
+
+    public function login(){
+        $this->autoRender = false;
+        if($this->request->is('post')){
+            $username = $this->request->data('username');
+            $pass = Security::hash($this->request->data('pass'),'sha1',true);
+
+            $user = $this->User->findByUsernameAndPassAndAktif($username, $pass, 1);
+            if($user){
+                $this->Session->write('user',$user['User']['username']);
+                $this->Session->write('userCheck',1);
+                return $this->redirect(
+                    array('controller' => 'yoneticis', 'action' => 'index')
+                );
+            }else{
+                return $this->redirect(array('controller'=>'yoneticis','action'=>'giris'));
+            }
+        }else{
+            return $this->redirect(array('controller'=>'yoneticis','action'=>'giris'));
+        }
+    }
+
+    public function cikis(){
+        $this->Session->destroy();
+        return $this->redirect(
+            array('controller' => 'sayfas', 'action' => 'index')
+        );
+    }
+
+    public function yenihaber(){}
+
+    public function haberkaydet(){
+        $this->autoRender = false;
+        $return['hata'] = true;
+        if($this->request->is('post')){
+            $data = $this->request->data;
+            $yayinda = array_key_exists('yayinda',$data)?1:0;
+            $saved = array('baslik'=>$data['baslik'],'icerik'=>$data['icerik'],'yayinda'=>$yayinda,'islem_tarihi'=>date('Y-m-d H:i:s'));
+
+            if(array_key_exists('haberId',$data) && $data['haberId'] != 0){
+                $pata = $this->Haber->findById($data['haberId']);
+                if($pata){
+                    $this->Haber->id = $data['haberId'];
+                    if($this->Haber->save($saved)){
+                        $lastId = $data['haberId'];
+                        $return['hata'] = false;
+                        $return['HaberId'] = $lastId;
+                    }
+                }
+            }else{
+                $this->Haber->create();
+                if($this->Haber->save($saved)){
+                    $lastId = $this->Haber->getLastInsertID();
+                    $return['hata'] = false;
+                    $return['HaberId'] = $lastId;
+                }
+            }
+        }
+
+        echo json_encode($return);
+        exit();
+    }
+
+    public function haberedit(){
+        $named = $this->request->params["named"];
+        $haber = $this->Haber->findById($named['hId']);
+        if(!$haber){
+            $this->redirect(array('controller'=>'yoneticis'));
+        }
+
+        $this->set('haber',$haber);
+    }
+
+    public function haberler(){
+        $data = $this->Haber->find('all',array('order'=>array('islem_tarihi'=>'DESC')));
+        $this->set('haberler',$data);
     }
 }
