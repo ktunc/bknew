@@ -123,7 +123,7 @@ echo $this->Html->css('site/PhotoSwipe/photoswipe');
     <div class="hidden-xs hidden-sm col-md-3">
         <?php
         foreach($ilanlar as $row){
-            echo '<div class="row thumbnail margin-rl-0">';
+            echo '<a class="row thumbnail margin-rl-0" href="'.$this->Html->url('/').'ilan/ilan:'.$row['Ilan']['id'].'">';
             if(!empty($row['IlanResim'])){
                 echo '<img src="'.$this->Html->url('/').$row['IlanResim'][0]['paththumb'].'" width="100%"/>';
                 echo '<p class="IlanHeader2">'.$row['Ilan']['baslik'].'</p>';
@@ -147,7 +147,7 @@ echo $this->Html->css('site/PhotoSwipe/photoswipe');
                 $ilanturu = "Arsa";
             }
             echo '<p class="IlanAdres2">'.$satkir.' '.$ilanturu.'</p>';
-            echo '</div>';
+            echo '</a>';
         }
         ?>
     </div>

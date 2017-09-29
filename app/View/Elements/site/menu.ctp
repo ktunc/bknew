@@ -1,3 +1,7 @@
+<?php
+$ilansay = $this->requestAction('/sayfas/ilansayilar');
+?>
+
 <div class="row padding-tb-5">
     <div class="col-xs-4 padding-rl-5">
         <div class="bg-danger menu1 padding-tb-20 text-center">
@@ -5,21 +9,21 @@
                 <img src="<?php echo $this->Html->url('/');?>img/menu/konut.png" width="100%"/>
             </div>
             <h2>Konut</h2>
-            <h3>10</h3>
+            <h3><?php echo $ilansay['konut']; ?></h3>
         </div>
     </div>
     <div class="col-xs-4 padding-rl-5">
         <div class="bg-info menu1 padding-tb-20 text-center">
             <div class="menu1img"><img src="<?php echo $this->Html->url('/');?>img/menu/isyeri.png" width="100%"/></div>
             <h2>İşyeri</h2>
-            <h3>10</h3>
+            <h3><?php echo $ilansay['isyeri']; ?></h3>
         </div>
     </div>
     <div class="col-xs-4 padding-rl-5">
         <div class="bg-success menu1 padding-tb-20 text-center">
             <div class="menu1img"><img src="<?php echo $this->Html->url('/');?>img/menu/arsa.png" width="100%"/></div>
             <h2>Arsa</h2>
-            <h3>10</h3>
+            <h3><?php echo $ilansay['arsa']; ?></h3>
         </div>
     </div>
 </div>
@@ -39,7 +43,7 @@
         </div>
     </div>
     <div class="col-xs-4 padding-rl-5">
-        <div class="bg-detayli padding-tb-5 text-center menu3">
+        <div class="bg-detayli padding-tb-5 text-center menu3 pointer" onclick="FuncDetayliArama()">
             <div class="menu3img"><img src="<?php echo $this->Html->url('/');?>img/menu/arama.png" width="100%"/></div>
             <div><h4>DETAYLI ARAMA</h4></div>
         </div>
@@ -97,3 +101,11 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+function FuncDetayliArama() {
+    $('#DetayliAramaModal').modal({
+        keyboard: false,
+        backdrop: 'static'
+    });
+}
+</script>

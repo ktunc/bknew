@@ -231,10 +231,10 @@ echo $this->Html->script('site/jquery.bxslider.min');
                     var dat = $.parseJSON(data);
                     if(dat['hata']){
                         $.unblockUI();
-                        $('#UyariModal #UyariContent').html('Bir hata meydana geldi. Lütfen sayfayı yenileyerek tekrar deneyiniz.');
-                        $('#UyariModal').modal({
-                            keyboard:false,
-                            backdrop:'static'
+                        swal({
+                            title: "Hata!!!",
+                            text: "Bir hata meydana geldi. Daha sonra tekrar deneyin.",
+                            type: "error"
                         });
                         return false;
                     }else{
@@ -307,10 +307,10 @@ echo $this->Html->script('site/jquery.bxslider.min');
             var dat = $.parseJSON(data);
             if(dat['hata']){
                 $.unblockUI();
-                $('#UyariModal #UyariContent').html('Bir hata meydana geldi. Lütfen sayfayı yenileyerek tekrar deneyiniz.');
-                $('#UyariModal').modal({
-                    keyboard:false,
-                    backdrop:'static'
+                swal({
+                    title: "Hata!!!",
+                    text: "Bir hata meydana geldi. Daha sonra tekrar deneyin.",
+                    type: "error"
                 });
                 return false;
             }else{

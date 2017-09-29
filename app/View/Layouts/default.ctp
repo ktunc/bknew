@@ -54,7 +54,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     </div>
 	<div class="container-fluid">
 		<div class="row">
-            <div class="hidden-xs hidden-sm col-md-3">
+            <div class="hidden-xs hidden-sm col-md-3 menuclass">
                 <?php echo $this->element('site/menu'); ?>
             </div>
             <div class="col-xs-12 col-sm-12 hidden-md hidden-lg">
@@ -67,5 +67,15 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		</div>
 	</div>
 	<?php echo $this->element('sql_dump'); ?>
+<?php echo $this->element('site/detayli_arama'); ?>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('.headerlogo').width($('.menuclass').width());
+});
+
+$(window).resize(function () {
+    $('.headerlogo').width($('.menuclass').width());
+});
+</script>
 </body>
 </html>

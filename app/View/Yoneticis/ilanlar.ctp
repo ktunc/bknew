@@ -38,8 +38,8 @@ echo $this->Html->css(array('yonetici/plugins/dataTables/datatables.min'));
                             }else {
                                 echo '<td>Arsa</td>';
                             }
-                            echo '<td><a href="'.$this->Html->url('/').'yoneticis/ilanedit/ilan:'.$row['Ilan']['id'].'"><i class="fa fa-edit fa-lg text-success"></i></a></td>';
-                            echo '<td> <i class="fa fa-times fa-lg text-danger" onclick="FuncIlanSil('.$row['Ilan']['id'].')"></i></td>';
+                            echo '<td class="text-center"><a href="'.$this->Html->url('/').'yoneticis/ilanedit/ilan:'.$row['Ilan']['id'].'"><i class="fa fa-edit fa-lg text-success"></i></a></td>';
+                            echo '<td class="text-center"> <i class="fa fa-times fa-lg text-danger" onclick="FuncIlanSil('.$row['Ilan']['id'].')"></i></td>';
                             echo '</tr>';
                         }
                         ?>
@@ -80,39 +80,52 @@ echo $this->Html->script(array(
     });
 
     function FuncIlanSil(ilanId) {
-        $.blockUI({ css: { backgroundColor: 'transparent', border: 'none'},message: $('#LoaderBlock') });
-        setTimeout(function(){
-            $.ajax({
-                async:false,
-                type:'POST',
-                url:'<?php echo $this->Html->url('/');?>yoneticis/haberkaydet',
-                data: {'ilanId':ilanId}
-            }).done(function(data){
-                var dat = $.parseJSON(data);
-                if(dat['hata']){
+        swal({
+            title: 'İlanı silmek istediğinizden emin misiniz?',
+            text: "",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: '<i class="fa fa-trash"></i> Sil'
+        }).then(function () {
+            $.blockUI({ css: { backgroundColor: 'transparent', border: 'none'},message: $('#LoaderBlock') });
+            setTimeout(function(){
+                $.ajax({
+                    async:false,
+                    type:'POST',
+                    url:'<?php echo $this->Html->url('/');?>yoneticis/ajaxilansil',
+                    data: {'ilanId':ilanId}
+                }).done(function(data){
+                    var dat = $.parseJSON(data);
+                    if(dat['hata']){
+                        swal({
+                            title: "Hata",
+                            text: "İlan silinirken bir hata meydana geldi. Lütfen tekrar deneyin.",
+                            type: "error"
+                        });
+                        $.unblockUI();
+                    }else{
+                        $.unblockUI();
+                        swal({
+                            title: "Başarılı",
+                            text: "İlan başarıyla silindi.",
+                            type: "success",
+                            confirmButtonText: 'Tamam'
+                        }).then(function(){
+                            window.location.href = "<?php echo $this->Html->url('/');?>yoneticis/ilanlar";
+                            $.blockUI({ css: { backgroundColor: 'transparent', border: 'none'},message: $('#LoaderBlock') });
+                        });
+
+                    }
+                }).fail(function(){
                     swal({
                         title: "Hata",
-                        text: "haber kaydedilirken bir hata meydana geldi. Lütfen tekrar deneyin.",
+                        text: "İlan silinirken bir hata meydana geldi. Lütfen tekrar deneyin.",
                         type: "error"
                     });
                     $.unblockUI();
-                }else{
-                    swal({
-                        title: "Başarılı",
-                        text: "Haber Başarıyla Kaydedildi.",
-                        type: "success",
-                        confirmButtonText: 'Tamam'
-                    });
-                    $.unblockUI();
-                }
-            }).fail(function(){
-                swal({
-                    title: "Hata",
-                    text: "haber kaydedilirken bir hata meydana geldi. Lütfen tekrar deneyin.",
-                    type: "error"
                 });
-                $.unblockUI();
-            });
-        },500);
+            },500);
+        });
     }
 </script>

@@ -86,7 +86,7 @@ foreach ($danismanlar as $row){
                                         <div class="col-lg-10"><input type="text" name="oda" placeholder="Oda" class="form-control" value="<?php echo $ilan['IlanKonut']['oda']; ?>"></div>
                                     </div>
                                     <div class="form-group"><label class="col-lg-2 control-label">Metre Kare:</label>
-                                        <div class="col-lg-10"><input type="text" name="mkare" placeholder="Metre Kare" class="form-control" value="<?php echo $ilan['IlanKonut']['mkare']; ?>"></div>
+                                        <div class="col-lg-10"><input type="text" name="mkare" placeholder="Metre Kare" class="form-control" value="<?php echo $ilan['Ilan']['mkare']; ?>"></div>
                                     </div>
                                     <div class="form-group"><label class="col-lg-2 control-label">Fiyat:</label>
                                         <div class="col-lg-10"><input type="text" name="fiyat" placeholder="Fiyat" class="form-control" value="<?php echo $ilan['Ilan']['fiyat']; ?>"></div>
@@ -106,7 +106,7 @@ foreach ($danismanlar as $row){
                                         <div class="col-lg-10"><input type="text" name="oda" placeholder="Oda" class="form-control" value="<?php echo $ilan['IlanIsyeri']['oda']; ?>"></div>
                                     </div>
                                     <div class="form-group"><label class="col-lg-2 control-label">Metre Kare:</label>
-                                        <div class="col-lg-10"><input type="text" name="mkare" placeholder="Metre Kare" class="form-control" value="<?php echo $ilan['IlanIsyeri']['mkare']; ?>"></div>
+                                        <div class="col-lg-10"><input type="text" name="mkare" placeholder="Metre Kare" class="form-control" value="<?php echo $ilan['Ilan']['mkare']; ?>"></div>
                                     </div>
                                     <div class="form-group"><label class="col-lg-2 control-label">Fiyat:</label>
                                         <div class="col-lg-10"><input type="text" name="fiyat" placeholder="Fiyat" class="form-control" <?php echo $ilan['Ilan']['fiyat']; ?>></div>
@@ -128,7 +128,7 @@ foreach ($danismanlar as $row){
                                         <div class="col-lg-10"><input type="text" name="Tapu" placeholder="Tapu" class="form-control" value="<?php echo $ilan['IlanArsa']['tapu']; ?>"></div>
                                     </div>
                                     <div class="form-group"><label class="col-lg-2 control-label">Metre Kare:</label>
-                                        <div class="col-lg-10"><input type="text" name="mkare" placeholder="Metre Kare" class="form-control" value="<?php echo $ilan['IlanArsa']['mkare']; ?>"></div>
+                                        <div class="col-lg-10"><input type="text" name="mkare" placeholder="Metre Kare" class="form-control" value="<?php echo $ilan['Ilan']['mkare']; ?>"></div>
                                     </div>
                                     <div class="form-group"><label class="col-lg-2 control-label">Fiyat:</label>
                                         <div class="col-lg-10"><input type="text" name="fiyat" placeholder="Fiyat" class="form-control" value="<?php echo $ilan['Ilan']['fiyat']; ?>"></div>
