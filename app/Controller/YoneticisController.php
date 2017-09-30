@@ -461,16 +461,16 @@ class YoneticisController extends AppController {
                         }
                         // Resim Ekle Son
 
-                        // İletisim Kaydet
+                        // Iletisim Kaydet
                         $this->DanismanIletisim->deleteAll(array('danisman_id'=>$lastId),true);
                         foreach($data['iletisimturu'] as $key=>$val){
-                            if(!empty($data['iletisim'][$key])){
-                                $saved = array('danisman_id'=>$lastId, 'iletisim'=>$data['iletisim'][$key], 'turu'=>$val, 'islem_tarihi'=>date('Y-m-d H:i:s'));
+                            if(!empty($data['Iletisim'][$key])){
+                                $saved = array('danisman_id'=>$lastId, 'Iletisim' =>$data['Iletisim'][$key], 'turu'=>$val, 'islem_tarihi'=>date('Y-m-d H:i:s'));
                                 $this->DanismanIletisim->create();
                                 $this->DanismanIletisim->save($saved);
                             }
                         }
-                        // İletisim Kaydet Son
+                        // Iletisim Kaydet Son
 
                         $danisman = $this->Danisman->findById($lastId);
                         $return['resim'] = !empty($danisman['Danisman']['resim'])?(Router::url('/', true).$danisman['Danisman']['resim']):false;
@@ -502,15 +502,15 @@ class YoneticisController extends AppController {
                     }
                     // Resim Ekle Son
 
-                    // İletisim Kaydet
+                    // Iletisim Kaydet
                     foreach($data['iletisimturu'] as $key=>$val){
-                        if(!empty($data['iletisim'][$key])){
-                            $saved = array('danisman_id'=>$lastId, 'iletisim'=>$data['iletisim'][$key], 'turu'=>$val, 'islem_tarihi'=>date('Y-m-d H:i:s'));
+                        if(!empty($data['Iletisim'][$key])){
+                            $saved = array('danisman_id'=>$lastId, 'Iletisim' =>$data['Iletisim'][$key], 'turu'=>$val, 'islem_tarihi'=>date('Y-m-d H:i:s'));
                             $this->DanismanIletisim->create();
                             $this->DanismanIletisim->save($saved);
                         }
                     }
-                    // İletisim Kaydet Son
+                    // Iletisim Kaydet Son
 
                     $danisman = $this->Danisman->findById($lastId);
                     $return['resim'] = !empty($danisman['Danisman']['resim'])?(Router::url('/', true).$danisman['Danisman']['resim']):false;

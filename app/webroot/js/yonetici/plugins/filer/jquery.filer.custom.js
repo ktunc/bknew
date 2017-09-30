@@ -7,7 +7,7 @@ $(document).ready(function(){
 		limit: limit,
 		fileMaxSize: fileMaxSize,
 		//extensions: extensions,
-		changeInput: '<div class="jFiler-input-dragDrop"><div class="jFiler-input-inner"><div class="jFiler-input-icon"><i class="icon-jfi-cloud-up-o"></i></div><div class="jFiler-input-text"><h3>Resimleri Sürükle&Bırak</h3> <span style="display:inline-block; margin: 15px 0">yada</span></div><a class="jFiler-input-choose-btn blue">Resim Seç</a></div></div>',
+		changeInput: '<div class="jFiler-input-dragDrop"><div class="jFiler-input-inner"><div class="jFiler-input-icon"><i class="icon-jfi-cloud-up-o"></i></div><div class="jFiler-input-text"><h3>Resimleri Sürükle&Bırak</h3> <span style="display:inline-block; margin: 15px 0">yada</span></div><a class="jFiler-input-choose-btn blue">Resim Seç</a></div></div><div class="jFiler-items jFiler-row"></div>',
 		showThumbs: true,
 		theme: "dragdropbox",
 		templates: {

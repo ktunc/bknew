@@ -78,7 +78,7 @@ $iletisimturu = array(1=>'Telefon', 2=>'Mail');
                                         echo '</select>';
                                         echo '</div>';
                                         echo '<div class="col-lg-9">';
-                                        echo '<input type="text" class="form-control" name="iletisim[]" placeholder="İletişim" value="'.$cow['iletisim'].'"/>';
+                                        echo '<input type="text" class="form-control" name="iletisim[]" placeholder="İletişim" value="'.$cow['Iletisim'].'"/>';
                                         echo '</div>';
                                         echo '<div class="col-lg-1"><button type="button" class="btn btn-sm btn-danger iletisimsil"><i class="fa fa-trash"></i></button></div>';
                                         echo '</div>';

@@ -15,10 +15,11 @@ App::uses('AppController', 'Controller');
  * @property Danisman $Danisman
  * @property DanismanIletisim $DanismanIletisim
  * @property Haber $Haber
+ * @property Iletisim $Iletisim
  */
 
 class SayfasController extends AppController{
-    var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri', 'IlanResim', 'Sehir', 'Ilce', 'Semt', 'Mahalle', 'Danisman', 'DanismanIletisim','Haber');
+    var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri', 'IlanResim', 'Sehir', 'Ilce', 'Semt', 'Mahalle', 'Danisman', 'DanismanIletisim','Haber','Iletisim');
 
     public function beforeFilter(){
         $detect = new Mobile_Detect;
@@ -279,6 +280,8 @@ class SayfasController extends AppController{
 
     public function projeler(){}
 
+    public function teknik_analiz(){}
+
     public function danismanlar(){
         $this->paginate = array(
             'fields'=>array('*'),
@@ -288,5 +291,23 @@ class SayfasController extends AppController{
 
         $danismanlar = $this->paginate('Danisman');
         $this->set('danismanlar',$danismanlar);
+    }
+
+    public function AjaxGetBatiInfo(){
+        $this->autoRender = false;
+        if($this->request->is('post')){
+            $IletTel = $this->Iletisim->find('first',array('conditions'=>array('type'=>1)));
+            $IletMail = $this->Iletisim->find('first',array('conditions'=>array('type'=>3)));
+            $IletAdres = $this->Iletisim->find('first',array('conditions'=>array('type'=>5)));
+            $ilan['hata'] = false;
+            $ilan['tel'] = $IletTel?$IletTel['Iletisim']['iletisim']:'';
+            $ilan['adres'] = $IletAdres?$IletAdres['Iletisim']['iletisim']:'';
+            $ilan['mail'] = $IletMail?$IletMail['Iletisim']['iletisim']:'';
+            echo json_encode($ilan);
+        }else{
+            $ilan['hata'] = true;
+            echo json_encode($ilan);
+        }
+        exit();
     }
 }

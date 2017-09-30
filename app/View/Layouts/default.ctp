@@ -66,7 +66,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
             </div>
 		</div>
 	</div>
-	<?php echo $this->element('sql_dump'); ?>
+<!--	--><?php //echo $this->element('sql_dump'); ?>
 <?php echo $this->element('site/detayli_arama'); ?>
 <script type="text/javascript">
 $(document).ready(function(){

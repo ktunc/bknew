@@ -7,8 +7,8 @@
     background-color: transparent;
 border-radius: 5px;margin-right: 10px; margin-bottom:10px;text-align: right">
     <img class="mapIcon" alt="batikapigayrimenkul_gmapuydu_icon" src="<?php echo $this->webroot;?>img/uydu45.png" onclick="FuncMapTypeChange()"/><br>
-    <img class="mapIcon" alt="batikapigayrimenkul_gmapkelsearch_icon" src="<?php echo $this->webroot;?>img/kel45.png" onclick="FuncMapTextSearch()"/><br>
-    <img class="mapIcon" alt="batikapigayrimenkul_gmapfilter_icon" src="<?php echo $this->webroot;?>img/filter45.png" onclick="FuncDetSearch()"/><br>
+    <img class="mapIcon" alt="batikapigayrimenkul_gmapkelsearch_icon" src="<?php echo $this->webroot;?>img/kel45.png" onclick="FuncDetayliArama()"/><br>
+    <img class="mapIcon" alt="batikapigayrimenkul_gmapfilter_icon" src="<?php echo $this->webroot;?>img/filter45.png" onclick="FuncDetayliArama()"/><br>
 <!--    <a href="--><?php //echo $this->Html->url('/').'users/arama'.$this->requestAction(array('controller'=>'users','action'=>'GetPagUrl'),$pagg);?><!--"><img class="mapIcon" alt="batikapigayrimenkul_gmaplisteleme_icon" src="--><?php //echo $this->webroot;?><!--img/listele45.png"/></a>-->
     <!-- <button type="button" class="btn btn-xs btn-primary" onclick="FuncSetNowPosition()" style="margin-top:5px;"><i class="fa fa-2x fa-compass"></i></button> -->
 </div>
@@ -301,7 +301,7 @@ echo $this->Html->script('site/jquery.bxslider.min');
         $.ajax({
             //async: false,
             type: 'POST',
-            url: "<?php echo $this->Html->url('/');?>users/AjaxGetBatiInfo",
+            url: "<?php echo $this->Html->url('/');?>sayfas/AjaxGetBatiInfo",
             data: 'ilanId=1'
         }).done(function(data){
             var dat = $.parseJSON(data);
@@ -314,14 +314,14 @@ echo $this->Html->script('site/jquery.bxslider.min');
                 });
                 return false;
             }else{
-                var ilanLink = "<?php echo $this->Html->url('/');?>users/iletisim";
+                var ilanLink = "<?php echo $this->Html->url('/');?>sayfas/iletisim";
                 var content = '<div class="anaDivMapFlex fontBold"><a href="'+ilanLink+'" class="text-black fontBold mapH1">BATIKAPI Gayrimenkul A.Ş. </a></div>';
                 content += '<div class="anaDivMap"><a href="'+ilanLink+'" class="fontBold text-danger mapHalt fontItalic" style="text-transform: capitalize;">'+dat['adres']+'</a></div>';
                 content += '<div class="anaDivMap"><a href="'+ilanLink+'" class="fontBold text-black mapHalt">'+dat['tel']+'</a></div>';
                 content += '<div class="anaDivMap"><a href="'+ilanLink+'" class="fontBold text-black mapHalt">'+dat['mail']+'</a></div>';
                 content += '<div class="anaDivMap text-right mapHNo" id="CloseMapContent"><i class="fa fa-times fa-2x text-danger" style="margin-right: 5px;cursor: pointer"></i></div>';
                 $('#mapContent #map-ilan-content').html(content);
-                $('#mapContent #map-ilan-img').html('<a href="'+ilanLink+'"><img src="<?php echo $this->Html->url('/');?>img/bmo.jpg" /></a>');
+                $('#mapContent #map-ilan-img').html('<a href="'+ilanLink+'"><img src="<?php echo $this->Html->url('/');?>img/mapmy.png" /></a>');
                 $('#mapContent').show();
                 $('#mapContent').css('display','inline-flex');
                 $.unblockUI();

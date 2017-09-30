@@ -43,7 +43,7 @@ $iletisimturu = array(1=>'Telefon', 2=>'Mail');
                                         echo $iletisimturu[$cow['turu']].':';
                                         echo '</div>';
                                         echo '<div class="col-lg-10">';
-                                        echo $cow['iletisim'];
+                                        echo $cow['Iletisim'];
                                         echo '</div>';
                                         echo '</div>';
                                     }
