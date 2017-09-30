@@ -6,7 +6,7 @@ echo $this->Html->css(array('yonetici/plugins/dataTables/datatables.min'));
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Haberler</h5>
+                <h5>Teknik Analizler</h5>
             </div>
             <div class="ibox-content">
 
@@ -14,7 +14,7 @@ echo $this->Html->css(array('yonetici/plugins/dataTables/datatables.min'));
                     <table class="table table-striped table-bordered table-hover dataTables-example" >
                         <thead>
                         <tr>
-                            <th width="5%">Haber ID</th>
+                            <th width="5%">Teknik Analiz ID</th>
                             <th>Başlık</th>
                             <th width="5%">Yayında</th>
                             <th width="5%">Düzenle</th>
@@ -23,24 +23,24 @@ echo $this->Html->css(array('yonetici/plugins/dataTables/datatables.min'));
                         </thead>
                         <tbody>
                         <?php
-                        foreach($haberler as $row){
+                        foreach($teknik_analizler as $row){
                             echo '<tr>';
-                            echo '<td>'.$row['Haber']['id'].'</td>';
-                            echo '<td>'.$row['Haber']['baslik'].'</td>';
-                            if($row['Haber']['yayinda'] == 1){
+                            echo '<td>'.$row['TeknikAnaliz']['id'].'</td>';
+                            echo '<td>'.$row['TeknikAnaliz']['baslik'].'</td>';
+                            if($row['TeknikAnaliz']['yayinda'] == 1){
                                 echo '<td class="text-center text-primary"><i class="fa fa-check fa-lg"></i></td>';
                             }else {
                                 echo '<td class="text-center text-danger"><i class="fa fa-times fa-lg"></i></td>';
                             }
-                            echo '<td class="text-center"><a href="'.$this->Html->url('/').'yoneticis/haberedit/hId:'.$row['Haber']['id'].'"><i class="fa fa-edit fa-lg text-success"></i></a></td>';
-                            echo '<td class="text-center"><i class="fa fa-times fa-lg text-danger" onclick="FuncHaberSil('.$row['Haber']['id'].')"></i></td>';
+                            echo '<td class="text-center"><a href="'.$this->Html->url('/').'yoneticis/teknikanalizedit/taId:'.$row['TeknikAnaliz']['id'].'"><i class="fa fa-edit fa-lg text-success"></i></a></td>';
+                            echo '<td class="text-center"><i class="fa fa-times fa-lg text-danger" onclick="FuncTeknikAnalizSil('.$row['TeknikAnaliz']['id'].')"></i></td>';
                             echo '</tr>';
                         }
                         ?>
                         </tbody>
                         <tfoot>
                         <tr>
-                            <th width="5%">Haber ID</th>
+                            <th width="5%">Tekni kAnaliz ID</th>
                             <th>Başlık</th>
                             <th width="5%">Yayında</th>
                             <th width="5%">Düzenle</th>
@@ -71,9 +71,9 @@ echo $this->Html->script(array(
 
     });
 
-    function FuncHaberSil(hId){
+    function FuncTeknikAnalizSil(taId){
         swal({
-            title: 'Haberi silmek istediğinizden emin misiniz?',
+            title: 'Teknik Analizi silmek istediğinizden emin misiniz?',
             text: "",
             type: 'warning',
             showCancelButton: true,
@@ -85,14 +85,14 @@ echo $this->Html->script(array(
                 $.ajax({
                     async:false,
                     type:'POST',
-                    url:'<?php echo $this->Html->url('/');?>yoneticis/habersil',
-                    data: {'hId':hId}
+                    url:'<?php echo $this->Html->url('/');?>yoneticis/teknikanalizsil',
+                    data: {'taId':taId}
                 }).done(function(data){
                     var dat = $.parseJSON(data);
                     if(dat['hata']){
                         swal({
                             title: "Hata",
-                            text: "Haber silinirken bir hata meydana geldi. Lütfen tekrar deneyin.",
+                            text: "Teknik Analiz silinirken bir hata meydana geldi. Lütfen tekrar deneyin.",
                             type: "error"
                         });
                         $.unblockUI();
@@ -100,11 +100,11 @@ echo $this->Html->script(array(
                         $.unblockUI();
                         swal({
                             title: "Başarılı",
-                            text: "Haber başarıyla silindi.",
+                            text: "Teknik Analiz başarıyla silindi.",
                             type: "success",
                             confirmButtonText: 'Tamam'
                         }).then(function(){
-                            window.location.href = "<?php echo $this->Html->url('/');?>yoneticis/haberler";
+                            window.location.href = "<?php echo $this->Html->url('/');?>yoneticis/teknik_analizler";
                             $.blockUI({ css: { backgroundColor: 'transparent', border: 'none'},message: $('#LoaderBlock') });
                         });
 
@@ -112,7 +112,7 @@ echo $this->Html->script(array(
                 }).fail(function(){
                     swal({
                         title: "Hata",
-                        text: "Haber silinirken bir hata meydana geldi. Lütfen tekrar deneyin.",
+                        text: "Teknik Analiz silinirken bir hata meydana geldi. Lütfen tekrar deneyin.",
                         type: "error"
                     });
                     $.unblockUI();

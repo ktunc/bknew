@@ -33,8 +33,15 @@
             <li>
                 <a href="#"><i class="fa fa-newspaper-o"></i> <span class="nav-label">Proje</span> <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
-                    <li><a href="<?php echo $this->Html->url('/');?>yoneticis/haberler">Projeler</a></li>
-                    <li><a href="<?php echo $this->Html->url('/');?>yoneticis/yenihaber">Yeni Proje</a></li>
+                    <li><a href="<?php echo $this->Html->url('/');?>yoneticis/projeler">Projeler</a></li>
+                    <li><a href="<?php echo $this->Html->url('/');?>yoneticis/yeniproje">Yeni Proje</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-newspaper-o"></i> <span class="nav-label">Teknik Analiz</span> <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li><a href="<?php echo $this->Html->url('/');?>yoneticis/teknik_analizler">Tenkini Analizler</a></li>
+                    <li><a href="<?php echo $this->Html->url('/');?>yoneticis/yeni_teknik_analiz">Yeni Teknik Analiz</a></li>
                 </ul>
             </li>
 <!--            <li>-->

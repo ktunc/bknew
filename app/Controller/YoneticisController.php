@@ -18,12 +18,13 @@ App::uses('ImageManipulator','Vendor');
  * @property DanismanIletisim $DanismanIletisim
  * @property Haber $Haber
  * @property Proje $Proje
+ * @property TeknikAnaliz $TeknikAnaliz
  * @property User $User
  */
 class YoneticisController extends AppController {
 
     var $layout = 'yonetici';
-    var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri', 'IlanResim', 'Sehir', 'Ilce', 'Semt', 'Mahalle', 'Danisman', 'DanismanIletisim','Haber','User','Proje');
+    var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri', 'IlanResim', 'Sehir', 'Ilce', 'Semt', 'Mahalle', 'Danisman', 'DanismanIletisim','Haber','User','Proje','TeknikAnaliz');
 /**
  * Scaffold
  *
@@ -759,5 +760,67 @@ class YoneticisController extends AppController {
     public function projeler(){
         $data = $this->Proje->find('all',array('order'=>array('islem_tarihi'=>'DESC')));
         $this->set('projeler',$data);
+    }
+
+    public function yeni_teknik_analiz(){}
+
+    public function teknikanalizkaydet(){
+        $this->autoRender = false;
+        $return['hata'] = true;
+        if($this->request->is('post')){
+            $data = $this->request->data;
+            $yayinda = array_key_exists('yayinda',$data)?1:0;
+            $saved = array('baslik'=>$data['baslik'],'icerik'=>$data['icerik'],'yayinda'=>$yayinda,'islem_tarihi'=>date('Y-m-d H:i:s'));
+
+            if(array_key_exists('taId',$data) && $data['taId'] != 0){
+                $pata = $this->TeknikAnaliz->findById($data['taId']);
+                if($pata){
+                    $this->TeknikAnaliz->id = $data['taId'];
+                    if($this->TeknikAnaliz->save($saved)){
+                        $lastId = $data['taId'];
+                        $return['hata'] = false;
+                        $return['taId'] = $lastId;
+                    }
+                }
+            }else{
+                $this->TeknikAnaliz->create();
+                if($this->TeknikAnaliz->save($saved)){
+                    $lastId = $this->TeknikAnaliz->getLastInsertID();
+                    $return['hata'] = false;
+                    $return['taId'] = $lastId;
+                }
+            }
+        }
+
+        echo json_encode($return);
+        exit();
+    }
+
+    public function teknikanakizedit(){
+        $named = $this->request->params["named"];
+        $teknik_analiz = $this->TeknikAnaliz->findById($named['taId']);
+        if(!$teknik_analiz){
+            $this->redirect(array('controller'=>'yoneticis'));
+        }
+
+        $this->set('teknik_analiz',$teknik_analiz);
+    }
+
+    public function teknikanalizsil(){
+        $this->autoRender = false;
+        $return['hata'] = true;
+        if($this->request->is('post')){
+            $taId = $this->request->data('taId');
+            if($this->TeknikAnaliz->deleteAll(array('id'=>$taId))){
+                $return['hata'] = false;
+            }
+        }
+        echo json_encode($return);
+        exit();
+    }
+
+    public function teknik_analizler(){
+        $data = $this->TeknikAnaliz->find('all',array('order'=>array('islem_tarihi'=>'DESC')));
+        $this->set('teknik_analizler',$data);
     }
 }
