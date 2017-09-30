@@ -29,10 +29,10 @@ $ilansay = $this->requestAction('/sayfas/ilansayilar');
 </div>
 <div class="row padding-tb-5">
     <div class="col-xs-6 padding-rl-5">
-        <img src="<?php echo $this->Html->url('/');?>img/menu/harita.png" width="100%"/>
+        <iframe id="videoframe" width="100%" height="315" src="https://www.youtube.com/embed/videoseries?list=UUZXNUXvKTHj7siaGdBFkEag&autoplay=1&loop=1&index=<?php echo rand(1,60); ?>" frameborder="0" allowfullscreen></iframe>
     </div>
     <div class="col-xs-6 padding-rl-5">
-        <img src="<?php echo $this->Html->url('/');?>img/menu/harita.png" width="100%"/>
+        <img id="haritaimg" src="<?php echo $this->Html->url('/');?>img/menu/harita.png" width="100%"/>
     </div>
 </div>
 <div class="row padding-tb-5">
@@ -102,6 +102,12 @@ $ilansay = $this->requestAction('/sayfas/ilansayilar');
     </div>
 </div>
 <script type="text/javascript">
+$(document).ready(function () {
+    $('#videoframe').height($('#haritaimg').height());
+});
+$(window).resize(function () {
+    $('#videoframe').height($('#haritaimg').height());
+});
 function FuncDetayliArama() {
     $('#DetayliAramaModal').modal({
         keyboard: false,

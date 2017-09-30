@@ -796,7 +796,7 @@ class YoneticisController extends AppController {
         exit();
     }
 
-    public function teknikanakizedit(){
+    public function teknikanalizedit(){
         $named = $this->request->params["named"];
         $teknik_analiz = $this->TeknikAnaliz->findById($named['taId']);
         if(!$teknik_analiz){
