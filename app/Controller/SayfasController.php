@@ -15,11 +15,12 @@ App::uses('AppController', 'Controller');
  * @property Danisman $Danisman
  * @property DanismanIletisim $DanismanIletisim
  * @property Haber $Haber
+ * @property Proje $Proje
  * @property Iletisim $Iletisim
  */
 
 class SayfasController extends AppController{
-    var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri', 'IlanResim', 'Sehir', 'Ilce', 'Semt', 'Mahalle', 'Danisman', 'DanismanIletisim','Haber','Iletisim');
+    var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri', 'IlanResim', 'Sehir', 'Ilce', 'Semt', 'Mahalle', 'Danisman', 'DanismanIletisim','Haber','Iletisim','Proje');
 
     public function beforeFilter(){
         $detect = new Mobile_Detect;
@@ -274,11 +275,35 @@ class SayfasController extends AppController{
         }
     }
 
+    public function projeler(){
+        $this->paginate = array(
+            'conditions'=>array('yayinda'=>1),
+            'fields'=>array('*'),
+            'limit'=>12,
+            'order'=>array('islem_tarihi'=>'DESC')
+        );
+
+        $projeler = $this->paginate('Proje');
+        $this->set('projeler',$projeler);
+    }
+
+    public function proje(){
+        $named = $this->request->params['named'];
+        if(array_key_exists('pId',$named)){
+            $proje = $this->Proje->findByIdAndYayinda($named['pId'],1);
+            if($proje){
+                $this->set('proje',$proje);
+            }else{
+                return $this->redirect(array('controller'=>'sayfas','action'=>'projeler'));
+            }
+        }else{
+            return $this->redirect(array('controller'=>'sayfas','action'=>'projeler'));
+        }
+    }
+
     public function kurumsal(){}
 
     public function formlar(){}
-
-    public function projeler(){}
 
     public function teknik_analiz(){}
 
