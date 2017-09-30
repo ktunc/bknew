@@ -14,10 +14,11 @@ App::uses('AppController', 'Controller');
  * @property Mahalle $Mahalle
  * @property Danisman $Danisman
  * @property DanismanIletisim $DanismanIletisim
+ * @property Haber $Haber
  */
 
 class SayfasController extends AppController{
-    var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri', 'IlanResim', 'Sehir', 'Ilce', 'Semt', 'Mahalle', 'Danisman', 'DanismanIletisim');
+    var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri', 'IlanResim', 'Sehir', 'Ilce', 'Semt', 'Mahalle', 'Danisman', 'DanismanIletisim','Haber');
 
     public function beforeFilter(){
         $detect = new Mobile_Detect;
@@ -62,7 +63,17 @@ class SayfasController extends AppController{
         if(array_key_exists('dId',$named)){
             $danisman = $this->Danisman->findById($named['dId']);
             if($danisman){
+                foreach ($danisman['Ilan'] as $key=>$row) {
+                    $pp = $this->IlanResim->find('first',array('conditions'=>array('ilan_id'=>$row['id']),'order'=>array('sira'=>'ASC')));
+                    $danisman['Ilan'][$key]['path'] = false;
+                    $danisman['Ilan'][$key]['paththumb'] = false;
+                    if(!empty($pp)){
+                        $danisman['Ilan'][$key]['path'] = $pp['IlanResim']['path'];
+                        $danisman['Ilan'][$key]['paththumb'] = $pp['IlanResim']['paththumb'];
+                    }
+                }
                 $this->set('danisman',$danisman);
+
                 $danismanlar = $this->Danisman->find('all',array('conditions'=>array('Danisman.id != '.$named['dId']), 'order'=>array('isim'=>'asc')));
                 $this->set('danismanlar',$danismanlar);
             }else{
@@ -113,7 +124,7 @@ class SayfasController extends AppController{
 
         $Con = array();
         if($tur != 0){
-            $Con['Ilan.tur'] = $tur;
+            $Con['Ilan.turu'] = $tur;
         }
 
         if(array_key_exists('aramatext',$data)){
@@ -234,5 +245,48 @@ class SayfasController extends AppController{
 
         echo json_encode($return);
         exit();
+    }
+
+    public function haberler(){
+        $this->paginate = array(
+            'conditions'=>array('yayinda'=>1),
+            'fields'=>array('*'),
+            'limit'=>12,
+            'order'=>array('islem_tarihi'=>'DESC')
+        );
+
+        $haberler = $this->paginate('Haber');
+        $this->set('haberler',$haberler);
+    }
+
+    public function haber(){
+        $named = $this->request->params['named'];
+        if(array_key_exists('hId',$named)){
+            $haber = $this->Haber->findByIdAndYayinda($named['hId'],1);
+            if($haber){
+                $this->set('haber',$haber);
+            }else{
+                return $this->redirect(array('controller'=>'sayfas','action'=>'haberler'));
+            }
+        }else{
+            return $this->redirect(array('controller'=>'sayfas','action'=>'haberler'));
+        }
+    }
+
+    public function kurumsal(){}
+
+    public function formlar(){}
+
+    public function projeler(){}
+
+    public function danismanlar(){
+        $this->paginate = array(
+            'fields'=>array('*'),
+            'limit'=>12,
+            'order'=>array('isim'=>'ASC')
+        );
+
+        $danismanlar = $this->paginate('Danisman');
+        $this->set('danismanlar',$danismanlar);
     }
 }

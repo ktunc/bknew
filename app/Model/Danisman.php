@@ -43,6 +43,11 @@ class Danisman extends AppModel {
             'className' => 'DanismanIletisim',
             'foreignKey' => 'danisman_id',
             'dependent' => true
+        ),
+        'Ilan'=>array(
+            'className' => 'Ilan',
+            'foreignKey' => 'danisman_id',
+            'dependent' => true
         )
     );
 

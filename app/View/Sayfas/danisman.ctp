@@ -29,12 +29,12 @@
             <?php
             foreach($danisman['Ilan'] as $row){
                 echo '<div class="col-xs-12 col-sm-4">';
-                echo '<div class="thumbnail">';
-                //echo '<img src="'.$this->Html->url('/').$row[''].'" width="100%"/>';
+                echo '<a class="thumbnail" href="'.$this->Html->url('/').'sayfas/ilan/ilan:'.$row['id'].'">';
+                echo '<img src="'.$this->Html->url('/').$row['paththumb'].'" width="100%"/>';
                 echo '<div class="caption">';
-                echo '<p>'.$row['baslik'].'</p>';
+                echo '<p class="IlanHeader2">'.$row['baslik'].'</p>';
                 echo '</div>';
-                echo '</div>';
+                echo '</a>';
                 echo '</div>';
             }
             ?>

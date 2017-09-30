@@ -45,7 +45,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->fetch('css');
     echo $this->fetch('script');
     ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
 </head>
 <body>
 <?php echo $this->element('loader'); ?>
@@ -54,12 +54,12 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     </div>
 	<div class="container-fluid">
 		<div class="row">
-            <div class="hidden-xs hidden-sm col-md-3 menuclass">
+            <div class=" col-md-3 menuclass">
                 <?php echo $this->element('site/menu'); ?>
             </div>
-            <div class="col-xs-12 col-sm-12 hidden-md hidden-lg">
-                <?php echo $this->element('site/menumobile'); ?>
-            </div>
+<!--            <div class="col-xs-12 col-sm-12 hidden-md hidden-lg">-->
+<!--                --><?php //echo $this->element('site/menumobile'); ?>
+<!--            </div>-->
             <div class="col-xs-12 col-sm-12 col-md-9">
                 <?php echo $this->Flash->render(); ?>
                 <?php echo $this->fetch('content'); ?>

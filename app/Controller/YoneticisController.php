@@ -546,7 +546,7 @@ class YoneticisController extends AppController {
         }
 
         foreach ($danisman['Ilan'] as $key=>$row) {
-            $pp = $this->IlanResim->find('first',array('conditions'=>array('ilan_id'=>$row['id']),'order'=>array('islem_tarihi'=>'ASC')));
+            $pp = $this->IlanResim->find('first',array('conditions'=>array('ilan_id'=>$row['id']),'order'=>array('sira'=>'ASC')));
             $danisman['Ilan'][$key]['path'] = false;
             $danisman['Ilan'][$key]['paththumb'] = false;
             if(!empty($pp)){
