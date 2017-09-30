@@ -27,6 +27,8 @@
  */
 	Router::connect('/', array('controller' => 'sayfas', 'action' => 'index'));
     Router::connect('/ilan/*', array('controller' => 'sayfas', 'action' => 'ilan'));
+    Router::connect('/giris/*', array('controller' => 'yoneticis', 'action' => 'giris'));
+    Router::connect('/cikis/*', array('controller' => 'yoneticis', 'action' => 'cikis'));
 /**
  * ...and connect the rest of 'Pages' controller's URLs.
  */

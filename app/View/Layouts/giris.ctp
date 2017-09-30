@@ -22,7 +22,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <head>
     <?php echo $this->Html->charset(); ?>
     <title>
-        GDA Hukuk & Danışmanlık
+        Batıkapı Gayrimenkul
     </title>
     <?php
     echo $this->Html->meta('icon');

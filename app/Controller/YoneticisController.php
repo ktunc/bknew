@@ -17,12 +17,13 @@ App::uses('ImageManipulator','Vendor');
  * @property Danisman $Danisman
  * @property DanismanIletisim $DanismanIletisim
  * @property Haber $Haber
+ * @property Proje $Proje
  * @property User $User
  */
 class YoneticisController extends AppController {
 
     var $layout = 'yonetici';
-    var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri', 'IlanResim', 'Sehir', 'Ilce', 'Semt', 'Mahalle', 'Danisman', 'DanismanIletisim','Haber','User');
+    var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri', 'IlanResim', 'Sehir', 'Ilce', 'Semt', 'Mahalle', 'Danisman', 'DanismanIletisim','Haber','User','Proje');
 /**
  * Scaffold
  *
@@ -680,10 +681,83 @@ class YoneticisController extends AppController {
         $this->set('haber',$haber);
     }
 
+    public function habersil(){
+        $this->autoRender = false;
+        $return['hata'] = true;
+        if($this->request->is('post')){
+            $hId = $this->request->data('hId');
+            if($this->Haber->deleteAll(array('id'=>$hId))){
+                $return['hata'] = false;
+            }
+        }
+        echo json_encode($return);
+        exit();
+    }
+
     public function haberler(){
         $data = $this->Haber->find('all',array('order'=>array('islem_tarihi'=>'DESC')));
         $this->set('haberler',$data);
     }
 
+    public function yeniproje(){}
 
+    public function projekaydet(){
+        $this->autoRender = false;
+        $return['hata'] = true;
+        if($this->request->is('post')){
+            $data = $this->request->data;
+            $yayinda = array_key_exists('yayinda',$data)?1:0;
+            $saved = array('baslik'=>$data['baslik'],'icerik'=>$data['icerik'],'yayinda'=>$yayinda,'islem_tarihi'=>date('Y-m-d H:i:s'));
+
+            if(array_key_exists('projeId',$data) && $data['projeId'] != 0){
+                $pata = $this->Proje->findById($data['projeId']);
+                if($pata){
+                    $this->Proje->id = $data['projeId'];
+                    if($this->Proje->save($saved)){
+                        $lastId = $data['projeId'];
+                        $return['hata'] = false;
+                        $return['ProjeId'] = $lastId;
+                    }
+                }
+            }else{
+                $this->Proje->create();
+                if($this->Proje->save($saved)){
+                    $lastId = $this->Proje->getLastInsertID();
+                    $return['hata'] = false;
+                    $return['ProjeId'] = $lastId;
+                }
+            }
+        }
+
+        echo json_encode($return);
+        exit();
+    }
+
+    public function projeedit(){
+        $named = $this->request->params["named"];
+        $proje = $this->Proje->findById($named['pId']);
+        if(!$proje){
+            $this->redirect(array('controller'=>'yoneticis'));
+        }
+
+        $this->set('proje',$proje);
+    }
+
+    public function projesil(){
+        $this->autoRender = false;
+        $return['hata'] = true;
+        if($this->request->is('post')){
+            $pId = $this->request->data('pId');
+            if($this->Proje->deleteAll(array('id'=>$pId))){
+                $return['hata'] = false;
+            }
+        }
+        echo json_encode($return);
+        exit();
+    }
+
+    public function projeler(){
+        $data = $this->Proje->find('all',array('order'=>array('islem_tarihi'=>'DESC')));
+        $this->set('projeler',$data);
+    }
 }
