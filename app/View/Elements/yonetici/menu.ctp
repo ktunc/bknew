@@ -30,6 +30,13 @@
                     <li><a href="<?php echo $this->Html->url('/');?>yoneticis/yenihaber">Yeni Haber</a></li>
                 </ul>
             </li>
+            <li>
+                <a href="#"><i class="fa fa-newspaper-o"></i> <span class="nav-label">Proje</span> <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li><a href="<?php echo $this->Html->url('/');?>yoneticis/haberler">Projeler</a></li>
+                    <li><a href="<?php echo $this->Html->url('/');?>yoneticis/yenihaber">Yeni Proje</a></li>
+                </ul>
+            </li>
 <!--            <li>-->
 <!--                <a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">Layouts</span></a>-->
 <!--            </li>-->
