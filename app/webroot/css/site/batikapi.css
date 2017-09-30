@@ -60,7 +60,7 @@ a.thumbnail{
 .thumbnail .caption{
     color: #000000 !important;
 }
-.thumbnail img{
+.thumbnail img, .thumbnail>img{
     height: 150px !important;
 }
 .bg-white{

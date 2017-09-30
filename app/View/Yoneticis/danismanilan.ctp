@@ -43,7 +43,7 @@ $iletisimturu = array(1=>'Telefon', 2=>'Mail');
                                         echo $iletisimturu[$cow['turu']].':';
                                         echo '</div>';
                                         echo '<div class="col-lg-10">';
-                                        echo $cow['Iletisim'];
+                                        echo $cow['iletisim'];
                                         echo '</div>';
                                         echo '</div>';
                                     }
@@ -51,21 +51,23 @@ $iletisimturu = array(1=>'Telefon', 2=>'Mail');
                             </div>
                         </div>
                         <div class="form-group">
-                            <?php
-                            foreach ($danisman['Ilan'] as $cow) {
-                                echo '<div class="col-lg-3">';
-                                echo '<div class="widget-head-color-box navy-bg p-xs text-center">';
-                                echo '<img src="'.$this->Html->url('/').$cow['paththumb'].'" class="img-rounded" style="width:100%;">';
-                                echo '</div>';
-                                echo '<div class="widget-text-box">
+                            <div class="row">
+                                <?php
+                                foreach ($danisman['Ilan'] as $cow) {
+                                    echo '<div class="col-xs-3">';
+                                    echo '<div class="thumbnail">';
+                                    echo '<img src="'.$this->Html->url('/').$cow['paththumb'].'" style="width:100%;">';
+                                    echo '<div class="caption">
                                     <h4 class="media-heading">'.CakeText::truncate($cow['baslik'],50).'</h4>
                                     <div class="text-right">
                                         <a class="btn btn-xs btn-primary" href="'.$this->Html->url('/').'yoneticis/ilanedit/ilan:'.$cow['id'].'" target="_blank">İncele</a>
                                     </div>
                                 </div>';
-                                echo '</div>';
-                            }
-                            ?>
+                                    echo '</div>';
+                                    echo '</div>';
+                                }
+                                ?>
+                            </div>
                         </div>
                     </form>
                 </div>

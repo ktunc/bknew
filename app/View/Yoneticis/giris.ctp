@@ -1,5 +1,3 @@
-<?php pr('test'); ?>
-<?php pr(Security::hash(123456,'sha1',true)); ?>
 <div class="middle-box text-center loginscreen animated fadeInDown">
     <div>
         <div>

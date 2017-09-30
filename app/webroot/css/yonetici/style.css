@@ -8560,3 +8560,17 @@ body.md-skin {
     margin: 0;
   }
 }
+.thumbnail{
+  background-color: transparent;
+  border:1px solid #dddddd;
+}
+a.thumbnail{
+  text-decoration: none !important;
+  color: #000 !important;
+}
+.thumbnail .caption{
+  color: #000000 !important;
+}
+.thumbnail img, .thumbnail>img{
+  height: 150px !important;
+}
