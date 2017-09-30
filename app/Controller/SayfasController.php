@@ -16,11 +16,12 @@ App::uses('AppController', 'Controller');
  * @property DanismanIletisim $DanismanIletisim
  * @property Haber $Haber
  * @property Proje $Proje
+ * @property TeknikAnaliz $TeknikAnaliz
  * @property Iletisim $Iletisim
  */
 
 class SayfasController extends AppController{
-    var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri', 'IlanResim', 'Sehir', 'Ilce', 'Semt', 'Mahalle', 'Danisman', 'DanismanIletisim','Haber','Iletisim','Proje');
+    var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri', 'IlanResim', 'Sehir', 'Ilce', 'Semt', 'Mahalle', 'Danisman', 'DanismanIletisim','Haber','Iletisim','Proje','TeknikAnaliz');
 
     public function beforeFilter(){
         $detect = new Mobile_Detect;
@@ -301,11 +302,36 @@ class SayfasController extends AppController{
         }
     }
 
+    public function teknik_analizler(){
+        $this->paginate = array(
+            'conditions'=>array('yayinda'=>1),
+            'fields'=>array('*'),
+            'limit'=>12,
+            'order'=>array('islem_tarihi'=>'DESC')
+        );
+
+        $teknik_analizler = $this->paginate('TeknikAnaliz');
+        $this->set('teknik_analizler',$teknik_analizler);
+    }
+
+    public function teknik_analiz(){
+        $named = $this->request->params['named'];
+        if(array_key_exists('taId',$named)){
+            $teknik_analiz = $this->TeknikAnaliz->findByIdAndYayinda($named['taId'],1);
+            if($teknik_analiz){
+                $this->set('teknik_analiz',$teknik_analiz);
+            }else{
+                return $this->redirect(array('controller'=>'sayfas','action'=>'teknik_analizler'));
+            }
+        }else{
+            return $this->redirect(array('controller'=>'sayfas','action'=>'teknik_analizler'));
+        }
+    }
+
     public function kurumsal(){}
 
     public function formlar(){}
 
-    public function teknik_analiz(){}
 
     public function danismanlar(){
         $this->paginate = array(

@@ -69,7 +69,7 @@ $ilansay = $this->requestAction('/sayfas/ilansayilar');
         </div>
     </div>
     <div class="col-xs-4 padding-rl-5">
-        <div class="bg-analiz padding-tb-5 text-center menu3 pointer" onclick="FuncGoLink('sayfas/teknik_analiz')">
+        <div class="bg-analiz padding-tb-5 text-center menu3 pointer" onclick="FuncGoLink('sayfas/teknik_analizler')">
             <div class="menu3img"><img src="<?php echo $this->Html->url('/');?>img/menu/teknik_analiz.png" width="100%"/></div>
             <div><h4>TEKNİK ANALİZ</h4></div>
         </div>
