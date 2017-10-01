@@ -26,11 +26,25 @@ class SayfasController extends AppController{
     public function beforeFilter(){
         $detect = new Mobile_Detect;
         if($detect->isMobile() || $detect->isTablet()){
-            $this->layout = 'mobile';
+            //$this->layout = 'mobile';
         }
     }
 
     public function index(){
+        $named = $this->request->params['named'];
+        $sqlEk = ' 1 = 1 ';
+        if(array_key_exists('tur',$named)){
+            $sqlEk .= ' AND Ilan.turu = '.$named['tur'];
+        }
+        $ilanlar = array();
+        $data = $this->Ilan->find('all',array('conditions'=>array('Ilan.latitude IS NOT NULL', 'Ilan.longitude IS NOT NULL', $sqlEk)));
+        foreach ($data as $row){
+            $ilanlar[] = $row['Ilan'];
+        }
+        $this->set('ilanlar',json_encode($ilanlar));
+    }
+
+    public function ilanmap(){
         $named = $this->request->params['named'];
         $sqlEk = ' 1 = 1 ';
         if(array_key_exists('tur',$named)){
