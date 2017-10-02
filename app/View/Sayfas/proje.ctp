@@ -5,7 +5,7 @@ echo $this->Html->script('site/FlexSlider/modernizr');
 echo $this->Html->css('site/PhotoSwipe/photoswipe');
 ?>
     <div class="container-fluid bg-white">
-        <div class="col-sm-12 col-md-9">
+        <div class="col-sm-12 col-md-12">
             <div class="row">
                 <p class="IlanHeader"><?php echo $proje['Proje']['baslik']; ?></p>
             </div>

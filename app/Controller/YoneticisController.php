@@ -27,7 +27,7 @@ App::uses('ImageManipulator','Vendor');
 class YoneticisController extends AppController {
 
     var $layout = 'yonetici';
-    var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri', 'IlanResim', 'Sehir', 'Ilce', 'Semt', 'Mahalle', 'Danisman', 'DanismanIletisim','Haber','HaberResim','User','Proje','ProjeResim','TeknikAnaliz');
+    var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri', 'IlanResim', 'Sehir', 'Ilce', 'Semt', 'Mahalle', 'Danisman', 'DanismanIletisim','Haber','HaberResim','User','Proje','ProjeResim','TeknikAnaliz','TeknikAnalizResim');
 /**
  * Scaffold
  *

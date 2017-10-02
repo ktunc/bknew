@@ -4,7 +4,7 @@
         foreach($teknik_analizler as $row){
             echo '<div class="col-xs-12 col-sm-3">';
             echo '<a class="thumbnail" href="'.$this->Html->url('/').'sayfas/teknik_analiz/taId:'.$row['TeknikAnaliz']['id'].'">';
-            if(!empty($row['HaberResim'])){
+            if(!empty($row['TeknikAnalizResim'])){
                 echo '<img src="'.$this->webroot.$row['TeknikAnalizResim'][0]['paththumb'].'" width="100%"/>';
             }else{
                 echo '<img src="'.$this->Html->url('/').'img/logo-xxs.png" width="100%"/>';
