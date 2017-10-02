@@ -4,7 +4,11 @@
         foreach($projeler as $row){
             echo '<div class="col-xs-12 col-sm-3">';
             echo '<a class="thumbnail" href="'.$this->Html->url('/').'sayfas/proje/pId:'.$row['Proje']['id'].'">';
-            echo '<img src="'.$this->Html->url('/').'img/logo-xxs.png" width="100%"/>';
+            if(!empty($row['ProjeResim'])){
+                echo '<img src="'.$this->webroot.$row['ProjeResim'][0]['paththumb'].'" width="100%"/>';
+            }else{
+                echo '<img src="'.$this->Html->url('/').'img/logo-xxs.png" width="100%"/>';
+            }
             echo '<p class="IlanHeader2">'.$row['Proje']['baslik'].'</p>';
             echo '<p class="IlanAdres3">'.$row['Proje']['islem_tarihi'].'</p>';
 //            if(!empty($row['IlanResim'])){
