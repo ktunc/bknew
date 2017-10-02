@@ -15,13 +15,15 @@ App::uses('AppController', 'Controller');
  * @property Danisman $Danisman
  * @property DanismanIletisim $DanismanIletisim
  * @property Haber $Haber
+ * @property HaberResim $HaberResim
+ * @property ProjeResim $ProjeResim
  * @property Proje $Proje
  * @property TeknikAnaliz $TeknikAnaliz
  * @property Iletisim $Iletisim
  */
 
 class SayfasController extends AppController{
-    var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri', 'IlanResim', 'Sehir', 'Ilce', 'Semt', 'Mahalle', 'Danisman', 'DanismanIletisim','Haber','Iletisim','Proje','TeknikAnaliz');
+    var $uses = array('Ilan','IlanKonut','IlanArsa','IlanIsyeri', 'IlanResim', 'Sehir', 'Ilce', 'Semt', 'Mahalle', 'Danisman', 'DanismanIletisim','Haber','Iletisim','Proje','TeknikAnaliz','HaberResim','ProjeResim');
 
     public function beforeFilter(){
         $detect = new Mobile_Detect;

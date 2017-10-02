@@ -22,7 +22,9 @@ echo $this->Html->css(array(
     'yonetici/plugins/jasny/jasny-bootstrap.min',
     'yonetici/plugins/iCheck/custom',
     'yonetici/plugins/blueimp/css/blueimp-gallery.min',
-    'sortable'
+    'sortable',
+    'yonetici/plugins/filer/jquery.filer',
+    'yonetici/plugins/filer/themes/jquery.filer-dragdropbox-theme'
 ));
 $yayinda = "";
 if($haber['Haber']['yayinda'] == 1){
@@ -76,12 +78,12 @@ if($haber['Haber']['yayinda'] == 1){
                             <div class="lightBoxGallery">
                                 <section class="sortableblock">
                                     <div id="items" class="sortable">
-                                        <?php foreach($ilan['IlanResim'] as $row){
-                                            echo '<div class="col-xs-12 col-sm-3 sortdata" data-ilan-id="'.$row['ilan_id'].'" data-resim-id="'.$row['id'].'">';
+                                        <?php foreach($haber['HaberResim'] as $row){
+                                            echo '<div class="col-xs-12 col-sm-3 sortdata" data-haber-id="'.$row['haber_id'].'" data-resim-id="'.$row['id'].'">';
                                             echo '<div class="thumbnail">';
                                             echo '<a href="'.$this->Html->url('/').$row['path'].'" data-gallery="" ><img src="'.$this->Html->url('/').$row['paththumb'].'" width="100%"></a>';
                                             echo '<div class="caption">';
-                                            echo '<i onclick="FuncDeleteResim('.$row['id'].')" class="fa fa-trash fa-lg text-danger"></i>';
+                                            echo '<i onclick="FuncDeleteHaberResim('.$row['id'].')" class="fa fa-trash fa-lg text-danger"></i>';
                                             echo '</div>';
                                             echo '</div>';
                                             echo '</div>';
@@ -134,7 +136,9 @@ echo $this->Html->script(array(
     'yonetici/plugins/iCheck/icheck.min',
     'yonetici/plugins/Sortable-master/Sortable',
     'site/jquery.sortable.min',
-    'yonetici/plugins/blueimp/jquery.blueimp-gallery.min'
+    'yonetici/plugins/blueimp/jquery.blueimp-gallery.min',
+    'yonetici/plugins/filer/jquery.filer.min',
+    'yonetici/plugins/filer/jquery.filer.custom'
 ));
 ?>
 <script type="text/javascript">
@@ -241,6 +245,46 @@ echo $this->Html->script(array(
                 }
             }
         }).dialogelfinder('instance');
+    }
+
+    function FuncDeleteHaberResim(resId){
+        swal({
+            title: 'Resmi silmek istediğinizden emin misiniz?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: '<i class="fa fa-trash"></i> Sil',
+            cancelButtonText: 'İptal'
+        }).then(function () {
+            $.ajax({
+                type:'POST',
+                url:'<?php echo $this->Html->url('/');?>yoneticis/haberresimsil',
+                data:{'resId':resId}
+            }).done(function (data) {
+                var dat = $.parseJSON(data);
+                if(dat['hata']){
+                    swal(
+                        'Hata!!!',
+                        'Resim silinirken bir hata meydana geldi. Lütfen tekrar deneyin.',
+                        'danger'
+                    );
+                }else{
+                    $('[data-resim-id="'+dat['resId']+'"]').remove();
+                    FuncResimSirala();
+                    swal(
+                        'Başarılı!!!',
+                        'Resim başarıyla silindi.',
+                        'success'
+                    );
+                }
+            }).fail(function () {
+                swal(
+                    'Hata!!!',
+                    'Resim silinirken bir hata meydana geldi. Lütfen internet bağlantınızı kontrol ederek tekrar deneyin.',
+                    'danger'
+                );
+            });
+        });
     }
 
     function FuncHaberResimSirala(){
