@@ -4,16 +4,13 @@
         foreach($teknik_analizler as $row){
             echo '<div class="col-xs-12 col-sm-3">';
             echo '<a class="thumbnail" href="'.$this->Html->url('/').'sayfas/teknik_analiz/taId:'.$row['TeknikAnaliz']['id'].'">';
-            echo '<img src="'.$this->Html->url('/').'img/logo-xxs.png" width="100%"/>';
+            if(!empty($row['HaberResim'])){
+                echo '<img src="'.$this->webroot.$row['TeknikAnalizResim'][0]['paththumb'].'" width="100%"/>';
+            }else{
+                echo '<img src="'.$this->Html->url('/').'img/logo-xxs.png" width="100%"/>';
+            }
             echo '<p class="IlanHeader2">'.$row['TeknikAnaliz']['baslik'].'</p>';
             echo '<p class="IlanAdres3">'.$row['TeknikAnaliz']['islem_tarihi'].'</p>';
-//            if(!empty($row['IlanResim'])){
-//                echo '<img src="'.$this->webroot.$row['IlanResim'][0]['paththumb'].'" width="100%"/>';
-//                echo '<p class="IlanHeader2">'.$row['TeknikAnaliz']['baslik'].'</p>';
-//            }else{
-//                echo '<img src="'.$this->Html->url('/').'img/logo-xxs.png" width="100%"/>';
-//                echo '<p class="IlanHeader2">'.$row['TeknikAnaliz']['baslik'].'</p>';
-//            }
             echo '</a>';
             echo '</div>';
         }
