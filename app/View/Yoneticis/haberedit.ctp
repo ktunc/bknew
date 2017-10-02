@@ -1,3 +1,18 @@
+<style>
+    .sortable-ghost {
+        opacity: .2;
+    }
+
+    .drag-handle {
+        margin-right: 10px;
+        font: bold 20px Sans-Serif;
+        color: #5F9EDF;
+        display: inline-block;
+        cursor: move;
+        cursor: -webkit-grabbing;  /* overrides 'move' */
+    }
+
+</style>
 <?php
 echo $this->Html->css(array(
     'yonetici/plugins/summernote/summernote',
@@ -5,7 +20,9 @@ echo $this->Html->css(array(
     '../plugin/elfinder/css/elfinder.min',
     'yonetici/plugins/jQueryUI/jquery-ui',
     'yonetici/plugins/jasny/jasny-bootstrap.min',
-    'yonetici/plugins/iCheck/custom'
+    'yonetici/plugins/iCheck/custom',
+    'yonetici/plugins/blueimp/css/blueimp-gallery.min',
+    'sortable'
 ));
 $yayinda = "";
 if($haber['Haber']['yayinda'] == 1){
@@ -38,6 +55,64 @@ if($haber['Haber']['yayinda'] == 1){
                     </div>
 
                     <div class="form-group">
+                        <label class="col-lg-2 control-label">Resimler:</label>
+                        <div class="col-lg-10">
+                            <div id="content">
+
+                                <!-- Example 2 -->
+                                <input type="file" name="files[]" id="filer_input2" multiple="multiple" accept="image/*">
+                                <!-- end of Example 2 -->
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <div class="lightBoxGallery">
+                                <section class="sortableblock">
+                                    <div id="items" class="sortable">
+                                        <?php foreach($ilan['IlanResim'] as $row){
+                                            echo '<div class="col-xs-12 col-sm-3 sortdata" data-ilan-id="'.$row['ilan_id'].'" data-resim-id="'.$row['id'].'">';
+                                            echo '<div class="thumbnail">';
+                                            echo '<a href="'.$this->Html->url('/').$row['path'].'" data-gallery="" ><img src="'.$this->Html->url('/').$row['paththumb'].'" width="100%"></a>';
+                                            echo '<div class="caption">';
+                                            echo '<i onclick="FuncDeleteResim('.$row['id'].')" class="fa fa-trash fa-lg text-danger"></i>';
+                                            echo '</div>';
+                                            echo '</div>';
+                                            echo '</div>';
+                                            //echo '<li><a href="'.$this->Html->url('/').$row['path'].'" data-gallery="" ><img src="'.$this->Html->url('/').$row['paththumb'].'" width="100%"></a> <br><i onclick="FuncDeleteResim('.$row['id'].')" class="fa fa-trash fa-lg text-danger"></i></li>';
+//                                                echo '<li>';
+//                                                echo '<div class="thumbnail">';
+//                                                echo '<a href="'.$this->Html->url('/').$row['path'].'" data-gallery="" ><img src="'.$this->Html->url('/').$row['paththumb'].'" width="100%"></a>';
+//                                                echo '<div class="caption">';
+//                                                echo '<i onclick="FuncDeleteResim('.$row['id'].')" class="fa fa-trash fa-lg text-danger"></i>';
+//                                                echo '</div>';
+//                                                echo '</div>';
+//                                                echo '</li>';
+
+                                        } ?>
+                                    </div>
+                                </section>
+
+                                <div id="blueimp-gallery" class="blueimp-gallery">
+                                    <div class="slides"></div>
+                                    <h3 class="title"></h3>
+                                    <a class="prev">‹</a>
+                                    <a class="next">›</a>
+                                    <a class="close">×</a>
+                                    <a class="play-pause"></a>
+                                    <ol class="indicator"></ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label class="col-lg-2 control-label"></label>
                         <div class="col-lg-10"><button type="button" class="btn btn-outline btn-sm btn-primary dim" id="haberkaydet"><i class="fa fa-check"></i> Kaydet</button></div>
                     </div>
@@ -56,11 +131,25 @@ echo $this->Html->script(array(
     '../plugin/elfinder/js/elfinder.min',
     '../plugin/elfinder/js/i18n/elfinder.tr',
     'yonetici/plugins/jasny/jasny-bootstrap.min',
-    'yonetici/plugins/iCheck/icheck.min'
+    'yonetici/plugins/iCheck/icheck.min',
+    'yonetici/plugins/Sortable-master/Sortable',
+    'site/jquery.sortable.min',
+    'yonetici/plugins/blueimp/jquery.blueimp-gallery.min'
 ));
 ?>
 <script type="text/javascript">
     $(document).ready(function(){
+        var el = document.getElementById('items');
+        var sortable = Sortable.create(el,{
+            // Element dragging ended
+            onEnd: function (/**Event*/evt) {
+//                                alert(evt.oldIndex+1);  // element's old index within parent
+//                                alert(evt.newIndex+1);  // element's new index within parent
+//                                var ilanId = evt.item.dataset.ilanId;
+//                                var resId = evt.item.dataset.resimId;
+                FuncHaberResimSirala();
+            }
+        });
 
         $('.i-checks').iCheck({
             checkboxClass: 'icheckbox_square-green',
@@ -152,5 +241,21 @@ echo $this->Html->script(array(
                 }
             }
         }).dialogelfinder('instance');
+    }
+
+    function FuncHaberResimSirala(){
+        var resArr = [];
+        $('div#items .sortdata').each(function () {
+            resArr.push({'ilan-id':$(this).data('ilan-id'), 'resim-id':$(this).data('resim-id')});
+        });
+        $.ajax({
+            type:'POST',
+            url:'<?php echo $this->Html->url('/');?>yoneticis/haberresimsirala',
+            data: {'resimler':resArr}
+        }).done(function (data) {
+
+        }).fail(function () {
+
+        });
     }
 </script>
