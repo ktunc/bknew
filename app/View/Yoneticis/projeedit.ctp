@@ -203,6 +203,8 @@ echo $this->Html->script(array(
                             text: "Proje Başarıyla Kaydedildi.",
                             type: "success",
                             confirmButtonText: 'Tamam'
+                        }).then(function(){
+                            window.location.reload();
                         });
                         $.unblockUI();
                     }

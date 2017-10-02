@@ -123,6 +123,8 @@ echo $this->Html->script(array(
                                 text: "Proje Başarıyla Kaydedildi.",
                                 type: "success",
                                 confirmButtonText: 'Tamam'
+                            }).then(function(){
+                                window.location.href = "<?php echo $this->Html->url('/');?>yoneticis/projeedit/pId:"+dat['pId'];
                             });
                             $.unblockUI();
                         }

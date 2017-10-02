@@ -124,6 +124,8 @@ echo $this->Html->script(array(
                                 text: "Haber Başarıyla Kaydedildi.",
                                 type: "success",
                                 confirmButtonText: 'Tamam'
+                            }).then(function(){
+                                window.location.href = "<?php echo $this->Html->url('/');?>yoneticis/haberedit/hId:"+dat['hId'];
                             });
                             $.unblockUI();
                         }

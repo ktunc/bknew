@@ -123,6 +123,8 @@ echo $this->Html->script(array(
                                 text: "Teknik Analiz Başarıyla Kaydedildi.",
                                 type: "success",
                                 confirmButtonText: 'Tamam'
+                            }).then(function(){
+                                window.location.href = "<?php echo $this->Html->url('/');?>yoneticis/teknikanalizedit/taId:"+dat['taId'];
                             });
                             $.unblockUI();
                         }

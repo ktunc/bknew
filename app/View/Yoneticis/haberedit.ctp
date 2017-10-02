@@ -205,6 +205,8 @@ echo $this->Html->script(array(
                             text: "Haber Başarıyla Kaydedildi.",
                             type: "success",
                             confirmButtonText: 'Tamam'
+                        }).then(function(){
+                            window.location.reload();
                         });
                         $.unblockUI();
                     }
