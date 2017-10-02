@@ -191,43 +191,45 @@ class YoneticisController extends AppController {
                 $yuklenenfile = array_key_exists('yuklenenfile',$data)?$data['yuklenenfile']:false;
 
                 $hata = 0;
-                $sira = $this->IlanResim->find('count',array('conditions'=>array('ilan_id'=>$ilanId)));
-                foreach($yuklenenfile as $value){
-                    $sira++;
-                    $asilpath = WWW_ROOT.'img/gecici/'.$value;
-                    if(!is_file($asilpath)){
-                        continue;
-                    }
+                if($yuklenenfile){
+                    $sira = $this->IlanResim->find('count',array('conditions'=>array('ilan_id'=>$ilanId)));
+                    foreach($yuklenenfile as $value){
+                        $sira++;
+                        $asilpath = WWW_ROOT.'img/gecici/'.$value;
+                        if(!is_file($asilpath)){
+                            continue;
+                        }
 
-                    if(file_exists($asilpath)){
-                        $fileType = pathinfo($value, PATHINFO_EXTENSION);
-                        $resName = time().rand(1,1000).'.'.$fileType;
-                        $path = 'img/ilan/'.$ilanId.'/'.$resName;
-                        $path8 = 'img/ilan/'.$ilanId.'/800-'.$resName;
-                        $pathThumb = 'img/ilan/'.$ilanId.'/thumb'.$resName;
+                        if(file_exists($asilpath)){
+                            $fileType = pathinfo($value, PATHINFO_EXTENSION);
+                            $resName = time().rand(1,1000).'.'.$fileType;
+                            $path = 'img/ilan/'.$ilanId.'/'.$resName;
+                            $path8 = 'img/ilan/'.$ilanId.'/800-'.$resName;
+                            $pathThumb = 'img/ilan/'.$ilanId.'/thumb'.$resName;
 //                        $pathRes = WWW_ROOT.'img/ilan/'.$ilanId.'/'.$resName;
 //                        $pathResThumb = WWW_ROOT.'img/ilan/'.$ilanId.'/thumb'.$resName;
 
-                        //image Resize
-                        $manipulator = new ImageManipulator($asilpath);
-                        $manipulator->resample(1024, 1024);
-                        if($manipulator->save($path)){
-                            $manipulator = new ImageManipulator($path);
-                            $manipulator->resample(800, 800);
-                            $manipulator->save($path8);
-                            $manipulator = new ImageManipulator($path);
-                            $manipulator->resample(200, 200);
-                            $manipulator->save($pathThumb);
-                            $this->IlanResim->create();
-                            $this->IlanResim->save(array('ilan_id'=>$ilanId,'res'=>$value,'path'=>$path,'path8'=>$path8,'paththumb'=>$pathThumb, 'sira'=>$sira, 'islem_tarihi'=>date('Y-m-d H:i:s')));
-                            if(file_exists($asilpath)){
-                                unlink($asilpath);
+                            //image Resize
+                            $manipulator = new ImageManipulator($asilpath);
+                            $manipulator->resample(1024, 1024);
+                            if($manipulator->save($path)){
+                                $manipulator = new ImageManipulator($path);
+                                $manipulator->resample(800, 800);
+                                $manipulator->save($path8);
+                                $manipulator = new ImageManipulator($path);
+                                $manipulator->resample(200, 200);
+                                $manipulator->save($pathThumb);
+                                $this->IlanResim->create();
+                                $this->IlanResim->save(array('ilan_id'=>$ilanId,'res'=>$value,'path'=>$path,'path8'=>$path8,'paththumb'=>$pathThumb, 'sira'=>$sira, 'islem_tarihi'=>date('Y-m-d H:i:s')));
+                                if(file_exists($asilpath)){
+                                    unlink($asilpath);
+                                }
+                            }else{
+                                $hata++;
                             }
                         }else{
                             $hata++;
                         }
-                    }else{
-                        $hata++;
                     }
                 }
 
@@ -664,6 +666,49 @@ class YoneticisController extends AppController {
 
                         // Haber Resim Kaydet
                         $yuklenenfile = array_key_exists('yuklenenfile',$data)?$data['yuklenenfile']:false;
+                        if($yuklenenfile){
+                            $sira = $this->HaberResim->find('count',array('conditions'=>array('haber_id'=>$lastId)));
+                            foreach($yuklenenfile as $value){
+                                $sira++;
+                                $asilpath = WWW_ROOT.'img/gecici/'.$value;
+                                if(!is_file($asilpath)){
+                                    continue;
+                                }
+
+                                if(file_exists($asilpath)){
+                                    $fileType = pathinfo($value, PATHINFO_EXTENSION);
+                                    $resName = time().rand(1,1000).'.'.$fileType;
+                                    $path = 'img/haber/'.$lastId.'/'.$resName;
+                                    $pathThumb = 'img/haber/'.$lastId.'/thumb'.$resName;
+
+                                    //image Resize
+                                    $manipulator = new ImageManipulator($asilpath);
+                                    $manipulator->resample(1024, 1024);
+                                    if($manipulator->save($path)){
+                                        $manipulator = new ImageManipulator($path);
+                                        $manipulator->resample(200, 200);
+                                        $manipulator->save($pathThumb);
+                                        $this->HaberResim->create();
+                                        $this->HaberResim->save(array('haber_id'=>$lastId,'res'=>$value,'path'=>$path,'paththumb'=>$pathThumb, 'sira'=>$sira, 'islem_tarihi'=>date('Y-m-d H:i:s')));
+                                        if(file_exists($asilpath)){
+                                            unlink($asilpath);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }else{
+                $this->Haber->create();
+                if($this->Haber->save($saved)){
+                    $lastId = $this->Haber->getLastInsertID();
+                    $return['hata'] = false;
+                    $return['HaberId'] = $lastId;
+
+                    // Haber Resim Kaydet
+                    $yuklenenfile = array_key_exists('yuklenenfile',$data)?$data['yuklenenfile']:false;
+                    if($yuklenenfile){
                         $sira = $this->HaberResim->find('count',array('conditions'=>array('haber_id'=>$lastId)));
                         foreach($yuklenenfile as $value){
                             $sira++;
@@ -690,45 +735,6 @@ class YoneticisController extends AppController {
                                     if(file_exists($asilpath)){
                                         unlink($asilpath);
                                     }
-                                }
-                            }
-                        }
-                    }
-                }
-            }else{
-                $this->Haber->create();
-                if($this->Haber->save($saved)){
-                    $lastId = $this->Haber->getLastInsertID();
-                    $return['hata'] = false;
-                    $return['HaberId'] = $lastId;
-
-                    // Haber Resim Kaydet
-                    $yuklenenfile = array_key_exists('yuklenenfile',$data)?$data['yuklenenfile']:false;
-                    $sira = $this->HaberResim->find('count',array('conditions'=>array('haber_id'=>$lastId)));
-                    foreach($yuklenenfile as $value){
-                        $sira++;
-                        $asilpath = WWW_ROOT.'img/gecici/'.$value;
-                        if(!is_file($asilpath)){
-                            continue;
-                        }
-
-                        if(file_exists($asilpath)){
-                            $fileType = pathinfo($value, PATHINFO_EXTENSION);
-                            $resName = time().rand(1,1000).'.'.$fileType;
-                            $path = 'img/haber/'.$lastId.'/'.$resName;
-                            $pathThumb = 'img/haber/'.$lastId.'/thumb'.$resName;
-
-                            //image Resize
-                            $manipulator = new ImageManipulator($asilpath);
-                            $manipulator->resample(1024, 1024);
-                            if($manipulator->save($path)){
-                                $manipulator = new ImageManipulator($path);
-                                $manipulator->resample(200, 200);
-                                $manipulator->save($pathThumb);
-                                $this->HaberResim->create();
-                                $this->HaberResim->save(array('haber_id'=>$lastId,'res'=>$value,'path'=>$path,'paththumb'=>$pathThumb, 'sira'=>$sira, 'islem_tarihi'=>date('Y-m-d H:i:s')));
-                                if(file_exists($asilpath)){
-                                    unlink($asilpath);
                                 }
                             }
                         }
@@ -834,6 +840,49 @@ class YoneticisController extends AppController {
 
                         // Proje Resim Kaydet
                         $yuklenenfile = array_key_exists('yuklenenfile',$data)?$data['yuklenenfile']:false;
+                        if($yuklenenfile){
+                            $sira = $this->ProjeResim->find('count',array('conditions'=>array('proje_id'=>$lastId)));
+                            foreach($yuklenenfile as $value){
+                                $sira++;
+                                $asilpath = WWW_ROOT.'img/gecici/'.$value;
+                                if(!is_file($asilpath)){
+                                    continue;
+                                }
+
+                                if(file_exists($asilpath)){
+                                    $fileType = pathinfo($value, PATHINFO_EXTENSION);
+                                    $resName = time().rand(1,1000).'.'.$fileType;
+                                    $path = 'img/proje/'.$lastId.'/'.$resName;
+                                    $pathThumb = 'img/proje/'.$lastId.'/thumb'.$resName;
+
+                                    //image Resize
+                                    $manipulator = new ImageManipulator($asilpath);
+                                    $manipulator->resample(1024, 1024);
+                                    if($manipulator->save($path)){
+                                        $manipulator = new ImageManipulator($path);
+                                        $manipulator->resample(200, 200);
+                                        $manipulator->save($pathThumb);
+                                        $this->ProjeResim->create();
+                                        $this->ProjeResim->save(array('proje_id'=>$lastId,'res'=>$value,'path'=>$path,'paththumb'=>$pathThumb, 'sira'=>$sira, 'islem_tarihi'=>date('Y-m-d H:i:s')));
+                                        if(file_exists($asilpath)){
+                                            unlink($asilpath);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }else{
+                $this->Proje->create();
+                if($this->Proje->save($saved)){
+                    $lastId = $this->Proje->getLastInsertID();
+                    $return['hata'] = false;
+                    $return['ProjeId'] = $lastId;
+
+                    // Proje Resim Kaydet
+                    $yuklenenfile = array_key_exists('yuklenenfile',$data)?$data['yuklenenfile']:false;
+                    if($yuklenenfile){
                         $sira = $this->ProjeResim->find('count',array('conditions'=>array('proje_id'=>$lastId)));
                         foreach($yuklenenfile as $value){
                             $sira++;
@@ -860,45 +909,6 @@ class YoneticisController extends AppController {
                                     if(file_exists($asilpath)){
                                         unlink($asilpath);
                                     }
-                                }
-                            }
-                        }
-                    }
-                }
-            }else{
-                $this->Proje->create();
-                if($this->Proje->save($saved)){
-                    $lastId = $this->Proje->getLastInsertID();
-                    $return['hata'] = false;
-                    $return['ProjeId'] = $lastId;
-
-                    // Proje Resim Kaydet
-                    $yuklenenfile = array_key_exists('yuklenenfile',$data)?$data['yuklenenfile']:false;
-                    $sira = $this->ProjeResim->find('count',array('conditions'=>array('proje_id'=>$lastId)));
-                    foreach($yuklenenfile as $value){
-                        $sira++;
-                        $asilpath = WWW_ROOT.'img/gecici/'.$value;
-                        if(!is_file($asilpath)){
-                            continue;
-                        }
-
-                        if(file_exists($asilpath)){
-                            $fileType = pathinfo($value, PATHINFO_EXTENSION);
-                            $resName = time().rand(1,1000).'.'.$fileType;
-                            $path = 'img/proje/'.$lastId.'/'.$resName;
-                            $pathThumb = 'img/proje/'.$lastId.'/thumb'.$resName;
-
-                            //image Resize
-                            $manipulator = new ImageManipulator($asilpath);
-                            $manipulator->resample(1024, 1024);
-                            if($manipulator->save($path)){
-                                $manipulator = new ImageManipulator($path);
-                                $manipulator->resample(200, 200);
-                                $manipulator->save($pathThumb);
-                                $this->ProjeResim->create();
-                                $this->ProjeResim->save(array('proje_id'=>$lastId,'res'=>$value,'path'=>$path,'paththumb'=>$pathThumb, 'sira'=>$sira, 'islem_tarihi'=>date('Y-m-d H:i:s')));
-                                if(file_exists($asilpath)){
-                                    unlink($asilpath);
                                 }
                             }
                         }
@@ -1004,6 +1014,49 @@ class YoneticisController extends AppController {
 
                         // Teknik Analiz Resim Kaydet
                         $yuklenenfile = array_key_exists('yuklenenfile',$data)?$data['yuklenenfile']:false;
+                        if($yuklenenfile){
+                            $sira = $this->TeknikAnalizResim->find('count',array('conditions'=>array('teknik_analiz_id'=>$lastId)));
+                            foreach($yuklenenfile as $value){
+                                $sira++;
+                                $asilpath = WWW_ROOT.'img/gecici/'.$value;
+                                if(!is_file($asilpath)){
+                                    continue;
+                                }
+
+                                if(file_exists($asilpath)){
+                                    $fileType = pathinfo($value, PATHINFO_EXTENSION);
+                                    $resName = time().rand(1,1000).'.'.$fileType;
+                                    $path = 'img/teknik_analiz/'.$lastId.'/'.$resName;
+                                    $pathThumb = 'img/teknik_analiz/'.$lastId.'/thumb'.$resName;
+
+                                    //image Resize
+                                    $manipulator = new ImageManipulator($asilpath);
+                                    $manipulator->resample(1024, 1024);
+                                    if($manipulator->save($path)){
+                                        $manipulator = new ImageManipulator($path);
+                                        $manipulator->resample(200, 200);
+                                        $manipulator->save($pathThumb);
+                                        $this->TeknikAnalizResim->create();
+                                        $this->TeknikAnalizResim->save(array('teknik_analiz_id'=>$lastId,'res'=>$value,'path'=>$path,'paththumb'=>$pathThumb, 'sira'=>$sira, 'islem_tarihi'=>date('Y-m-d H:i:s')));
+                                        if(file_exists($asilpath)){
+                                            unlink($asilpath);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }else{
+                $this->TeknikAnaliz->create();
+                if($this->TeknikAnaliz->save($saved)){
+                    $lastId = $this->TeknikAnaliz->getLastInsertID();
+                    $return['hata'] = false;
+                    $return['taId'] = $lastId;
+
+                    // Teknik Analiz Resim Kaydet
+                    $yuklenenfile = array_key_exists('yuklenenfile',$data)?$data['yuklenenfile']:false;
+                    if($yuklenenfile){
                         $sira = $this->TeknikAnalizResim->find('count',array('conditions'=>array('teknik_analiz_id'=>$lastId)));
                         foreach($yuklenenfile as $value){
                             $sira++;
@@ -1030,45 +1083,6 @@ class YoneticisController extends AppController {
                                     if(file_exists($asilpath)){
                                         unlink($asilpath);
                                     }
-                                }
-                            }
-                        }
-                    }
-                }
-            }else{
-                $this->TeknikAnaliz->create();
-                if($this->TeknikAnaliz->save($saved)){
-                    $lastId = $this->TeknikAnaliz->getLastInsertID();
-                    $return['hata'] = false;
-                    $return['taId'] = $lastId;
-
-                    // Teknik Analiz Resim Kaydet
-                    $yuklenenfile = array_key_exists('yuklenenfile',$data)?$data['yuklenenfile']:false;
-                    $sira = $this->TeknikAnalizResim->find('count',array('conditions'=>array('teknik_analiz_id'=>$lastId)));
-                    foreach($yuklenenfile as $value){
-                        $sira++;
-                        $asilpath = WWW_ROOT.'img/gecici/'.$value;
-                        if(!is_file($asilpath)){
-                            continue;
-                        }
-
-                        if(file_exists($asilpath)){
-                            $fileType = pathinfo($value, PATHINFO_EXTENSION);
-                            $resName = time().rand(1,1000).'.'.$fileType;
-                            $path = 'img/teknik_analiz/'.$lastId.'/'.$resName;
-                            $pathThumb = 'img/teknik_analiz/'.$lastId.'/thumb'.$resName;
-
-                            //image Resize
-                            $manipulator = new ImageManipulator($asilpath);
-                            $manipulator->resample(1024, 1024);
-                            if($manipulator->save($path)){
-                                $manipulator = new ImageManipulator($path);
-                                $manipulator->resample(200, 200);
-                                $manipulator->save($pathThumb);
-                                $this->TeknikAnalizResim->create();
-                                $this->TeknikAnalizResim->save(array('teknik_analiz_id'=>$lastId,'res'=>$value,'path'=>$path,'paththumb'=>$pathThumb, 'sira'=>$sira, 'islem_tarihi'=>date('Y-m-d H:i:s')));
-                                if(file_exists($asilpath)){
-                                    unlink($asilpath);
                                 }
                             }
                         }
