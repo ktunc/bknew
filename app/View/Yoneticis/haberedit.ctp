@@ -290,7 +290,7 @@ echo $this->Html->script(array(
     function FuncHaberResimSirala(){
         var resArr = [];
         $('div#items .sortdata').each(function () {
-            resArr.push({'ilan-id':$(this).data('ilan-id'), 'resim-id':$(this).data('resim-id')});
+            resArr.push({'haber-id':$(this).data('haber-id'), 'resim-id':$(this).data('resim-id')});
         });
         $.ajax({
             type:'POST',
