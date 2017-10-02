@@ -149,7 +149,7 @@ echo $this->Html->script(array(
 //                                alert(evt.newIndex+1);  // element's new index within parent
 //                                var ilanId = evt.item.dataset.ilanId;
 //                                var resId = evt.item.dataset.resimId;
-                FuncHaberResimSirala();
+                FuncProjeResimSirala();
             }
         });
 
@@ -285,7 +285,7 @@ echo $this->Html->script(array(
         });
     }
 
-    function FuncHaberResimSirala(){
+    function FuncProjeResimSirala(){
         var resArr = [];
         $('div#items .sortdata').each(function () {
             resArr.push({'proje-id':$(this).data('proje-id'), 'resim-id':$(this).data('resim-id')});

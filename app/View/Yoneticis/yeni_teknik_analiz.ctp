@@ -5,7 +5,9 @@ echo $this->Html->css(array(
     '../plugin/elfinder/css/elfinder.min',
     'yonetici/plugins/jQueryUI/jquery-ui',
     'yonetici/plugins/jasny/jasny-bootstrap.min',
-    'yonetici/plugins/iCheck/custom'
+    'yonetici/plugins/iCheck/custom',
+    'yonetici/plugins/filer/jquery.filer',
+    'yonetici/plugins/filer/themes/jquery.filer-dragdropbox-theme'
 ));
 ?>
     <style>
@@ -32,7 +34,18 @@ echo $this->Html->css(array(
                                 <textarea name="icerik" class="summernote"></textarea>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Resimler:</label>
+                            <div class="col-lg-10">
+                                <div id="content">
 
+                                    <!-- Example 2 -->
+                                    <input type="file" name="files[]" id="filer_input2" multiple="multiple" accept="image/*">
+                                    <!-- end of Example 2 -->
+
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="col-lg-2 control-label"></label>
                             <div class="col-lg-10"><button type="button" class="btn btn-outline btn-sm btn-primary dim" id="teknikanalizkaydet"><i class="fa fa-check"></i> Kaydet</button></div>
@@ -52,7 +65,9 @@ echo $this->Html->script(array(
     '../plugin/elfinder/js/elfinder.min',
     '../plugin/elfinder/js/i18n/elfinder.tr',
     'yonetici/plugins/jasny/jasny-bootstrap.min',
-    'yonetici/plugins/iCheck/icheck.min'
+    'yonetici/plugins/iCheck/icheck.min',
+    'yonetici/plugins/filer/jquery.filer.min',
+    'yonetici/plugins/filer/jquery.filer.custom'
 ));
 ?>
     <script type="text/javascript">
