@@ -5,7 +5,7 @@ echo $this->Html->script('site/FlexSlider/modernizr');
 echo $this->Html->css('site/PhotoSwipe/photoswipe');
 ?>
 <div class="container-fluid bg-white">
-    <div class="col-sm-12 col-md-9">
+    <div class="col-sm-12 col-md-9 scrollHeight">
         <div class="row">
             <p class="IlanHeader"><?php echo $ilan['Ilan']['baslik']; ?></p>
             <p class="IlanAdres"><?php echo (!empty($ilan['Mahalle']['id'])?$ilan['Mahalle']['mahalle_adi'].' / ':'').(!empty($ilan['Semt']['id'])?$ilan['Semt']['semt_adi'].' / ':'').(!empty($ilan['Ilce']['id'])?$ilan['Ilce']['ilce_adi'].' / ':'').(!empty($ilan['Sehir']['id'])?$ilan['Sehir']['sehir_adi']:''); ?></p>
@@ -118,9 +118,8 @@ echo $this->Html->css('site/PhotoSwipe/photoswipe');
         <div class="row">
             <?php echo $ilan['Ilan']['icerik']; ?>
         </div>
-        <?php pr($ilan); ?>
     </div>
-    <div class="hidden-xs hidden-sm col-md-3">
+    <div class="hidden-xs hidden-sm col-md-3 scrollHeight">
         <?php
         foreach($ilanlar as $row){
             echo '<a class="row thumbnail margin-rl-0" href="'.$this->Html->url('/').'ilan/ilan:'.$row['Ilan']['id'].'">';

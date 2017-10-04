@@ -71,10 +71,12 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <script type="text/javascript">
 $(document).ready(function(){
     $('.headerlogo').width($('.menuclass').width());
+    $('.scrollHeight').height($(window).height()*0.8);
 });
 
 $(window).resize(function () {
     $('.headerlogo').width($('.menuclass').width());
+    $('.scrollHeight').height($(window).height()*0.8);
 });
 </script>
 </body>
