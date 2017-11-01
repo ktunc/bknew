@@ -4,7 +4,7 @@ $ilansay = $this->requestAction('/sayfas/ilansayilar');
 
 <div class="row padding-tb-5">
     <div class="col-xs-4 padding-rl-5">
-        <div class="menu1 padding-tb-20 text-center pointer" onclick="FuncGoLink('sayfas/ilanlar/tur:1')">
+        <div class="menu1 padding-tb-20 text-center pointer borderGri" onclick="FuncGoLink('sayfas/ilanlar/tur:1')">
             <div class="menu1img">
                 <img src="<?php echo $this->Html->url('/');?>img/menu/konut.png" width="100%"/>
             </div>
@@ -13,14 +13,14 @@ $ilansay = $this->requestAction('/sayfas/ilansayilar');
         </div>
     </div>
     <div class="col-xs-4 padding-rl-5">
-        <div class="menu1 padding-tb-20 text-center pointer" onclick="FuncGoLink('sayfas/ilanlar/tur:2')">
+        <div class="menu1 padding-tb-20 text-center pointer borderGri" onclick="FuncGoLink('sayfas/ilanlar/tur:2')">
             <div class="menu1img"><img src="<?php echo $this->Html->url('/');?>img/menu/isyeri.png" width="100%"/></div>
             <h2>İşyeri</h2>
             <h3><?php echo $ilansay['isyeri']; ?></h3>
         </div>
     </div>
     <div class="col-xs-4 padding-rl-5">
-        <div class="menu1 padding-tb-20 text-center pointer" onclick="FuncGoLink('sayfas/ilanlar/tur:3')">
+        <div class="menu1 padding-tb-20 text-center pointer borderGri" onclick="FuncGoLink('sayfas/ilanlar/tur:3')">
             <div class="menu1img"><img src="<?php echo $this->Html->url('/');?>img/menu/arsa.png" width="100%"/></div>
             <h2>Arsa</h2>
             <h3><?php echo $ilansay['arsa']; ?></h3>

@@ -115,6 +115,9 @@ a.thumbnail{
     margin-left: 10px;
     margin-right: 10px;
 }
+.borderGri{
+    border:1px solid #c5c6c6;
+}
 /* Menu */
 .menu1{
     padding-right: 0px;
