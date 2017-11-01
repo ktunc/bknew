@@ -83,6 +83,10 @@ a.thumbnail{
     height: 400px !important;
 }
 
+.padding-rl-2{
+    padding-right: 2px;
+    padding-left: 2px;
+}
 .padding-rl-5{
     padding-right: 5px;
     padding-left: 5px;
