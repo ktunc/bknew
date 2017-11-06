@@ -4,7 +4,7 @@ $ilansay = $this->requestAction('/sayfas/ilansayilar');
 
 <div class="row padding-tb-5">
     <div class="col-xs-4 padding-rl-2">
-        <div class="menu1 padding-tb-20 text-center pointer borderGri" onclick="FuncGoLink('sayfas/ilanlar/tur:1')">
+        <div class="menu1 padding-tb-10 text-center pointer borderGri" onclick="FuncGoLink('sayfas/ilanlar/tur:1')">
             <div class="menu1img">
                 <img src="<?php echo $this->Html->url('/');?>img/menu/konut.png" width="100%"/>
             </div>
@@ -13,14 +13,14 @@ $ilansay = $this->requestAction('/sayfas/ilansayilar');
         </div>
     </div>
     <div class="col-xs-4 padding-rl-2">
-        <div class="menu1 padding-tb-20 text-center pointer borderGri" onclick="FuncGoLink('sayfas/ilanlar/tur:2')">
+        <div class="menu1 padding-tb-10 text-center pointer borderGri" onclick="FuncGoLink('sayfas/ilanlar/tur:2')">
             <div class="menu1img"><img src="<?php echo $this->Html->url('/');?>img/menu/isyeri.png" width="100%"/></div>
             <h2>İşyeri</h2>
             <h3><?php echo $ilansay['isyeri']; ?></h3>
         </div>
     </div>
     <div class="col-xs-4 padding-rl-2">
-        <div class="menu1 padding-tb-20 text-center pointer borderGri" onclick="FuncGoLink('sayfas/ilanlar/tur:3')">
+        <div class="menu1 padding-tb-10 text-center pointer borderGri" onclick="FuncGoLink('sayfas/ilanlar/tur:3')">
             <div class="menu1img"><img src="<?php echo $this->Html->url('/');?>img/menu/arsa.png" width="100%"/></div>
             <h2>Arsa</h2>
             <h3><?php echo $ilansay['arsa']; ?></h3>
@@ -31,7 +31,7 @@ $ilansay = $this->requestAction('/sayfas/ilansayilar');
     <div class="col-xs-4 padding-rl-2">
         <div class="row">
             <div class="col-xs-12">
-                <div class="menu1 padding-tb-20 text-center pointer borderGri" onclick="FuncGoLink('sayfas/ilanlar/tur:1')">
+                <div class="menu1 padding-tb-10 text-center pointer borderGri" onclick="FuncGoLink('sayfas/ilanlar/tur:1')">
                     <div class="menu1img">
                         <img src="<?php echo $this->Html->url('/');?>img/menu/projeler.png" width="100%"/>
                     </div>
@@ -41,7 +41,7 @@ $ilansay = $this->requestAction('/sayfas/ilansayilar');
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <div class="menu1 padding-tb-20 text-center pointer borderGri" onclick="FuncGoLink('sayfas/ilanlar/tur:1')">
+                <div class="menu1 padding-tb-10 text-center pointer borderGri" onclick="FuncGoLink('sayfas/ilanlar/tur:1')">
                     <div class="menu1img">
                         <img src="<?php echo $this->Html->url('/');?>img/menu/teknik_analiz.png" width="100%"/>
                     </div>
@@ -51,18 +51,14 @@ $ilansay = $this->requestAction('/sayfas/ilansayilar');
         </div>
     </div>
     <div class="col-xs-8 padding-rl-2">
-        <div class="menu1 padding-tb-20 text-center pointer borderGri" onclick="FuncGoLink('sayfas/ilanlar/tur:2')">
-            <div class="menu1img"><img src="<?php echo $this->Html->url('/');?>img/menu/isyeri.png" width="100%"/></div>
-            <h2>İşyeri</h2>
+        <div class="menu1 padding-tb-10 text-center pointer borderGri" onclick="FuncGoLink('sayfas/ilanlar/tur:2')">
+            <div class="menu1img"><img src="<?php echo $this->Html->url('/');?>img/menu/harita.png" width="100%"/></div>
         </div>
     </div>
 </div>
 <div class="row padding-tb-5">
-    <div class="col-xs-6 padding-rl-2">
+    <div class="col-xs-12 padding-rl-2">
         <iframe id="videoframe" width="100%" height="315" src="https://www.youtube.com/embed/videoseries?list=UUZXNUXvKTHj7siaGdBFkEag&autoplay=1&loop=1&index=<?php echo rand(1,60); ?>" frameborder="0" allowfullscreen></iframe>
-    </div>
-    <div class="col-xs-6 padding-rl-2">
-        <img id="haritaimg" src="<?php echo $this->Html->url('/');?>img/menu/harita.png" width="100%"/>
     </div>
 </div>
 <div class="row padding-tb-5">
